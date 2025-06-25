@@ -5,14 +5,16 @@ import 'package:qaimati/utilities/setup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await setUp();
-  EasyLocalization(
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
-    path: 'assets/translations', // <-- change the path of the translation files
-    fallbackLocale: Locale('en', 'US'),
-    child: MyApp(),
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en', 'US'),
+      child: MyApp(),
+    ),
   );
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
