@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 
@@ -35,7 +34,7 @@ class CustomTheme {
       selectedItemColor: StyleColor.green,
       unselectedItemColor: StyleColor.gray,
     ),
-    cardColor: StyleColor.graylight,
+    cardColor: StyleColor.gray,
     dividerColor: StyleColor.gray,
   );
 
@@ -71,7 +70,7 @@ class CustomTheme {
       selectedItemColor: StyleColor.green,
       unselectedItemColor: StyleColor.gray,
     ),
-    cardColor: StyleColor.graylight,
+    cardColor: StyleColor.gray,
     dividerColor: StyleColor.gray,
   );
 }

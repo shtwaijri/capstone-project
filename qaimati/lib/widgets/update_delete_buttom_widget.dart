@@ -48,7 +48,7 @@ class UpdateDeleteButtomWidget extends StatelessWidget {
         StyleSize.sizeW16,
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: StyleColor.error,
+            backgroundColor: StyleColor.red,
             fixedSize: Size(
               context.getWidth() * .43,
               context.getHeight() * 0.06,
