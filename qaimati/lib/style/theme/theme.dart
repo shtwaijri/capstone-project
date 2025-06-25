@@ -1,36 +1,77 @@
-// import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+import 'package:qaimati/style/style_color.dart';
 
 class CustomTheme {
-  // static final customTheme = ThemeData(
-  //   colorScheme: ColorScheme(
-  //     brightness: Brightness.light,
-  //     primary: StyleColor.beige,
-  //     onPrimary: StyleColor.black,
-  //     secondary: StyleColor.tail,
-  //     onSecondary: StyleColor.black,
-  //     error: StyleColor.red,
-  //     onError: StyleColor.red,
-  //     surface: StyleColor.beige,
-  //     onSurface: StyleColor.black,
-  //   ),
-  //   scaffoldBackgroundColor: StyleColor.beige,
-  //   elevatedButtonTheme: ElevatedButtonThemeData(
-  //     style: ButtonStyle(
-  //       alignment: Alignment.center,
-  //       elevation: WidgetStateProperty.all(0),
-  //       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-  //         RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  //       ),
-  //       backgroundColor: WidgetStateProperty.all(StyleColor.tail),
-  //       foregroundColor: WidgetStateProperty.all(StyleColor.black),
-  //       overlayColor: WidgetStatePropertyAll(Colors.grey.shade600),
-  //     ),
-  //   ),
-  //   listTileTheme: ListTileThemeData(tileColor: Colors.transparent),
-  //   appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
-  //   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-  //     selectedItemColor: StyleColor.tail,
-  //     unselectedItemColor: StyleColor.black,
-  //   ),
-  // );
+  static final lightTheme = ThemeData(
+    colorScheme: ColorScheme(
+      brightness: Brightness.light,
+      primary: StyleColor.green,
+      onPrimary: StyleColor.black,
+      secondary: StyleColor.blue,
+      onSecondary: StyleColor.black,
+      error: StyleColor.red,
+      onError: StyleColor.red,
+      surface: StyleColor.green,
+      onSurface: StyleColor.black,
+    ),
+    scaffoldBackgroundColor: StyleColor.white,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        alignment: Alignment.center,
+        elevation: WidgetStateProperty.all(0),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        backgroundColor: WidgetStateProperty.all(StyleColor.green),
+        foregroundColor: WidgetStateProperty.all(StyleColor.white),
+        overlayColor: WidgetStatePropertyAll(StyleColor.gray),
+      ),
+    ),
+    listTileTheme: ListTileThemeData(tileColor: Colors.transparent),
+    appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: StyleColor.white,
+      selectedItemColor: StyleColor.green,
+      unselectedItemColor: StyleColor.gray,
+    ),
+    cardColor: StyleColor.graylight,
+    dividerColor: StyleColor.gray,
+  );
+
+  static final darkTheme = ThemeData(
+    colorScheme: ColorScheme(
+      brightness: Brightness.dark,
+      primary: StyleColor.green,
+      onPrimary: StyleColor.white,
+      secondary: StyleColor.blue,
+      onSecondary: StyleColor.white,
+      error: StyleColor.red,
+      onError: StyleColor.red,
+      surface: StyleColor.green,
+      onSurface: StyleColor.white,
+    ),
+    scaffoldBackgroundColor: StyleColor.black,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        alignment: Alignment.center,
+        elevation: WidgetStateProperty.all(0),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        backgroundColor: WidgetStateProperty.all(StyleColor.green),
+        foregroundColor: WidgetStateProperty.all(StyleColor.white),
+        overlayColor: WidgetStatePropertyAll(StyleColor.gray),
+      ),
+    ),
+    listTileTheme: ListTileThemeData(tileColor: Colors.transparent),
+    appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: StyleColor.black,
+      selectedItemColor: StyleColor.green,
+      unselectedItemColor: StyleColor.gray,
+    ),
+    cardColor: StyleColor.graylight,
+    dividerColor: StyleColor.gray,
+  );
 }
