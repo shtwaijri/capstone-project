@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qaimati/style/style_color.dart';
 
 class FloatingButton extends StatelessWidget {
   const FloatingButton({super.key, required this.onpressed});
@@ -7,7 +8,7 @@ class FloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
         onPressed: () => onpressed!(),
-        backgroundColor: Colors.green[200],
+        backgroundColor: StyleColor.green,
         hoverColor: Colors.transparent,
         focusColor: Colors.transparent,
         splashColor: Colors.transparent,
