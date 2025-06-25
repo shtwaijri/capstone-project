@@ -1,8 +1,10 @@
 // part of 'auth.dart';
 
-// @immutable
-// sealed class AuthState {}
-// final class AuthStateInit extends AuthState {}
+
+// @override 
+sealed class AuthState {}
+final class AuthStateInit extends AuthState {}
+
 
 // final class SignupInitial extends AuthState {}
 
