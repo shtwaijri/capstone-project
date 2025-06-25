@@ -1,6 +1,6 @@
 part of 'auth.dart';
 
-@immutable
+// @immutable
 sealed class AuthEvent {}
 //
 class SignUpEvent extends AuthEvent {}
