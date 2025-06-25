@@ -1,17 +1,20 @@
-part of 'auth.dart';
+// part of 'auth.dart';
 
+
+// @override 
 sealed class AuthState {}
 final class AuthStateInit extends AuthState {}
 
-final class SignupInitial extends AuthState {}
+
+// final class SignupInitial extends AuthState {}
 
 
-final class LoadingSignUpState extends AuthState {}
+// final class LoadingSignUpState extends AuthState {}
 
-final class SuccessState extends AuthState {}
+// final class SuccessState extends AuthState {}
 
-final class ErrorState extends AuthState {
-  final String msg;
+// final class ErrorState extends AuthState {
+//   final String msg;
 
-  ErrorState({required this.msg});
-}
+//   ErrorState({required this.msg});
+// }

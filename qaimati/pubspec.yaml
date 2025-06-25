@@ -1,6 +1,7 @@
 name: qaimati
 description: "A new Flutter project."
 publish_to: 'none' 
+version: 0.1.0
 
 
 environment:
@@ -24,9 +25,6 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   fade_shimmer: ^2.4.0
 
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -40,3 +38,14 @@ flutter:
     - .env
     - assets/translations/
     - assets/images/
+  fonts:
+    - family: SFArabicRounded
+      fonts:
+        - asset: assets/fonts/SF-Arabic-Rounded.ttf
+
+    - family: SFCompactRounded
+      fonts:
+        - asset: assets/fonts/SF-Compact-Rounded-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SF-Compact-Rounded-Bold.otf
+          weight: 700
