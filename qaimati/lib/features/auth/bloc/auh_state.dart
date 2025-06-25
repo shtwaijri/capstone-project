@@ -1,6 +1,5 @@
 part of 'auth.dart';
 
-@immutable
 sealed class AuthState {}
 final class AuthStateInit extends AuthState {}
 
