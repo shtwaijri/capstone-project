@@ -41,8 +41,8 @@ Future<void> sendNotificationByExternalId({
   };
   final headers = {
     'Content-Type': 'application/json; charset=utf-8',
-    'Authorization':
-        'Basic ',
+    'Authorization':""
+       ,
   };
   final response = await http.post(
     url,
