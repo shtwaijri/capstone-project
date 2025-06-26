@@ -32,7 +32,7 @@ Future<void> sendNotificationByExternalId({
 }) async {
   final url = Uri.parse('https://onesignal.com/api/v1/notifications');
   final body = {
-    "app_id": "d28cebf3-3341-4355-902d-fb91610fcd46",
+    "app_id": "",
     "contents": {"en": message},
     "headings": {"en": title},
     "include_aliases": {"external_id": externalUserId},
@@ -42,7 +42,7 @@ Future<void> sendNotificationByExternalId({
   final headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Authorization':
-        'Basic os_v2_app_2kgox4ztifbvlebn7oiwcd6ni3jzckvqletenp5wydkw2slqahitpsvcimme374qe4rsnb6arkmx4uaqgzwsr4ksojfqly7itqwqgma',
+        'Basic ',
   };
   final response = await http.post(
     url,
