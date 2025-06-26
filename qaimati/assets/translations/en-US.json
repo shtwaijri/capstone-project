@@ -25,6 +25,7 @@
 
   "commonCancel": "Cancel",
   "commonDelete": "Delete",
+  "commonSearch": "Search",
 
   "itemNoItems": "You haven't added any items to the list yet.",
   "itemName": "Enter item Name ",
@@ -47,8 +48,8 @@
   "receiptSizeNote": "(up to 12 Mb)",
   "receiptStore": "Store name",
   "receiptEnterStore": "Enter store name",
-  "receiptTotalLabel": "Total name",
-  "receiptEnterTotal": "Enter item total",
+  "receiptTotalLabel": "Total",
+  "receiptEnterTotal": "Enter items total",
   "receiptSubmit": "Submit",
   "receiptExpenses": "Expenses",
   "receiptNoReceipts": "You haven't added any Receipt",

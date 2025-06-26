@@ -25,6 +25,7 @@
 
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
+  "commonSearch": "بحث",
 
   "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",
   "itemName": "أدخل اسم العنصر",
@@ -47,7 +48,7 @@
   "receiptSizeNote": "(حتى ١٢ ميجابايت)",
   "receiptStore": "اسم المتجر",
   "receiptEnterStore": "أدخل اسم المتجر",
-  "receiptTotalLabel": "الاسم الإجمالي",
+  "receiptTotalLabel": " الإجمالي",
   "receiptEnterTotal": "أدخل إجمالي الأصناف",
   "receiptSubmit": "إرسال",
   "receiptExpenses": "المصروفات",
