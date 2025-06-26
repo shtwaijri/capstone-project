@@ -26,15 +26,20 @@
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
   "commonSearch": "بحث",
-
+  
   "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",
+  "itemNoItems1": "لم تُضِف أي عناصر",
+  "itemNoItems2": " إلى القائمة بعد.",
+
   "itemName": "أدخل اسم العنصر",
   "itemAdd": "أضف العنصر",
   "itemUpdate": "حدّث العنصر",
   "itemDelete": "احذف العنصر",
   "itemDeleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
-
+     "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
+   "Item": "العنصر",
+   "CompleteSelected":"إكمال العناصر المحددة",
 
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",
   "memberAdd": "إضافة عضو",
@@ -59,6 +64,9 @@
   "receiptUpdate": "تحديث الإيصال",
   "receiptDelete": "حذف الإيصال",
   "receiptDeleteConfirm": "هل أنت متأكد من حذف هذا الإيصال؟",
+
+  "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
+
 
   "profileTitle": "الملف الشخصي",
   "settingsTitle": "الإعدادات",
