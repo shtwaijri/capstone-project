@@ -1,7 +1,17 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_events.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_states.dart';
+
+
+// class OnboardingBloc extends Bloc<OnboardingEvents, OnboardingStates> {
+//   OnboardingBloc() : super(OnboardingStates()) {
+//     on<OnboardingEvents>((event, emit) {
+//       return emit(OnboardingStates(pageIndex: state.pageIndex));
+//     });
+//   }
+// }
 
 class OnboardingBloc extends Bloc<OnboardingEvents, OnboardingStates> {
   final PageController controller = PageController();
@@ -25,3 +35,5 @@ class OnboardingBloc extends Bloc<OnboardingEvents, OnboardingStates> {
     });
   }
 }
+
+

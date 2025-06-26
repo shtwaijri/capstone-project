@@ -1,3 +1,6 @@
+// class OnboardingEvents {}
+
+
 abstract class OnboardingEvents {}
 
 class PageChangedEvent extends OnboardingEvents {
