@@ -54,7 +54,7 @@
   "receiptNoReceipts": "You haven't added any Receipt",
   "receiptMonthly": "monthly spending",
   "receiptSummary": "Receipt Summary",
-  "receiptPdf": "receipt",
+  "receipt": "Receipt",
   "receiptPdfLabel": "PDF",
   "receiptUpdate": "Update the receipt",
   "receiptDelete": "Delete the receipt",
