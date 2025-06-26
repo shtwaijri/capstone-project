@@ -15,21 +15,19 @@ final class ChooseImportanceState extends SubListState {
   ChooseImportanceState({required this.isImportant});
 }
 
- 
- 
 //  class ItemModel {
 //   final String name;
 //   final int quantity;
 //   final bool isImportant;
 //   final String createdBy;
-//   bool isChecked;  
+//   bool isChecked;
 
 //   ItemModel({
 //     required this.name,
 //     required this.quantity,
 //     required this.isImportant,
 //     required this.createdBy,
-//     this.isChecked = false, 
+//     this.isChecked = false,
 //   });
 
 //    ItemModel copyWith({
@@ -53,17 +51,16 @@ class ItemModel {
   int quantity;
   bool isImportant;
   String createdBy;
-  bool isChecked; // 🔴 تأكد من إضافة هذا الحقل
+  bool isChecked;
 
   ItemModel({
     required this.name,
     required this.quantity,
     this.isImportant = false,
     required this.createdBy,
-    this.isChecked = false, // 🔴 القيمة الافتراضية عند الإنشاء
+    this.isChecked = false,
   });
 
-  // 🔴 تأكد من تحديث دالة copyWith
   ItemModel copyWith({
     String? name,
     int? quantity,
@@ -81,16 +78,46 @@ class ItemModel {
   }
 }
 
+//  class SubListLoadedState extends SubListState {
+//   final List<ItemModel> items;
+//   final int currentNumber;
+//   final bool currentIsItemImportant;
+//   final int selectedItemsCount;
 
- class SubListLoadedState extends SubListState {
+//   SubListLoadedState({
+//     required this.items,
+//     required this.currentNumber,
+//     required this.currentIsItemImportant,
+//     required this.selectedItemsCount
+//   });
+// }
+
+final class SubListLoadedState extends SubListState {
   final List<ItemModel> items;
-  final int currentNumber; 
-  final bool currentIsItemImportant;  
+  final int currentNumber;
+  final bool currentIsItemImportant;
+
+  final int selectedItemsCount;
 
   SubListLoadedState({
     required this.items,
+    required this.selectedItemsCount,
     required this.currentNumber,
     required this.currentIsItemImportant,
   });
-}
 
+  SubListLoadedState copyWith({
+    List<ItemModel>? items,
+    int? currentNumber,
+    bool? currentIsItemImportant,
+    int? selectedItemsCount,
+  }) {
+    return SubListLoadedState(
+      items: items ?? this.items,
+      selectedItemsCount: selectedItemsCount ?? this.selectedItemsCount,
+      currentNumber: currentNumber ?? this.currentNumber,
+      currentIsItemImportant:
+          currentIsItemImportant ?? this.currentIsItemImportant,
+    );
+  }
+}

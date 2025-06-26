@@ -11,6 +11,13 @@ import 'package:qaimati/widgets/buttom_widget.dart';
 void completeItemBottomsheet({required BuildContext context}) {
   final bloc = context.read<SubListBloc>();
 
+  List<ItemModel> itemsCheckedOutTrue = [];
+  for (var item in bloc.items) {
+    if (item.isChecked == true) {
+      itemsCheckedOutTrue.add(item);
+    }
+  }
+
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
@@ -22,9 +29,7 @@ void completeItemBottomsheet({required BuildContext context}) {
         value: bloc,
         child: Padding(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(
-              context,
-            ).viewInsets.bottom,  
+            bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: SingleChildScrollView(
             child: Container(
@@ -35,22 +40,29 @@ void completeItemBottomsheet({required BuildContext context}) {
                 crossAxisAlignment:
                     CrossAxisAlignment.start, // Align children to start (left)
                 children: [
-                 StyleSize.sizeH32,
+                  StyleSize.sizeH32,
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 10,
+                      itemCount: itemsCheckedOutTrue.length,
                       itemBuilder: (context, index) {
+                        final item = itemsCheckedOutTrue[index];
                         return ListTile(
-                          title: Text("item"),
-                          subtitle: Text("create by"),
+                          title: Text(item.name),
+                          subtitle: Text("memberCreatedBy".tr()),
                         );
                       },
                     ),
                   ),
                   StyleSize.sizeH16,
-                  ButtomWidget(onTab: () {  }, textElevatedButton: "receiptAdd".tr(),),
-                   StyleSize.sizeH16,
-                   ButtomWidget(onTab: () {  }, textElevatedButton: "checkoutwithoutreceipt".tr(),),
+                  ButtomWidget(
+                    onTab: () {},
+                    textElevatedButton: "receiptAdd".tr(),
+                  ),
+                  StyleSize.sizeH16,
+                  ButtomWidget(
+                    onTab: () {},
+                    textElevatedButton: "checkoutwithoutreceipt".tr(),
+                  ),
                 ],
               ),
             ),

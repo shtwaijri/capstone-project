@@ -36,7 +36,8 @@
   "itemUpdate": "Update the item",
   "itemDelete": "Delete the item",
   "itemDeleteConfirm": "Are you sure you want to delete this item?",
-
+   "Item": "Item",
+  "CompleteSelected":"Complete Selected Items ",
 
   "checkoutComplete": "Complete Check Out",
 
@@ -60,7 +61,7 @@
   "receiptNoReceipts": "You haven't added any Receipt",
   "receiptMonthly": "monthly spending",
   "receiptSummary": "Receipt Summary",
-  "receiptPdf": "receipt",
+  "receipt": "Receipt",
   "receiptPdfLabel": "PDF",
   "receiptUpdate": "Update the receipt",
   "receiptDelete": "Delete the receipt",

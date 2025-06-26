@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+// app style color
 class StyleColor {
-  static const beige = Color(0xFFEAE5DF); //Background
-  static const white = Color.fromARGB(255, 255, 255, 255); //Background
-  static const tail = Color(0xFF97BEAC); //Buttons
-  static const black = Color(0xFF221E20); //text
-  static const red = Color(0xFFE65959); //Error or logout
-  static const green = Color(0xFF7FD996); //Success
-  static const floralWhite = Color(0xffFFF8F0);
-  static const gray = Colors.grey; //cards color
-  static const lightBrown = Color(0xffD3B48C);
-  static const blue = Color(0xffBCE7F0);
+  static const green = Color(0xFFB4DE95); //Buttons
+  static const blue = Color(0xFFBCE7F0);
+  static const red = Color(0xFFFF8699);
+  static const orange = Color(0xFFFE8B48);
+  static const yallow = Color(0xFFF7EB70);
+  static const black = Color(0xFF121211); //text
+  static const white = Color(0XFFFFFFFF); //Background
+  static const gray = Color(0xFFB9B9B9);
+  static const graylight = Color(0xFFEFEFF0);
+  static const error = Color(0xFFEB5757); //Error
+  static const success = Color(0xFF7FD996); //Success
+  static const warning = Color(0xFFE4C25D); //Warning
 }

@@ -23,6 +23,7 @@ dependencies:
   flutter_svg: ^2.2.0
   flutter_launcher_icons: ^0.14.4
   fade_shimmer: ^2.4.0
+  dotted_border: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +37,7 @@ flutter:
   assets:
     - .env
     - assets/translations/
+    - assets/svg/
   fonts:
     - family: SFArabicRounded
       fonts:

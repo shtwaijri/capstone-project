@@ -11,15 +11,23 @@ part 'sub_list_event.dart';
 part 'sub_list_state.dart';
 
 class SubListBloc extends Bloc<SubListEvent, SubListState> {
-  int number = 0;
+  int number = 1;
   bool isItemImportant = false;
   String? currentExternalId;
+  int selectedItemsCount = 0;
   TextEditingController itemController = TextEditingController();
-
   List<ItemModel> items = [];
-
   SubListBloc() : super(SubListInitial()) {
-    on<SubListEvent>((event, emit) async {});
+    on<SubListEvent>((event, emit) {
+      emit(
+        SubListLoadedState(
+          items: items,
+          currentNumber: number,
+          currentIsItemImportant: isItemImportant,
+          selectedItemsCount: selectedItemsCount,
+        ),
+      );
+    });
 
     on<IncrementNumberEvent>(incrementNumberMethod);
     on<DecrementNumberEvent>(decrementNumberMethod);
@@ -31,15 +39,29 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     on<LoadInitialItemDataEvent>(loadInitialItemDataMethod); // NEW
     on<ResetBlocStateEvent>(resetBlocStateMethod);
 
-    emit(SubListLoadedState(items: items, currentNumber: number, currentIsItemImportant: isItemImportant));
+    on<AddItemEvent>(addItemMethod);
   }
 
+  // void _emitLoadedState(Emitter<SubListState> emit) {
+  //   emit(
+  //     SubListLoadedState(
+  //       items: List.from(items),
+  //       currentNumber: number,
+  //       currentIsItemImportant: isItemImportant,
+  //       selectedItemsCount: selectedItemsCount,
+  //     ),
+  //   );
+  // }
+
   void _emitLoadedState(Emitter<SubListState> emit) {
-    emit(SubListLoadedState(
-      items: List.from(items),
-      currentNumber: number,
-      currentIsItemImportant: isItemImportant,
-    ));
+    emit(
+      SubListLoadedState(
+        items: List.from(items), //save new values
+        currentNumber: number,
+        currentIsItemImportant: isItemImportant,
+        selectedItemsCount: items.where((item) => item.isChecked).length,
+      ),
+    );
   }
 
   FutureOr<void> incrementNumberMethod(
@@ -54,7 +76,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     DecrementNumberEvent event,
     Emitter<SubListState> emit,
   ) {
-    if (number > 0) {
+    if (number > 1) {
       number--;
     }
     _emitLoadedState(emit);
@@ -75,30 +97,65 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     final newItem = ItemModel(
       name: event.itemName,
       quantity: event.quantity,
-      isImportant: event.isImportant,
       createdBy: event.createdBy,
+      isImportant: event.isImportant,
+      isChecked: false,
     );
-    items.add(newItem);
 
-    // Reset fields after adding
-    // number = 0;
-    // isItemImportant = false;
-    // itemController.clear();
+    items = List.from(items)..add(newItem);
+
+    itemController.clear();
+    number = 1;
+    isItemImportant = false;
 
     _emitLoadedState(emit);
   }
+  // FutureOr<void> addItemToListMethod(
+  //   AddItemToListEvent event,
+  //   Emitter<SubListState> emit,
+  // ) {
+  //    final newItem = ItemModel(
+  //       name: event.itemName,
+  //       quantity: event.quantity,
+  //       createdBy: event.createdBy,
+  //       isImportant: event.isImportant,
+  //       isChecked: false,
+  //     );
+  //     items.add(newItem);
+  //     itemController.clear();
+  //     number = 0;
+  //     isItemImportant = false;
+  //     emit(SubListLoadedState(
+  //       items: List.from(items),
+  //       currentNumber: number,
+  //       currentIsItemImportant: isItemImportant,
+  //       selectedItemsCount: items.where((item) => item.isChecked).length,
+  //     ));
+  //   // final newItem = ItemModel(
+  //   //   name: event.itemName,
+  //   //   quantity: event.quantity,
+  //   //   isImportant: event.isImportant,
+  //   //   createdBy: event.createdBy,
+  //   // );
+  //   // items.add(newItem);
 
-  FutureOr<void> toggleItemCheckedMethod(
-    ToggleItemCheckedEvent event,
-    Emitter<SubListState> emit,
-  ) {
-    if (event.index >= 0 && event.index < items.length) {
-      items[event.index] = items[event.index].copyWith(isChecked: event.isChecked);
-      _emitLoadedState(emit);
-    }
-  }
+  //   // Reset fields after adding
+  //   // number = 0;
+  //   // isItemImportant = false;
+  //   // itemController.clear();
 
-  // NEW: Update Item Method
+  //   _emitLoadedState(emit);
+  // }
+
+  // FutureOr<void> toggleItemCheckedMethod(
+  //   ToggleItemCheckedEvent event,
+  //   Emitter<SubListState> emit,
+  // ) {
+  //   if (event.index >= 0 && event.index < items.length) {
+  //     items[event.index] = items[event.index].copyWith(isChecked: event.isChecked);
+  //     _emitLoadedState(emit);
+  //   }
+  // }
   FutureOr<void> updateItemMethod(
     UpdateItemEvent event,
     Emitter<SubListState> emit,
@@ -109,13 +166,28 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         quantity: event.newQuantity,
         isImportant: event.newIsImportant,
       );
-      // Reset fields after updating
-      // number = 0;
-      // isItemImportant = false;
-      // itemController.clear();
+
       _emitLoadedState(emit);
     }
   }
+  // NEW: Update Item Method
+  // FutureOr<void> updateItemMethod(
+  //   UpdateItemEvent event,
+  //   Emitter<SubListState> emit,
+  // ) {
+  //   if (event.index >= 0 && event.index < items.length) {
+  //     items[event.index] = items[event.index].copyWith(
+  //       name: event.newItemName,
+  //       quantity: event.newQuantity,
+  //       isImportant: event.newIsImportant,
+  //     );
+  //     // Reset fields after updating
+  //     // number = 0;
+  //     // isItemImportant = false;
+  //     // itemController.clear();
+  //     _emitLoadedState(emit);
+  //   }
+  // }
 
   // NEW: Delete Item Method
   FutureOr<void> deleteItemMethod(
@@ -134,16 +206,21 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
 
   // NEW: Load Initial Item Data for update/delete bottom sheet
   FutureOr<void> loadInitialItemDataMethod(
-      LoadInitialItemDataEvent event, Emitter<SubListState> emit) {
+    LoadInitialItemDataEvent event,
+    Emitter<SubListState> emit,
+  ) {
     number = event.item.quantity;
     isItemImportant = event.item.isImportant;
     itemController.text = event.item.name;
     // Emit a state to update the UI (specifically the bottom sheet)
-    emit(SubListLoadedState(
-      items: List.from(items), // Keep current items
-      currentNumber: number,
-      currentIsItemImportant: isItemImportant,
-    ));
+    emit(
+      SubListLoadedState(
+        items: List.from(items), // Keep current items
+        currentNumber: number,
+        currentIsItemImportant: isItemImportant,
+        selectedItemsCount: selectedItemsCount,
+      ),
+    );
   }
 
   Future<void> initializeOneSignalAndRequestPermissions() async {
@@ -155,18 +232,85 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       log("Logged in with External ID: $currentExternalId");
     }
   }
-FutureOr<void> resetBlocStateMethod(
-  ResetBlocStateEvent event,
-  Emitter<SubListState> emit,
-) {
-  number = 1;
-  isItemImportant = false;
-  itemController.clear();
-  _emitLoadedState(emit); // مهم لإعادة بناء الواجهة
-}
+
+  FutureOr<void> resetBlocStateMethod(
+    ResetBlocStateEvent event,
+    Emitter<SubListState> emit,
+  ) {
+    // number = 1;
+    // isItemImportant = false;
+    // itemController.clear();
+    // _emitLoadedState(emit);
+    if (state is SubListLoadedState) {
+      final currentState = state as SubListLoadedState;
+      itemController.clear();
+      emit(
+        currentState.copyWith(currentNumber: 1, currentIsItemImportant: false),
+      );
+    }
+  }
+
   @override
   Future<void> close() {
     itemController.dispose();
     return super.close();
+  }
+
+  // FutureOr<void> toggleItemCheckedMethod(
+  //   ToggleItemCheckedEvent event,
+  //   Emitter<SubListState> emit,
+  // ) {
+  //   final currentState = state;
+  //   if (currentState is SubListLoadedState) {
+  //     final updatedItems = List<ItemModel>.from(currentState.items);
+  //     final updatedItem = updatedItems[event.index].copyWith(
+  //       isChecked: event.isChecked,
+  //     );
+  //     updatedItems[event.index] = updatedItem;
+
+  //     emit(
+  //       SubListLoadedState(
+  //         selectedItemsCount: updatedItems
+  //             .where((item) => item.isChecked)
+  //             .length,
+  //         items: updatedItems,
+  //         currentNumber: currentState.currentNumber,
+  //         currentIsItemImportant: currentState.currentIsItemImportant,
+  //       ),
+  //     );
+  //   }
+  // }
+
+  FutureOr<void> toggleItemCheckedMethod(
+    ToggleItemCheckedEvent event,
+    Emitter<SubListState> emit,
+  ) {
+    if (event.index >= 0 && event.index < items.length) {
+      items[event.index] = items[event.index].copyWith(
+        isChecked: event.isChecked,
+      );
+
+      _emitLoadedState(emit);
+    }
+  }
+
+  FutureOr<void> addItemMethod(AddItemEvent event, Emitter<SubListState> emit) {
+    if (state is SubListLoadedState) {
+      final currentState = state as SubListLoadedState;
+
+      final updatedItems = List<ItemModel>.from(currentState.items)
+        ..add(event.newItem);
+
+      final selectedCount = updatedItems.where((item) => item.isChecked).length;
+
+      emit(
+        SubListLoadedState(
+          items: updatedItems,
+          selectedItemsCount: selectedCount,
+          currentNumber: number,
+          currentIsItemImportant: isItemImportant,
+        ),
+      );
+    }
   }
 }

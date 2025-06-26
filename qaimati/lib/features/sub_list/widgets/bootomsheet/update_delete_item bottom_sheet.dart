@@ -12,22 +12,8 @@ import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
-
-import 'dart:developer';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
-import 'package:qaimati/features/sub_list/widgets/button/item_quantity_selector.dart';
-// 🔴 تأكد من استيراد دالة AlertDialog التي أنشأتها
-import 'package:qaimati/style/style_color.dart';
-import 'package:qaimati/style/style_size.dart';
-import 'package:qaimati/style/style_text.dart';
-import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
-import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
-
+ 
+ 
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
@@ -47,9 +33,7 @@ void showUpdateDeleteItemBottomSheet({
         value: bloc,
         child: BlocConsumer<SubListBloc, SubListState>(
           listener: (context, state) {
-            // يمكن أن يكون هناك Listener هنا إذا أردت معالجة حالات معينة
-            // بعد التعديل أو الحذف، ولكن بما أن pop(context) يحدث مباشرة،
-            // فالأهم هو إعادة تعيين الـ Bloc في whenComplete.
+           
           },
           builder: (context, state) {
             return Padding(
@@ -66,7 +50,7 @@ void showUpdateDeleteItemBottomSheet({
                     children: [
                       StyleSize.sizeH32,
                       Text(
-                        "Item",
+                        "Item".tr(),
                         style: StyleText.bold24(context),
                       ),
                       StyleSize.sizeH16,
@@ -148,21 +132,19 @@ void showUpdateDeleteItemBottomSheet({
                                 newIsImportant: bloc.isItemImportant,
                               ),
                             );
-                            Navigator.pop(context); // أغلق الـ BottomSheet بعد التعديل
-                            bloc.add(ResetBlocStateEvent());
+                            Navigator.pop(context); 
+                            // bloc.add(ResetBlocStateEvent());
                           } else {
                             log("Please enter item name and quantity for update");
                           }
                         },
                         updateLablel: "itemUpdate".tr(),
                         onDelete: () {
-                          // 🔴 استدعاء AlertDialog هنا
                           showDeleteItemAlertDialog(
                             context: context,
                             onDeleteConfirmed: () {
-                              // هذه الدالة سيتم استدعاؤها فقط إذا ضغط المستخدم "Delete" في AlertDialog
                               bloc.add(DeleteItemEvent(index: itemIndex));
-                              Navigator.pop(context); // أغلق الـ BottomSheet بعد الحذف
+                              Navigator.pop(context);  
                               bloc.add(ResetBlocStateEvent());
                             },
                           );

@@ -13,10 +13,9 @@ import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 
 void showAddItemBottomShaeet({required BuildContext context}) {
-  final bloc = context.read<SubListBloc>(); 
- 
-  bloc.add(ResetBlocStateEvent());
+  final bloc = context.read<SubListBloc>();
 
+  bloc.add(ResetBlocStateEvent());
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
@@ -24,25 +23,12 @@ void showAddItemBottomShaeet({required BuildContext context}) {
     context: context,
     builder: (context) {
       return BlocProvider.value(
-        value: bloc, // مرر نفس الـ bloc
-        // 🔴 استخدم BlocConsumer هنا للتعامل مع الـ actions (إغلاق الـ BottomSheet)
-        // و BlocBuilder لبناء الواجهة
+        value: bloc,
         child: BlocConsumer<SubListBloc, SubListState>(
           listener: (context, state) {
-            // إذا كانت الحالة هي SubListLoadedState بعد إضافة عنصر،
-            // فهذا يعني أن العملية تمت بنجاح ويمكننا إغلاق الـ BottomSheet
-            // ونقوم بإعادة تعيين الـ bloc مرة أخرى للتأكد من نظافة الحالة لأي استخدام مستقبلي
-            if (state is SubListLoadedState) {
-              // يمكنك هنا تحديد شروط أكثر دقة إذا أردت
-              // مثلاً، إذا كان هناك متغير في الـ state يشير إلى "تمت الإضافة بنجاح"
-              // لكن بما أن الـ AddItemToListEvent يقوم بتحديث القائمة وإعادة بناء الشاشة الرئيسية،
-              // فإذا وصلت هنا، فالإضافة تمت.
-            }
+            if (state is SubListLoadedState) {}
           },
           builder: (context, state) {
-            // نستخدم BlocBuilder عاديًا هنا لبناء الـ UI بناءً على الحالة
-            // القيمة الحالية للـ number و isItemImportant ستأتي من الـ bloc مباشرة
-            // والتي تم تهيئتها بـ ResetBlocStateEvent في بداية showAddItemBottomShaeet
             return Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -62,7 +48,6 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                         children: [
                           Flexible(
                             flex: 2,
-                            // BlocBuilder لـ ItemQuantitySelector
                             child: BlocBuilder<SubListBloc, SubListState>(
                               buildWhen: (previous, current) =>
                                   current is SubListLoadedState,
@@ -132,7 +117,7 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                       ButtomWidget(
                         onTab: () {
                           if (bloc.itemController.text.isNotEmpty &&
-                              bloc.number > 0) {
+                              bloc.number >= 1) {
                             bloc.add(
                               AddItemToListEvent(
                                 itemName: bloc.itemController.text,
@@ -141,15 +126,8 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                                 createdBy: "You",
                               ),
                             );
-                            Navigator.pop(
-                              context,
-                            );  
-                            bloc.add(
-                              ResetBlocStateEvent(),
-                            ); 
-                          } else {
-                            log("Please enter item name and quantity");
-                          }
+                            Navigator.pop(context);
+                          }  
                         },
                         textElevatedButton: "itemAdd".tr(),
                       ),
@@ -163,7 +141,6 @@ void showAddItemBottomShaeet({required BuildContext context}) {
       );
     },
   ).whenComplete(() {
-     
     bloc.add(ResetBlocStateEvent());
   });
 }

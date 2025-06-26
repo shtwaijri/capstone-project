@@ -19,6 +19,8 @@ void main() async {
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
+      // fallbackLocale: Locale('ar', 'AR'),
+      // startLocale: Locale('ar', 'AR'),
       child: MyApp(),
     ),
   );

@@ -27,12 +27,11 @@ class CustomItems extends StatelessWidget {
   final String itemName;
   final String createdBy;
   final bool isImportant;
-  final int itemIndex; // مؤشر العنصر في القائمة
-  final bool isItemChecked; // حالة الـ Checkbox من الـ Bloc
+  final int itemIndex;
+  final bool isItemChecked;
 
   @override
   Widget build(BuildContext context) {
-    // لم نعد نحتاج BlocProvider هنا لأنه سيتم التحكم من SubListBloc الرئيسي
     return Column(
       children: [
         Padding(
@@ -45,18 +44,16 @@ class CustomItems extends StatelessWidget {
                   context.getWidth() * 0.015,
                   context.getHeight() * -0.008,
                 ),
-                // BlocBuilder لم يعد ضروريًا هنا لأنه isChecked يأتي مباشرة من الـ widget
                 child: Checkbox(
                   side: BorderSide(color: StyleColor.green),
-                  value: isItemChecked, // استخدم القيمة الممررة
+                  value: isItemChecked,
                   onChanged: (value) {
-                    // أرسل event لتحديث حالة الـ checkbox في SubListBloc
                     context.read<SubListBloc>().add(
-                          ToggleItemCheckedEvent(
-                            index: itemIndex,
-                            isChecked: value!,
-                          ),
-                        );
+                      ToggleItemCheckedEvent(
+                        index: itemIndex,
+                        isChecked: value!,
+                      ),
+                    );
                   },
                 ),
               ),
@@ -67,28 +64,29 @@ class CustomItems extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        '$numOfItems - ',
-                        style: StyleText.bold16(context),
-                      ),
+                      Text('$numOfItems - ', style: StyleText.bold16(context)),
                       Text(itemName, style: StyleText.bold16(context)),
                     ],
                   ),
-                  Text.rich(
-                    TextSpan(
-                      text: 'memberCreatedBy '.tr(),
-                      style: StyleText.regular12(
-                        context,
-                      ).copyWith(fontSize: 10, color: StyleColor.gray),
-                      children: [
+                  Column(
+                    children: [
+                      Text.rich(
                         TextSpan(
-                          text: createdBy,
-                          style: StyleText.bold12(
+                          text: 'memberCreatedBy'.tr(),
+                          style: StyleText.regular12(
                             context,
-                          ).copyWith(fontSize: 10),
+                          ).copyWith(fontSize: 10, color: StyleColor.gray),
+                          children: [
+                            TextSpan(
+                              text: createdBy,
+                              style: StyleText.bold12(
+                                context,
+                              ).copyWith(fontSize: 10),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -111,5 +109,3 @@ class CustomItems extends StatelessWidget {
     );
   }
 }
-
- 

@@ -34,6 +34,8 @@
   "itemDeleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
      "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
+   "Item": "العنصر",
+   "CompleteSelected":"إكمال العناصر المحددة",
 
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",
   "memberAdd": "إضافة عضو",
@@ -54,7 +56,7 @@
   "receiptNoReceipts": "لم تُضف أي إيصال",
   "receiptMonthly": "المصروفات الشهرية",
   "receiptSummary": "ملخص الإيصال",
-  "receiptPdf": "إيصال",
+  "receipt": "إيصال",
   "receiptUpdate": "تحديث الإيصال",
   "receiptDelete": "حذف الإيصال",
   "receiptDeleteConfirm": "هل أنت متأكد من حذف هذا الإيصال؟",

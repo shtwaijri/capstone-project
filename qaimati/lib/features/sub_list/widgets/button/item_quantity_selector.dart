@@ -1,5 +1,4 @@
-// هذا هو الكود الذي أرسلته لي، وهو صحيح
-import 'package:flutter/cupertino.dart';
+ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
@@ -8,19 +7,19 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
 class ItemQuantitySelector extends StatelessWidget {
-  const ItemQuantitySelector({super.key, this.number = 0});
+  const ItemQuantitySelector({super.key, this.number = 1});
   final int number; 
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<SubListBloc>(); // استمر في الحصول على الـ bloc
+    final bloc = context.read<SubListBloc>(); 
 
     return BlocBuilder<SubListBloc, SubListState>(
-      buildWhen: (previous, current) => current is SubListLoadedState, // استمع فقط لـ SubListLoadedState
+      buildWhen: (previous, current) => current is SubListLoadedState,  
       builder: (context, state) {
-        int displayQuantity = 0;
+        int displayQuantity = 1;
         if (state is SubListLoadedState) {
-          displayQuantity = state.currentNumber; // استخدم القيمة من الـ state
+          displayQuantity = state.currentNumber;  
         }
         return Row(
           mainAxisSize: MainAxisSize.min,
