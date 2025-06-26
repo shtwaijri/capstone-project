@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
+import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
 class ItemQuantitySelector extends StatelessWidget {
@@ -14,26 +16,22 @@ class ItemQuantitySelector extends StatelessWidget {
 
     return BlocBuilder<SubListBloc, SubListState>(
       builder: (context, state) {
-        int currentNumber = number;
-        if (state is ChangeNumberState) {
-          currentNumber = state.number;
-        }
-
+       
         return Row(
           mainAxisSize: MainAxisSize.min, // This is crucial to make the Row take minimum space
           children: [
             Container(
               padding: const EdgeInsets.all(4),
-              width: context.getWidth()*.1,
-              height:context.getHeight()*.1,
+              width: context.getWidth()*.13,
+              height:context.getHeight()*.08,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                border: Border.all(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.circular( 4.0,),
+                border: Border.all(color: StyleColor.gray, width: 2),
               ),
               child: Center(
                 child: Text(
-                  "$currentNumber",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  "${bloc.number}",
+                  style:StyleText.bold16(context),
                 ),
               ),
             ),
@@ -49,9 +47,9 @@ class ItemQuantitySelector extends StatelessWidget {
                   },
                   icon: const Icon(
                     CupertinoIcons.minus_square_fill,
-                    color: Color(0xffB4DE95),
+                    color: StyleColor.green,
                   ),
-                  color: Colors.white,
+                  color: StyleColor.white,
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
@@ -61,9 +59,9 @@ class ItemQuantitySelector extends StatelessWidget {
                   },
                   icon: const Icon(
                     CupertinoIcons.plus_app_fill,
-                    color: Color(0xffB4DE95),
+                    color: StyleColor.green,
                   ),
-                  color: Colors.white,
+                  color:StyleColor.white,
                 ),
               ],
             ),

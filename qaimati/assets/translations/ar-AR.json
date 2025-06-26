@@ -25,8 +25,8 @@
 
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
-
-  "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",
+   "itemNoItems1": "لم تُضِف أي عناصر",
+  "itemNoItems2": " إلى القائمة بعد.",
   "itemName": "أدخل اسم العنصر",
   "itemAdd": "أضف العنصر",
   "itemUpdate": "حدّث العنصر",
@@ -58,6 +58,9 @@
   "receiptUpdate": "تحديث الإيصال",
   "receiptDelete": "حذف الإيصال",
   "receiptDeleteConfirm": "هل أنت متأكد من حذف هذا الإيصال؟",
+
+  "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
+
 
   "profileTitle": "الملف الشخصي",
   "settingsTitle": "الإعدادات",

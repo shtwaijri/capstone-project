@@ -40,7 +40,7 @@ class UpdateDeleteButtomWidget extends StatelessWidget {
           onPressed: onUpdate,
           child: Center(
             child: Text(
-              'Update the $updateLablel',
+              updateLablel,
               style: StyleText.buttonText(context),
             ),
           ),
@@ -57,7 +57,7 @@ class UpdateDeleteButtomWidget extends StatelessWidget {
           onPressed: onDelete,
           child: Center(
             child: Text(
-              'Delete the $deleteLabel',
+              deleteLabel,
               style: StyleText.buttonText(context),
             ),
           ),

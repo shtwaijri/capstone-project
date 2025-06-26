@@ -1,7 +1,7 @@
 part of 'sub_list_bloc.dart';
 
 @immutable
-sealed class SubListEvent {}
+  class SubListEvent {}
 
 class IncrementNumberEvent extends SubListEvent {}
 
@@ -12,3 +12,5 @@ class ChooseImportanceEvent extends SubListEvent {
 
   ChooseImportanceEvent({required this.isImportant});
 }
+
+
