@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// app style color
 class StyleColor {
   static const green = Color(0xFFB4DE95); //Buttons
   static const blue = Color(0xFFBCE7F0);
