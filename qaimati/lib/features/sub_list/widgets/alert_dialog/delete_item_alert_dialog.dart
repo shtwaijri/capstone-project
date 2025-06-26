@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:qaimati/style/style_color.dart';
+import 'package:easy_localization/easy_localization.dart'; 
 
-void showDeleteItemAlertDialog({required BuildContext context}) {
+void showDeleteItemAlertDialog({
+  required BuildContext context,
+  required Function() onDeleteConfirmed,  
+}) {
   showDialog(
     context: context,
     builder: (context) {
@@ -10,19 +13,22 @@ void showDeleteItemAlertDialog({required BuildContext context}) {
         backgroundColor: StyleColor.white,
         contentPadding: EdgeInsets.all(30),
         content: Text(
-          "Are you sure you want to delete this item?",
+          "deleteItemConfirmation".tr(),  
           style: TextStyle(color: StyleColor.red),
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context);  
             },
-            child: Text("Cancel", style: TextStyle(color: StyleColor.black)),
+            child: Text( "commonCancel".tr(), style: TextStyle(color: StyleColor.black)), 
           ),
           TextButton(
-            onPressed: () {},
-            child: Text("Delete", style: TextStyle(color: StyleColor.red)),
+            onPressed: () {
+              Navigator.pop(context);  
+              onDeleteConfirmed();  
+            },
+            child: Text( "commonDelete".tr(), style: TextStyle(color: StyleColor.red)), 
           ),
         ],
       );

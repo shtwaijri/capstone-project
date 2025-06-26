@@ -32,7 +32,7 @@
   "itemUpdate": "حدّث العنصر",
   "itemDelete": "احذف العنصر",
   "itemDeleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
-
+     "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
 
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",

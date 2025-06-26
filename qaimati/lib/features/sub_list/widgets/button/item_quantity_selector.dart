@@ -1,3 +1,4 @@
+// هذا هو الكود الذي أرسلته لي، وهو صحيح
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,17 +9,21 @@ import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
 class ItemQuantitySelector extends StatelessWidget {
   const ItemQuantitySelector({super.key, this.number = 0});
-  final int number;
+  final int number; 
 
   @override
   Widget build(BuildContext context) {
-      final bloc = context.read<SubListBloc>();
+    final bloc = context.read<SubListBloc>(); // استمر في الحصول على الـ bloc
 
     return BlocBuilder<SubListBloc, SubListState>(
+      buildWhen: (previous, current) => current is SubListLoadedState, // استمع فقط لـ SubListLoadedState
       builder: (context, state) {
-       
+        int displayQuantity = 0;
+        if (state is SubListLoadedState) {
+          displayQuantity = state.currentNumber; // استخدم القيمة من الـ state
+        }
         return Row(
-          mainAxisSize: MainAxisSize.min, // This is crucial to make the Row take minimum space
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(4),
@@ -30,12 +35,11 @@ class ItemQuantitySelector extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  "${bloc.number}",
+                  "${displayQuantity}", // 🔴 اعرض القيمة من state
                   style:StyleText.bold16(context),
                 ),
               ),
             ),
-            // No SizedBox here to ensure no horizontal space between Container and Column
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

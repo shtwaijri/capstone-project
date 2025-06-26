@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
-import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item%20bottom_sheet.dart';
+import 'package:qaimati/widgets/custom_items_widget/custom_items.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
@@ -28,30 +28,8 @@ class SubListScreen extends StatelessWidget {
           final bloc = context.read<SubListBloc>();
           return Scaffold(
             floatingActionButton: FloatingButton(
-              onpressed: () async {
-                log("starttttttttttttttttttttt");
-                await bloc.initializeOneSignalAndRequestPermissions();
-
-                final pushSubscription =
-                    await OneSignal.User.pushSubscription.id!;
-
-                if (OneSignal.User.pushSubscription.id != null &&
-                    OneSignal.User.pushSubscription.optedIn == true) {
-                  log(
-                    "✅ الجهاز مشترك في الإشعارات: ${OneSignal.User.pushSubscription.id}",
-                  );
-
-                  // أرسل الإشعار
-                  OneSignal.login(bloc.currentExternalId!);
-                  await sendNotificationByExternalId(
-                    externalUserId: [bloc.currentExternalId!],
-                    title: "عنوان",
-                    message: "محتوى الرسالة",
-                  );
-                } else {
-                  log("❌ الجهاز غير مشترك في Push Notifications");
-                }
-                log("enddddddddddddddddddddddddddddddd");
+              onpressed: () {
+                showAddItemBottomShaeet(context: context);
               },
             ),
             appBar: AppBar(
@@ -73,33 +51,77 @@ class SubListScreen extends StatelessWidget {
                   children: [
                     Text(" List Name", style: StyleText.bold24(context)),
                     Divider(thickness: .5),
-                    StyleSize.sizeH48,
-                    Image.asset("assets/images/2.png"),
-                    Center(
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: "itemNoItems1".tr(),
-                          style: StyleText.bold24(context),
-                          children: <TextSpan>[
-                            TextSpan(text: "\n"),
+                    StyleSize.sizeH16,
+                    BlocBuilder<SubListBloc, SubListState>(
+                      builder: (context, state) {
+                        List<ItemModel> itemsToDisplay = [];
 
-                            TextSpan(
-                              text: "itemNoItems2".tr(),
-                              style: StyleText.bold24(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    StyleSize.sizeH8,
-                    Center(
-                      child: Text(
-                        "itemAdd".tr(),
-                        style: StyleText.regular16Green(
-                          context,
-                        ).copyWith(fontSize: 20),
-                      ),
+                        if (state is SubListLoadedState) {
+                          itemsToDisplay = state.items;
+                        } else if (state is SubListInitial) {
+                          itemsToDisplay = [];
+                        }
+
+                        if (itemsToDisplay.isEmpty) {
+                          return Column(
+                            children: [
+                              StyleSize.sizeH48,
+                              Image.asset("assets/images/2.png"),
+                              Center(
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    text: "itemNoItems1".tr(),
+                                    style: StyleText.bold24(context),
+                                    children: <TextSpan>[
+                                      TextSpan(text: "\n"),
+                                      TextSpan(
+                                        text: "itemNoItems2".tr(),
+                                        style: StyleText.bold24(context),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              StyleSize.sizeH8,
+                              Center(
+                                child: Text(
+                                  "itemAdd".tr(),
+                                  style: StyleText.regular16Green(
+                                    context,
+                                  ).copyWith(fontSize: 20),
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: itemsToDisplay.length,
+                            itemBuilder: (context, index) {
+                              final item = itemsToDisplay[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  showUpdateDeleteItemBottomSheet(
+                                    context: context,
+                                    item: item,
+                                    itemIndex: index,  
+                                  );
+                                },
+                                child: CustomItems(
+                                  itemName: item.name,
+                                  numOfItems: item.quantity.toString(),
+                                  createdBy: item.createdBy,
+                                  isImportant: item.isImportant,
+                                  itemIndex: index,
+                                  isItemChecked: item.isChecked,
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
