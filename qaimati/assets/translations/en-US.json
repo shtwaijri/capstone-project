@@ -4,6 +4,8 @@
   "onboardingInvite": "Invite others, sync in  real-time",
   "onboardingReceipts": "Manage receipts your for better tracking",
 
+
+
   "authLogin": "Log In",
   "authSignup": "Sign Up",
   "authName": "Enter your name",
@@ -11,6 +13,7 @@
   "authPassword": "Password",
   "authConfirmPassword": "Confirm password",
   "authForgotPassword": "Forget your password?",
+
 
   "listNoLists": "You haven't created any lists yet.",
   "listAdd": "Add List",
@@ -23,15 +26,18 @@
   "listDelete": "Delete the list",
   "listDeleteConfirm": "Are you sure you want to delete this list?",
 
+
   "commonCancel": "Cancel",
   "commonDelete": "Delete",
-
-  "itemNoItems": "You haven't added any items to the list yet.",
+  "itemNoItems1": "You haven't added any",
+  "itemNoItems2": "items to the list yet.",
   "itemName": "Enter item Name ",
   "itemAdd": "Add the item",
   "itemUpdate": "Update the item",
   "itemDelete": "Delete the item",
   "itemDeleteConfirm": "Are you sure you want to delete this item?",
+   "Item": "Item",
+  "CompleteSelected":"Complete Selected Items ",
 
   "checkoutComplete": "Complete Check Out",
 
@@ -40,6 +46,7 @@
   "memberList": "List members",
   "memberDeleteConfirm": "Are you sure you want to delete this member?",
   "memberCreatedBy": "Created by",
+     "deleteItemConfirmation":"Are you sure you want to delete this item?",
 
   "receiptCheckout": "Check Out",
   "receiptAdd": "Add receipt",
@@ -59,16 +66,15 @@
   "receiptUpdate": "Update the receipt",
   "receiptDelete": "Delete the receipt",
   "receiptDeleteConfirm": "Are you sure you want to delete this receipt?",
+"checkoutwithoutreceipt":"checkout without receipt",
 
   "profileTitle": "Profile",
   "settingsTitle": "Setting",
   "settingsLanguage": "Change app language",
-
   "accountTitle": "Account",
   "accountName": "Change account name",
   "accountEmail": "Change account email",
   "accountPassword": "Change account Password",
   "accountPremium": "Prime Plus",
-
   "authLogout": "Log out"
 }
