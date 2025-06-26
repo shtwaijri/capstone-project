@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qaimati/features/auth/login_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
+import 'package:qaimati/features/expenses/screens/receipt_screen.dart';
 import 'package:qaimati/utilities/setup.dart';
 
 void main() async {
@@ -12,6 +14,8 @@ void main() async {
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
+      // fallbackLocale: Locale('ar', 'AR'),
+      // startLocale: Locale('ar', 'AR'),
       child: MyApp(),
     ),
   );
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: LoginScreen(),
+      home: ReceiptScreen(),
     );
   }
 }

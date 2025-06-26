@@ -54,7 +54,7 @@
   "receiptNoReceipts": "لم تُضف أي إيصال",
   "receiptMonthly": "المصروفات الشهرية",
   "receiptSummary": "ملخص الإيصال",
-  "receiptPdf": "إيصال",
+  "receipt": "إيصال",
   "receiptUpdate": "تحديث الإيصال",
   "receiptDelete": "حذف الإيصال",
   "receiptDeleteConfirm": "هل أنت متأكد من حذف هذا الإيصال؟",

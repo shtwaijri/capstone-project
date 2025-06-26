@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 
 class StyleText {
-  static String _getFontFamily(context) {
-    return
-    // context.locale.languageCode == 'en'
-    'SFCompactRounded';
-    // : 'SFArabicRounded';
+  static var bold12Grey;
+
+  static String _getFontFamily(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
+    return langCode == 'en' ? 'SFCompactRounded' : 'SFArabicRounded';
   }
 
   static Color _getTextColor(BuildContext context) {
@@ -58,6 +57,15 @@ class StyleText {
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: _getTextColor(context),
+    );
+  }
+
+  static TextStyle regular12Grey(BuildContext context) {
+    return TextStyle(
+      fontFamily: _getFontFamily(context),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: StyleColor.gray,
     );
   }
 
