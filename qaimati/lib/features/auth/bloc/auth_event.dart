@@ -2,7 +2,7 @@
 
 // @immutable
 
-sealed class AuthEvent {}
+ sealed class AuthEvent {}
 //
 class SignUpEvent extends AuthEvent {}
 
