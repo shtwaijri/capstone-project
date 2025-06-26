@@ -30,7 +30,7 @@ Future<void> sendNotificationByExternalId({
   required String title,
   required String message,
 }) async {
-  final url = Uri.parse('https://onesignal.com/api/v1/notifications');
+  final url = Uri.parse('');
   final body = {
     "app_id": "",
     "contents": {"en": message},
