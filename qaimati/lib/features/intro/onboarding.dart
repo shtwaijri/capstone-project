@@ -4,9 +4,10 @@ import 'package:qaimati/features/intro/bloc/onboarding_bloc.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_events.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_states.dart';
 import 'package:qaimati/features/loading/loading_screen.dart';
-import 'package:qaimati/style/style_color.dart';
+// import 'package:qaimati/style/style_color.dart';
 // import 'package:qaimati/style/style_size.dart';
-import 'package:qaimati/style/style_text.dart';
+// import 'package:qaimati/style/style_text.dart';
+import 'package:qaimati/widgets/buttom_widget.dart';
 // import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
 
@@ -50,32 +51,22 @@ class Onboarding extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: SizedBox(
-          height: 56,
-          child: ElevatedButton(
-            onPressed: () {
-              final bloc = context.read<OnboardingBloc>();
-              if (bloc.state.pageIndex == onboardingData.length - 1) {
-                // if not last page go to next, if last page change screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoadingScreen()),
-                );
-              } else {
-                bloc.add(NextPressedEvent(bloc.state.pageIndex + 1));
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: StyleColor.green, 
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), 
-              ),
-              
-            ),
-            child: Text('Next', style: StyleText.buttonText(context)),
-          ),
+        child: ButtomWidget(
+          textElevatedButton: 'Next',
+          onTab: () {
+            final bloc = context.read<OnboardingBloc>();
+            if (bloc.state.pageIndex == onboardingData.length - 1) {
+              // if not last page go to next, if last page change screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoadingScreen()),
+              );
+            } else {
+              bloc.add(NextPressedEvent(bloc.state.pageIndex + 1));
+            }
+          },
         ),
-      ),
+      )
     );
   }
 }

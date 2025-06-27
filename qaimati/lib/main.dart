@@ -38,13 +38,14 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      theme: CustomTheme.lightTheme,
       home: BlocProvider(
       create: (_) => OnboardingBloc(totalPages: 3),
       child: Onboarding(),
       ),
       //LoadingScreen(),
 
-      theme: CustomTheme.lightTheme,
+      
        
       
     );
