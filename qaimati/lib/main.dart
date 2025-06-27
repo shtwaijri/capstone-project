@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+
       home: BlocProvider(
       create: (_) => OnboardingBloc(totalPages: 3),
       child: Onboarding(),
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
       theme: CustomTheme.lightTheme,
        
       
+
     );
   }
 }
