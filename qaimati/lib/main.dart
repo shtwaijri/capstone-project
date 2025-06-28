@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       home: BlocProvider(
       create: (_) => OnboardingBloc(totalPages: 3),
-      child: Onboarding(),
+      child: SubListScreen(),
       ),
       //LoadingScreen(),
 

@@ -35,6 +35,7 @@
      "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
    "Item": "العنصر",
+   "titlenotempty" :"لا ينبغي أن يكون العنوان فارغًا",
    "CompleteSelected":"إكمال العناصر المحددة",
 
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",

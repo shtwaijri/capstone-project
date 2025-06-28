@@ -7,20 +7,15 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
 class ItemQuantitySelector extends StatelessWidget {
-  const ItemQuantitySelector({super.key, this.number = 1});
-  final int number; 
-
+  const ItemQuantitySelector({super.key, });
+ 
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<SubListBloc>(); 
-
     return BlocBuilder<SubListBloc, SubListState>(
       buildWhen: (previous, current) => current is SubListLoadedState,  
       builder: (context, state) {
-        int displayQuantity = 1;
-        if (state is SubListLoadedState) {
-          displayQuantity = state.currentNumber;  
-        }
+       
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -34,7 +29,7 @@ class ItemQuantitySelector extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  "${displayQuantity}", // 🔴 اعرض القيمة من state
+                  "${bloc.number}",  
                   style:StyleText.bold16(context),
                 ),
               ),
