@@ -71,11 +71,19 @@ void completeItemBottomsheet({required BuildContext context}) {
                   ButtomWidget(
                     onTab: () {
                       //CompletedScreen
+                      // حفظ العناصر المكتملة في قائمة منفصلة
+                      bloc.completedItems.addAll(itemsCheckedOutTrue);
 
-                       Navigator.pushReplacement(
+                      // إزالة العناصر المكتملة من القائمة الأصلية
+                      bloc.items.removeWhere((item) => item.isChecked);
+
+                      // تحديث الحالة
+                      bloc.add(ResetBlocStateEvent());
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CompletedScreen(),
+                          builder: (context) => BlocProvider.value(value: bloc,
+                          child: CompletedScreen(),),
                         ),
                       );
                     },

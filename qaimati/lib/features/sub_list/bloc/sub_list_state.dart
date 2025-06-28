@@ -74,3 +74,18 @@ final class SubListLoadedState extends SubListState {
     );
   }
 }
+
+final class SubListContentState extends SubListState {  
+  final List<ItemModel> items;
+  final List<ItemModel> completedItems;
+  final int number;
+  final bool isItemImportant;
+  
+
+  SubListContentState({  
+    required this.items,
+    required this.completedItems,
+    required this.number,
+    required this.isItemImportant,
+  });
+}

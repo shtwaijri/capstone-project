@@ -17,6 +17,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
   int selectedItemsCount = 0;
   TextEditingController itemController = TextEditingController();
   List<ItemModel> items = [];
+  List<ItemModel> completedItems = [];
   final formKey=GlobalKey<FormState>();
   SubListBloc() : super(SubListInitial()) {
     on<SubListEvent>((event, emit) {

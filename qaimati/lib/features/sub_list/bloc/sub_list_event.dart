@@ -68,4 +68,6 @@ class AddItemEvent extends SubListEvent {
 
   AddItemEvent(this.newItem);
 }
+ 
 
+final class CompleteCheckedItemsEvent extends SubListEvent {}
