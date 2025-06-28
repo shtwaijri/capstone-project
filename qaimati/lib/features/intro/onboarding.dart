@@ -57,7 +57,7 @@ class Onboarding extends StatelessWidget {
             final bloc = context.read<OnboardingBloc>();
             if (bloc.state.pageIndex == onboardingData.length - 1) {
               // if not last page go to next, if last page change screen
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoadingScreen()),
               );
