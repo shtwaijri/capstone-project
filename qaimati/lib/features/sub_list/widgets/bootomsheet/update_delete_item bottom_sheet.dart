@@ -12,7 +12,6 @@ import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
-import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
 
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
@@ -46,13 +45,12 @@ void showUpdateDeleteItemBottomSheet({
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       StyleSize.sizeH24,
                       Text(
-                         maxLines:4 ,
-                        //overflow: TextOverflow.ellipsis, 
-                        overflow:TextOverflow.visible,
-                         bloc.itemController.text,
+                        maxLines: 4,
+                        //overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.visible,
+                        bloc.itemController.text,
                         style: StyleText.bold24(context),
                       ),
 
@@ -65,11 +63,7 @@ void showUpdateDeleteItemBottomSheet({
                               buildWhen: (previous, current) =>
                                   current is SubListLoadedState,
                               builder: (context, state) {
-
-                                 
-                                
                                 return ItemQuantitySelector();
-
                               },
                             ),
                           ),
@@ -96,7 +90,6 @@ void showUpdateDeleteItemBottomSheet({
                         buildWhen: (previous, current) =>
                             current is SubListLoadedState,
                         builder: (context, state) {
-                         
                           return Container(
                             alignment: Alignment.centerLeft,
                             child: IconButton(
@@ -104,12 +97,10 @@ void showUpdateDeleteItemBottomSheet({
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 context.read<SubListBloc>().add(
-
-                                      ChooseImportanceEvent(
-                                        isImportant: !bloc.isItemImportant,
-                                      ),
-                                    );
-
+                                  ChooseImportanceEvent(
+                                    isImportant: !bloc.isItemImportant,
+                                  ),
+                                );
                               },
                               icon: Icon(
                                 !bloc.isItemImportant

@@ -1,9 +1,12 @@
 {
+      "Welcome": "Welcome to Qaimati",
+
   "onboardingTitle": "Quickly add and organize your shopping items in one place",
   "onboardingNext": "Next",
   "onboardingInvite": "Invite others, sync in  real-time",
   "onboardingReceipts": "Manage receipts your for better tracking",
 
+"enterEmail": "Enter your email to create your account or login",
 
 
   "authLogin": "Log In",

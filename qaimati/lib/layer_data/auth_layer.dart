@@ -1,36 +1,35 @@
 import 'dart:developer';
 
 import 'package:qaimati/repository/supabase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthLayer {
-  //will be used later 
+  //will be used later
   // bool isSignIn = false;
   // String? idUser;
- 
 
-    Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> sendOtp({required String email}) async {
     try {
-      log("signUp AuthLayer starts");
-      await SupabaseConnect.signUpByEmail(email: email, password: password);
-      log("signUp AuthLayer end ss ");
+      await SupabaseConnect.sendOtp(email: email);
     } catch (_) {
-      log("signUp AuthLayer rethrow");
+      rethrow;
+    }
+  }
+
+  Future<void> verifyOtp({required String email, required String token}) async {
+    try {
+      await SupabaseConnect.verifyOtp(email: email, token: token);
+    } catch (_) {
       rethrow;
     }
   }
 
   //login return AuthResponse from subabase
-    Future<AuthResponse?> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<AuthResponse?> login({required String email}) async {
     try {
       log("signUp AuthLayer starts");
-      await SupabaseConnect.logInByEmail(email, password);
+      await SupabaseConnect.sendOtp(email: email);
       log("signUp AuthLayer end ss ");
     } catch (_) {
       log("signUp AuthLayer rethrow");
@@ -40,18 +39,7 @@ class AuthLayer {
     return null;
   }
 
-    Future<void> updatePassword({required String password}) async {
-    try {
-      log("updatePassword AuthLayer starts");
-      await SupabaseConnect.updatePassword(password);
-      log("updatePassword AuthLayer end ss ");
-    } catch (_) {
-      log("updatePassword AuthLayer rethrow");
-      rethrow;
-    }
-  }
-
-    Future<void> updateEmail({required String email}) async {
+  Future<void> updateEmail({required String email}) async {
     try {
       log("updateEmail AuthLayer starts");
       await SupabaseConnect.updateEmail(email);
@@ -60,5 +48,18 @@ class AuthLayer {
       log("updateEmail AuthLayer rethrow");
       rethrow;
     }
+  }
+
+  //method to save user id
+
+  Future<void> saveUserId(String userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userId);
+  }
+
+  //method to get user id
+  Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
   }
 }
