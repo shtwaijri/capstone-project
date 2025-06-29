@@ -5,6 +5,7 @@ import 'package:qaimati/features/expenses/widgets/receipt_widget.dart';
 import 'package:qaimati/features/expenses/widgets/spending_widget.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
+import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/floating_button.dart';
 
 class ExpensesScreen extends StatelessWidget {
@@ -13,14 +14,12 @@ class ExpensesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Text('receiptExpenses'.tr(), style: StyleText.bold24(context)),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(color: StyleColor.graylight, height: 1),
-        ),
+      appBar: AppBarWidget(
+        title: 'receiptExpenses'.tr(),
+        showActions: false,
+        showSearchBar: false,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
