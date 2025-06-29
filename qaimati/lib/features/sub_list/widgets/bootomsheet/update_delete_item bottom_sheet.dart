@@ -11,9 +11,9 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
+import 'package:qaimati/widgets/dual_action_button_widget.dart';
 import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
- 
- 
+
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
@@ -32,9 +32,7 @@ void showUpdateDeleteItemBottomSheet({
       return BlocProvider.value(
         value: bloc,
         child: BlocConsumer<SubListBloc, SubListState>(
-          listener: (context, state) {
-           
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return Padding(
               padding: EdgeInsets.only(
@@ -49,10 +47,7 @@ void showUpdateDeleteItemBottomSheet({
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StyleSize.sizeH32,
-                      Text(
-                        "Item".tr(),
-                        style: StyleText.bold24(context),
-                      ),
+                      Text("Item".tr(), style: StyleText.bold24(context)),
                       StyleSize.sizeH16,
                       Row(
                         children: [
@@ -66,7 +61,9 @@ void showUpdateDeleteItemBottomSheet({
                                 if (state is SubListLoadedState) {
                                   currentQuantity = state.currentNumber;
                                 }
-                                return ItemQuantitySelector(number: currentQuantity);
+                                return ItemQuantitySelector(
+                                  number: currentQuantity,
+                                );
                               },
                             ),
                           ),
@@ -75,13 +72,13 @@ void showUpdateDeleteItemBottomSheet({
                             child: TextField(
                               controller: bloc.itemController,
                               decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 20,
+                                  horizontal: 8,
+                                ),
                                 hintText: "itemName".tr(),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    4.0,
-                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
                                 ),
                               ),
                             ),
@@ -104,15 +101,16 @@ void showUpdateDeleteItemBottomSheet({
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 context.read<SubListBloc>().add(
-                                      ChooseImportanceEvent(
-                                        isImportant: !currentIsImportant,
-                                      ),
-                                    );
+                                  ChooseImportanceEvent(
+                                    isImportant: !currentIsImportant,
+                                  ),
+                                );
                               },
                               icon: Icon(
                                 !currentIsImportant
                                     ? CupertinoIcons.exclamationmark_square
-                                    : CupertinoIcons.exclamationmark_square_fill,
+                                    : CupertinoIcons
+                                          .exclamationmark_square_fill,
                                 color: StyleColor.red,
                                 size: context.getWidth() * .09,
                               ),
@@ -121,9 +119,12 @@ void showUpdateDeleteItemBottomSheet({
                         },
                       ),
                       Spacer(),
-                      UpdateDeleteButtomWidget(
-                        onUpdate: () {
-                          if (bloc.itemController.text.isNotEmpty && bloc.number > 0) {
+                      DualActionButtonWidget(
+                        isCancel: false,
+                        isDelete: true,
+                        onPrimaryTap: () {
+                          if (bloc.itemController.text.isNotEmpty &&
+                              bloc.number > 0) {
                             bloc.add(
                               UpdateItemEvent(
                                 index: itemIndex,
@@ -132,24 +133,26 @@ void showUpdateDeleteItemBottomSheet({
                                 newIsImportant: bloc.isItemImportant,
                               ),
                             );
-                            Navigator.pop(context); 
+                            Navigator.pop(context);
                             // bloc.add(ResetBlocStateEvent());
                           } else {
-                            log("Please enter item name and quantity for update");
+                            log(
+                              "Please enter item name and quantity for update",
+                            );
                           }
                         },
-                        updateLablel: "itemUpdate".tr(),
-                        onDelete: () {
+                        primaryLabel: "itemUpdate".tr(),
+                        onSecondaryTap: () {
                           showDeleteItemAlertDialog(
                             context: context,
                             onDeleteConfirmed: () {
                               bloc.add(DeleteItemEvent(index: itemIndex));
-                              Navigator.pop(context);  
+                              Navigator.pop(context);
                               bloc.add(ResetBlocStateEvent());
                             },
                           );
                         },
-                        deleteLabel: "itemDelete".tr(),
+                        secondaryLabel: "itemDelete".tr(),
                       ),
                     ],
                   ),
