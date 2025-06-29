@@ -4,11 +4,9 @@ import 'package:qaimati/features/intro/bloc/onboarding_bloc.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_events.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_states.dart';
 import 'package:qaimati/features/loading/loading_screen.dart';
-import 'package:qaimati/style/style_color.dart';
-// import 'package:qaimati/style/style_size.dart';
-import 'package:qaimati/style/style_text.dart';
-// import 'package:qaimati/widgets/buttom_widget.dart';
+import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Onboarding extends StatelessWidget {
   Onboarding({super.key});
@@ -19,62 +17,58 @@ class Onboarding extends StatelessWidget {
       'title': 'Quickly add and organize your shopping items in one plac',
     },
     {
-      'image': 'assets/svg/no_list.svg',
+      'image': 'assets/svg/no_member.svg',
       'title': 'Invite others, sync in real-time',
     },
     {
-      'image': 'assets/svg/no_member.svg',
+      'image': 'assets/svg/no_list.svg',
       'title': ' Manage receipts your for better tracking.',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<OnboardingBloc, OnboardingStates>(
-        builder: (context, state) {
+    return BlocProvider(
+      create: (_) => OnboardingBloc(totalPages: onboardingData.length),
+      child: Builder(
+        builder: (context) {
           final bloc = context.read<OnboardingBloc>();
 
-          return PageView(
-            controller: bloc.controller,
-            onPageChanged: (value) {
-              bloc.add(PageChangedEvent(value));
-            },
-            children: onboardingData.map(
-              (page) {
-                return EmptyWidget(lable: page['title']!, img: page['image']!);
+          return Scaffold(
+            body: PageView(
+              controller: bloc.controller,
+              onPageChanged: (value) {
+                bloc.add(PageChangedEvent(value));
               },
-            ).toList(), // cnvert to list becouse children[] must contain list (not map)
+              children: onboardingData.map((page) {
+                return EmptyWidget(lable: page['title']!, img: page['image']!);
+              }).toList(),
+            ),
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: BlocBuilder<OnboardingBloc, OnboardingStates>(
+                builder: (context, state) {
+                  return ButtomWidget(
+                    onTab: () async {
+                      if (bloc.state.pageIndex == onboardingData.length - 1) {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('seenOnboarding', true);
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => LoadingScreen()),
+                        );
+                      } else {
+                        bloc.add(NextPressedEvent(bloc.state.pageIndex + 1));
+                      }
+                    },
+                    textElevatedButton: 'Next',
+                  );
+                },
+              ),
+            ),
           );
         },
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SizedBox(
-          height: 56,
-          child: ElevatedButton(
-            onPressed: () {
-              final bloc = context.read<OnboardingBloc>();
-              if (bloc.state.pageIndex == onboardingData.length - 1) {
-                // if not last page go to next, if last page change screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoadingScreen()),
-                );
-              } else {
-                bloc.add(NextPressedEvent(bloc.state.pageIndex + 1));
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: StyleColor.green, 
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), 
-              ),
-              
-            ),
-            child: Text('Next', style: StyleText.buttonText(context)),
-          ),
-        ),
       ),
     );
   }
