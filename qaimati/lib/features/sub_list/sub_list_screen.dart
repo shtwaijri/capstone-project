@@ -47,15 +47,9 @@ class SubListScreen extends StatelessWidget {
                   listener: (context, state) {},
                   builder: (context, state) {
                     List<ItemModel> itemsToDisplay = [];
-                    int currentSelectedItemsCount = 0;
-
                     if (state is SubListLoadedState) {
                       itemsToDisplay = state.items;
-                      currentSelectedItemsCount = state.selectedItemsCount;
-                    } else if (state is SubListInitial) {
-                      itemsToDisplay = [];
-                      currentSelectedItemsCount = 0;
-                    }
+                    }  
 
                     return SingleChildScrollView(
                       child: Column(
@@ -99,7 +93,7 @@ class SubListScreen extends StatelessWidget {
                           else
                             ListView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                            //  physics: NeverScrollableScrollPhysics(),
                               itemCount: itemsToDisplay.length,
                               itemBuilder: (context, index) {
                                 final item = itemsToDisplay[index];
@@ -122,9 +116,6 @@ class SubListScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                          SizedBox(
-                            height: currentSelectedItemsCount > 0 ? 500 : 0,
-                          ),
                         ],
                       ),
                     );
@@ -135,11 +126,15 @@ class SubListScreen extends StatelessWidget {
 
             bottomNavigationBar: BlocBuilder<SubListBloc, SubListState>(
               builder: (context, state) {
-                int currentSelectedItemsCount = 0;
-                if (state is SubListLoadedState) {
-                  currentSelectedItemsCount = state.selectedItemsCount;
+              
+                bool currentSelectedItemsCount = false;
+                for (var item in bloc.items) {
+                  if (item.isChecked) {
+                    currentSelectedItemsCount = true;
+                    break;
+                  }
                 }
-                return currentSelectedItemsCount > 0
+                return currentSelectedItemsCount
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ButtomWidget(
@@ -160,21 +155,4 @@ class SubListScreen extends StatelessWidget {
 }
 
 
-/**Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(
-                                8.0,
-                              ),  
-                              child: ButtomWidget(
-                                onTab: () {
-                                   
-                                  completeItemBottomsheet(context: context);
-                                },
-                                textElevatedButton:
-                                    "Complete Selected Items ", // يمكن تخصيص النص
-                              ),
-                            ),
-                          ), */
+ 

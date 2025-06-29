@@ -41,7 +41,7 @@
   "itemDeleteConfirm": "Are you sure you want to delete this item?",
    "Item": "Item",
   "CompleteSelected":"Complete Selected Items ",
-
+     "titlenotempty" :"the title should not be empty ",
   "checkoutComplete": "Complete Check Out",
 
   "memberNoMembers": "You haven't added any members yet.",
