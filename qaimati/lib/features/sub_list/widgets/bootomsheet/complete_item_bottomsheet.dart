@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qaimati/features/expenses/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
+import 'package:qaimati/features/sub_list/completed_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
@@ -55,12 +57,28 @@ void completeItemBottomsheet({required BuildContext context}) {
                   ),
                   StyleSize.sizeH16,
                   ButtomWidget(
-                    onTab: () {},
+                    onTab: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExpensesScreen(),
+                        ),
+                      );
+                    },
                     textElevatedButton: "receiptAdd".tr(),
                   ),
                   StyleSize.sizeH16,
                   ButtomWidget(
-                    onTab: () {},
+                    onTab: () {
+                      //CompletedScreen
+
+                       Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CompletedScreen(),
+                        ),
+                      );
+                    },
                     textElevatedButton: "checkoutwithoutreceipt".tr(),
                   ),
                 ],

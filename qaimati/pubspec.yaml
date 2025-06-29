@@ -40,6 +40,7 @@ flutter:
     - assets/translations/
     - assets/svg/
     - assets/image/
+    - assets/images/
   fonts:
     - family: SFArabicRounded
       fonts:

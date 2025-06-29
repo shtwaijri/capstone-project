@@ -41,13 +41,21 @@ void showUpdateDeleteItemBottomSheet({
               child: SingleChildScrollView(
                 child: Container(
                   width: context.getWidth(),
-                  height: context.getHeight() * 0.6,
+                  height: context.getHeight() * 0.46,
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      StyleSize.sizeH32,
-                      Text("Item".tr(), style: StyleText.bold24(context)),
+
+                      StyleSize.sizeH24,
+                      Text(
+                         maxLines:4 ,
+                        //overflow: TextOverflow.ellipsis, 
+                        overflow:TextOverflow.visible,
+                         bloc.itemController.text,
+                        style: StyleText.bold24(context),
+                      ),
+
                       StyleSize.sizeH16,
                       Row(
                         children: [
@@ -57,13 +65,11 @@ void showUpdateDeleteItemBottomSheet({
                               buildWhen: (previous, current) =>
                                   current is SubListLoadedState,
                               builder: (context, state) {
-                                int currentQuantity = 0;
-                                if (state is SubListLoadedState) {
-                                  currentQuantity = state.currentNumber;
-                                }
-                                return ItemQuantitySelector(
-                                  number: currentQuantity,
-                                );
+
+                                 
+                                
+                                return ItemQuantitySelector();
+
                               },
                             ),
                           ),
@@ -90,10 +96,7 @@ void showUpdateDeleteItemBottomSheet({
                         buildWhen: (previous, current) =>
                             current is SubListLoadedState,
                         builder: (context, state) {
-                          bool currentIsImportant = false;
-                          if (state is SubListLoadedState) {
-                            currentIsImportant = state.currentIsItemImportant;
-                          }
+                         
                           return Container(
                             alignment: Alignment.centerLeft,
                             child: IconButton(
@@ -101,13 +104,15 @@ void showUpdateDeleteItemBottomSheet({
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 context.read<SubListBloc>().add(
-                                  ChooseImportanceEvent(
-                                    isImportant: !currentIsImportant,
-                                  ),
-                                );
+
+                                      ChooseImportanceEvent(
+                                        isImportant: !bloc.isItemImportant,
+                                      ),
+                                    );
+
                               },
                               icon: Icon(
-                                !currentIsImportant
+                                !bloc.isItemImportant
                                     ? CupertinoIcons.exclamationmark_square
                                     : CupertinoIcons
                                           .exclamationmark_square_fill,
