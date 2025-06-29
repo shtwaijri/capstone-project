@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase/supabase.dart';
 
 class SupabaseConnect {
   static SupabaseClient? supabase;
@@ -23,56 +24,44 @@ class SupabaseConnect {
     }
   }
 
-  static Future<User?> signUpByEmail({
-    required String email,
-    required String password,
-  }) async {
+  /////////////////////////////////////////////////////////////////////////////////
+  // static Future<void> sendOtp({required String email}) async {
+  //   try {
+  //     await supabase!.auth.signInWithOtp(email: email);
+  //   } catch (e) {
+  //     throw AuthException("Failed to send OTP: $e");
+  //   }
+  // }
+  static Future<void> sendOtp({required String email}) async {
     try {
-      log("signUp start");
-      final user = await supabase!.auth.signUp(
-        password: password,
-        email: email,
-      );
-      log("signUp end coorect SupabaseConnect");
-      return user.user!;
-    } on AuthException catch (e) {
-      log("error AuthException  end coorect SupabaseConnect");
-      final msg = e.message.toLowerCase();
-      if (msg.contains('user already registered') ||
-          msg.contains('already registered') ||
-          msg.contains('duplicate')) {
-        //to clarify the error
-        throw Exception('This email is already registered.');
+      if (supabase == null) {
+        throw AuthException("Supabase is not initialized.");
       }
-    } catch (error) {
-      log("error AuthException  end coorect SupabaseConnect cachs");
 
-      throw FormatException("There is error with sign Up");
+      await supabase!.auth.signInWithOtp(email: email);
+    } catch (e) {
+      throw AuthException("Failed to send OTP: $e");
     }
-    return null;
   }
 
-  //method for signin
-
-  static Future<AuthResponse> logInByEmail(
-    String email,
-    String password,
-  ) async {
-    //hold user data if the sign in went successfully with supabase method 'signInWithPassword'
-    log("log in  start  SupabaseConnect");
-
-    final response = await supabase!.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
-    //clarify the error if user=null
-    log("signUp null SupabaseConnect");
-    if (response.user == null) {
-      throw Exception('Sign in error');
+  static Future<void> verifyOtp({
+    required String email,
+    required String token,
+  }) async {
+    try {
+      final response = await supabase!.auth.verifyOTP(
+        email: email,
+        token: token,
+        type: OtpType.email,
+      );
+      if (response.user == null) {
+        throw AuthException(
+          "OTP verification failed. Invalid code or expired.",
+        );
+      }
+    } catch (e) {
+      throw AuthException("Failed to verify OTP: $e");
     }
-    log("end  coorect SupabaseConnect");
-
-    return response;
   }
 
   /// Method to sign out the current user.
@@ -87,19 +76,11 @@ class SupabaseConnect {
     } on AuthException catch (e) {
       // Handle specific authentication errors during sign out (e.g., network issues).
       log('Error during sign out: ${e.message}');
-      throw Exception('Failed to sign out: ${e.message}');
+      throw AuthException('Failed to sign out: ${e.message}');
     } catch (e) {
       // Handle any other unexpected errors during sign out.
       log('An unexpected error occurred during sign out: $e');
-      throw Exception('An unexpected error occurred during sign out.');
-    }
-  }
-
-  static Future<void> updatePassword(String newPassword) async {
-    try {
-      await supabase!.auth.updateUser(UserAttributes(password: newPassword));
-    } catch (e) {
-      throw Exception("Failed to update email: $e");
+      throw AuthException('An unexpected error occurred during sign out.');
     }
   }
 

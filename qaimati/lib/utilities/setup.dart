@@ -14,7 +14,7 @@ Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
-  // await SupabaseConnect.init();
+  await SupabaseConnect.init();
   await EasyLocalization.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -34,6 +34,7 @@ Future<void> setUp() async {
     seenOnboarding,
     instanceName: 'seenOnboarding',
   );
-  print("✅ ====================================seenOnboarding = $seenOnboarding========================");
+  print(
+    "✅ ====================================seenOnboarding = $seenOnboarding========================",
+  );
 }
-
