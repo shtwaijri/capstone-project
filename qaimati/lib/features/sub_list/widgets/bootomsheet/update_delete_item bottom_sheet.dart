@@ -12,8 +12,8 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
-import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
-
+import 'package:qaimati/widgets/dual_action_button_widget.dart';
+ 
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
@@ -117,8 +117,10 @@ void showUpdateDeleteItemBottomSheet({
                         },
                       ),
                       Spacer(),
-                      UpdateDeleteButtomWidget(
-                        onUpdate: () {
+                      DualActionButtonWidget(
+                        isCancel:false,
+                        primaryLabel: "itemUpdate".tr(),
+                        onPrimaryTap: () {
                           if (bloc.itemController.text.isNotEmpty &&
                               bloc.number > 0) {
                             if (bloc.currentUserRole == "admin" ||
@@ -131,24 +133,17 @@ void showUpdateDeleteItemBottomSheet({
                               );
                             }
 
-                            // bloc.add(
-                            //   UpdateItemEvent(
-                            //     index: itemIndex,
-                            //     newItemName: bloc.itemController.text,
-                            //     newQuantity: bloc.number,
-                            //     newIsImportant: bloc.isItemImportant,
-                            //   ),
-                            // );
+                             
                             Navigator.pop(context);
-                            // bloc.add(ResetBlocStateEvent());
-                          } else {
+                           } else {
                             log(
                               "Please enter item name and quantity for update",
                             );
                           }
                         },
-                        updateLablel: "itemUpdate".tr(),
-                        onDelete: () {
+                        secondaryLabel: "itemDelete".tr(),
+                        isDelete:true,
+                        onSecondaryTap: () {
                           showDeleteItemAlertDialog(
                             context: context,
                             onDeleteConfirmed: () {
@@ -158,6 +153,7 @@ void showUpdateDeleteItemBottomSheet({
                                 bloc.add(
                                   DeleteItemEvent(index: itemIndex, item: item),
                                 );
+                                 Navigator.pop(context);
                               }
                               // bloc.add(DeleteItemEvent(index: itemIndex));
                               // Navigator.pop(context);
@@ -165,7 +161,7 @@ void showUpdateDeleteItemBottomSheet({
                             },
                           );
                         },
-                        deleteLabel: "itemDelete".tr(),
+                        
                       ),
                     ],
                   ),

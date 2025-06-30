@@ -5,6 +5,7 @@ import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/models/list/list_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase/supabase.dart';
 
 class SupabaseConnect {
   static SupabaseClient? supabase;
@@ -25,6 +26,72 @@ class SupabaseConnect {
       throw FormatException('error in db initialization: $e');
     }
   }
+
+  static Future<void> sendOtp({required String email}) async {
+    try {
+      if (supabase == null) {
+        throw AuthException("Supabase is not initialized.");
+      }
+
+      await supabase!.auth.signInWithOtp(email: email);
+    } catch (e) {
+      throw AuthException("Failed to send OTP: $e");
+    }
+  }
+
+  static Future<void> verifyOtp({
+    required String email,
+    required String token,
+  }) async {
+    try {
+      final response = await supabase!.auth.verifyOTP(
+        email: email,
+        token: token,
+        type: OtpType.email,
+      );
+      if (response.user == null) {
+        throw AuthException(
+          "OTP verification failed. Invalid code or expired.",
+        );
+      }
+    } catch (e) {
+      throw AuthException("Failed to verify OTP: $e");
+    }
+  }
+
+  /// Method to sign out the current user.
+  /// It clears the user session and tokens locally.
+  /// Throws an exception if an error occurs during the sign-out process.
+  Future<void> signOut() async {
+    try {
+      await supabase!.auth.signOut();
+      // Optional: You can add any additional logic here after successful sign out,
+      // such as navigating the user to the login screen or clearing local data.
+      log('User signed out successfully.');
+    } on AuthException catch (e) {
+      // Handle specific authentication errors during sign out (e.g., network issues).
+      log('Error during sign out: ${e.message}');
+      throw AuthException('Failed to sign out: ${e.message}');
+    } catch (e) {
+      // Handle any other unexpected errors during sign out.
+      log('An unexpected error occurred during sign out: $e');
+      throw AuthException('An unexpected error occurred during sign out.');
+    }
+  }
+
+  static Future<void> updateEmail(String newEmail) async {
+    try {
+      log("updateEmail subabase start ");
+      await supabase!.auth.updateUser(UserAttributes(email: newEmail));
+      log("updateEmail subabase end  ");
+    } catch (e) {
+      log("updateEmail  error $e");
+
+      throw Exception("Failed to update password: $e");
+    }
+  }
+
+  //add  here deleteUser method
 
   static Future<(List<ListModel>, List<ItemModel>)> getUserData(
     String userId,
@@ -190,13 +257,10 @@ class SupabaseConnect {
       throw Exception("Failed to update item in Supabase: $e");
     }
   }
-  
+
   static Future<void> deleteItem({required ItemModel item}) async {
     try {
-      await supabase!
-          .from('item')
-         .delete()
-        .eq('item_id', item.itemId!);
+      await supabase!.from('item').delete().eq('item_id', item.itemId!);
 
       log("✅ SupabaseConnect: Item ${item.itemId} updated successfully in DB.");
     } catch (e, stack) {
@@ -207,6 +271,68 @@ class SupabaseConnect {
     }
   }
 
+  static Future<void> updateItemsIsCompletedToTurue({
+    required List<String> itemIds,
+  }) async {
+    try {
+      if (itemIds.isEmpty) {
+        return;
+      }
+
+      final Map<String, dynamic> updates = {
+        'is_completed': true,
+        'closed_at': DateTime.now(),
+      };
+
+      await supabase!
+          .from('item')
+          .update(updates)
+          .filter('item_id', 'in', itemIds);
+
+      log(
+        "✅ SupabaseConnect: Successfully updated isCompleted/closed_at for ${itemIds.length} items.",
+      );
+    } catch (e, stack) {
+      log(
+        "❌ SupabaseConnect: Failed to update isCompleted/closed_at for items: $e\n$stack",
+      );
+      throw Exception(
+        "Failed to update isCompleted/closed_at for items in Supabase: $e",
+      );
+    }
+  }
+
+  // static Future<void> updateItemsIsCompleted({
+  //   required List<ItemModel> itemsToUpdate,
+  // }) async {
+  //   try {
+  //     if (itemsToUpdate.isEmpty) {
+  //       return;
+  //     }
+
+  //     final List<Map<String, dynamic>> updates = itemsToUpdate.map((item) {
+  //       return {
+  //         'item_id': item.itemId,
+  //         'is_completed': item.isCompleted,
+
+  //         'closed_at': item.closedAt ?? DateTime.now(),
+  //       };
+  //     }).toList();
+
+  //     await supabase!.from('item').upsert(updates);
+
+  //     log(
+  //       "✅ SupabaseConnect: Successfully updated isCompleted status for ${itemsToUpdate.length} items.",
+  //     );
+  //   } catch (e, stack) {
+  //     log(
+  //       "❌ SupabaseConnect: Failed to update isCompleted status for items: $e\n$stack",
+  //     );
+  //     throw Exception(
+  //       "Failed to update isCompleted status for items in Supabase: $e",
+  //     );
+  //   }
+  // }
 }
 
 

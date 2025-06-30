@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
+import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item%20bottom_sheet.dart';
 import 'package:qaimati/features/sub_list/widgets/button/checkout_button.dart';
 import 'package:qaimati/models/item/item_model.dart'; // تأكد من وجود هذا الاستيراد
@@ -129,7 +130,8 @@ class SubListScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: ButtomWidget(
                       onTab: () {
-                        // completeItemBottomsheet(context: context);
+                         bloc.add(GetCheckedItemsEvent());
+                         completeItemBottomsheet(context: context);
                       },
                       textElevatedButton: "CompleteSelected".tr(),
                     ),

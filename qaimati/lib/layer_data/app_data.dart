@@ -94,13 +94,28 @@ class AppDatatLayer {
     try {
       log("deleteItem  AppDatatLayer ${item.itemId}start.");
       await SupabaseConnect.deleteItem(item: item);
-      log(
-        "deleteItem  AppDatatLayer: Item ${item.itemId} end  successfully ",
-      );
+      log("deleteItem  AppDatatLayer: Item ${item.itemId} end  successfully ");
     } catch (_) {
       log("AppDatatLayer  rethrow: deleteItem");
 
       rethrow;
+    }
+  }
+
+    Future<void> updateItemsIsCompletedToTurue({
+    required List<String> itemIds,
+  }) async {
+    try {
+      await SupabaseConnect.updateItemsIsCompletedToTurue(itemIds: itemIds);
+
+      log(
+        "✅ updateItemsIsCompletedToTurue: Successfully updated isCompleted/closed_at for ${itemIds.length} items. in app layer",
+      );
+    } catch (e, stack) {
+      log(
+        "❌ updateItemsIsCompletedToTurue: Failed to update isCompleted/closed_at for items: $e\n$stack   . in app layer",
+      );
+       rethrow;
     }
   }
 }

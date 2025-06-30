@@ -35,7 +35,7 @@ class UpdateItemEvent extends SubListEvent {
   final int index;
   final ItemModel editedItem;
 
-  UpdateItemEvent( {required this.editedItem, required this.index});
+  UpdateItemEvent({required this.editedItem, required this.index});
 }
 
 class DeleteItemEvent extends SubListEvent {
@@ -71,3 +71,7 @@ class ToggleItemCheckedEvent extends SubListEvent {
     this.itemId,
   });
 }
+
+final class GetCheckedItemsEvent extends SubListEvent {}
+
+final class GetCompletedItemsEvent extends SubListEvent {}

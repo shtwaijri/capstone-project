@@ -1,9 +1,12 @@
 {
+      "Welcome": "Welcome to Qaimati",
+
   "onboardingTitle": "Quickly add and organize your shopping items in one place",
   "onboardingNext": "Next",
   "onboardingInvite": "Invite others, sync in  real-time",
   "onboardingReceipts": "Manage receipts your for better tracking",
 
+"enterEmail": "Enter your email to create your account or login",
 
 
   "authLogin": "Log In",
@@ -26,36 +29,40 @@
   "listDelete": "Delete the list",
   "listDeleteConfirm": "Are you sure you want to delete this list?",
 
-
   "commonCancel": "Cancel",
   "commonDelete": "Delete",
+  "commonSearch": "Search",
+
+  "itemNoItems": "You haven't added any items to the list yet.",
   "itemNoItems1": "You haven't added any",
   "itemNoItems2": "items to the list yet.",
+
   "itemName": "Enter item Name ",
   "itemAdd": "Add the item",
   "itemUpdate": "Update the item",
   "itemDelete": "Delete the item",
   "itemDeleteConfirm": "Are you sure you want to delete this item?",
+  "checkeditems":"checked items" ,
    "Item": "Item",
   "CompleteSelected":"Complete Selected Items ",
      "titlenotempty" :"the title should not be empty ",
   "checkoutComplete": "Complete Check Out",
-
+  "movecompleted":"move to completed without receipt",
   "memberNoMembers": "You haven't added any members yet.",
   "memberAdd": "Add member",
   "memberList": "List members",
   "memberDeleteConfirm": "Are you sure you want to delete this member?",
   "memberCreatedBy": "Created by",
      "deleteItemConfirmation":"Are you sure you want to delete this item?",
-
+   
   "receiptCheckout": "Check Out",
   "receiptAdd": "Add receipt",
   "receiptPhoto": "Add receipt photo",
   "receiptSizeNote": "(up to 12 Mb)",
   "receiptStore": "Store name",
   "receiptEnterStore": "Enter store name",
-  "receiptTotalLabel": "Total name",
-  "receiptEnterTotal": "Enter item total",
+  "receiptTotalLabel": "Total",
+  "receiptEnterTotal": "Enter items total",
   "receiptSubmit": "Submit",
   "receiptExpenses": "Expenses",
   "receiptNoReceipts": "You haven't added any Receipt",

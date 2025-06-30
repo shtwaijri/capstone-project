@@ -28,27 +28,22 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
   final authGetit = GetIt.I.get<AuthLayer>();
   final appGetit = GetIt.I.get<AppDatatLayer>();
   List<ItemModel> filteredItems = [];
-  SubListBloc() : super(SubListInitial()) {
-    on<SubListEvent>((event, emit) async {
-      // _emitLoadedState(emit);
-    });
+  List<ItemModel> checkedItems = [];
+  List<ItemModel> completedItems = [];
 
-    // on<IncrementNumberEvent>(incrementNumberMethod);
-    // on<DecrementNumberEvent>(decrementNumberMethod);
-    // on<ChooseImportanceEvent>(chooseImportanceMethod);
+  SubListBloc() : super(SubListInitial()) {
+    on<SubListEvent>((event, emit) async {});
+
     on<AddItemToListEvent>(addItemToListMethod);
     on<ToggleItemCheckedEvent>(toggleItemCheckedMethod);
     on<LoadItemsEvent>(loadItemsMethods);
     on<IncrementNumberEvent>(_incrementNumber);
     on<DecrementNumberEvent>(_decrementNumber);
-    //on<ChooseImportanceEvent>(chooseImportance);
     on<UpdateItemEvent>(updateItemMethod); // NEW
     on<DeleteItemEvent>(deleteItemMethod); // NEW
     on<ChooseImportanceEvent>(chooseImportance);
-    // on<LoadInitialItemDataEvent>(loadInitialItemDataMethod); // NEW
-    // on<ResetBlocStateEvent>(resetBlocStateMethod);
-
-    //on<AddItemEvent>(addItemMethod);
+    on<GetCheckedItemsEvent>(getCheckedItemsMethods);
+    on<GetCompletedItemsEvent>(getCompletedItemsMethod);
   }
 
   void _filterAndEmitCurrentState(Emitter<SubListState> emit) {
@@ -119,6 +114,10 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     LoadItemsEvent event,
     Emitter<SubListState> emit,
   ) async {
+    filteredItems.clear();
+    checkedItems.clear();
+    completedItems.clear();
+
     await appGetit.getListsApp(userId: authGetit.idUser!);
     await authGetit.getUser(authGetit.idUser!);
     listName = listName = appGetit.lists
@@ -126,8 +125,13 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         .name;
     for (var item in appGetit.items) {
       if (item.listId == appGetit.listId) {
-        filteredItems.add(item);
-        item.status ? isItemsChecked = true : "";
+        if (!item.isCompleted) {
+          filteredItems.add(item);
+        }
+        if (item.status) {
+          completedItems.add(item);
+          isItemsChecked = true;
+        }
       }
     }
     currentUserRole = await appGetit.getUserRoleForCurrentList(
@@ -159,6 +163,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         appUserId: authGetit.user!.userId,
         important: event.isImportant,
         createdBy: authGetit.user!.email,
+        createdAt: DateTime.now(),
       ),
     );
 
@@ -167,13 +172,12 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       filteredItems.add(newItem!);
       appGetit.items.add(newItem);
     }
- itemController.clear();
+    itemController.clear();
     number = 1;
 
     isItemImportant = false;
-    isItemsChecked = false;
+
     emit(UpdateScreentState());
-     
   }
 
   void _incrementNumber(
@@ -250,11 +254,10 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       log("❌ Error updating item object in SubListBloc: $e\n$stack");
     }
 
- itemController.clear();
+    itemController.clear();
     number = 1;
 
     isItemImportant = false;
-    isItemsChecked = false;
     emit(UpdateScreentState());
     emit(UpdateScreentState());
   }
@@ -289,5 +292,37 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     } catch (e, stack) {
       log("❌ Error deleting item in SubListBloc: $e\n$stack");
     }
+  }
+
+  FutureOr<void> getCheckedItemsMethods(
+    GetCheckedItemsEvent event,
+    Emitter<SubListState> emit,
+  ) {
+    for (var item in filteredItems) {
+      if (item.status) {
+        checkedItems.add(item);
+      }
+    }
+    emit(GetCheckedItemsState());
+  }
+
+  FutureOr<void> getCompletedItemsMethod(
+    GetCompletedItemsEvent event,
+    Emitter<SubListState> emit,
+  ) async {
+    try {
+      List<String> itemsIds = [];
+      for (var item in checkedItems) {
+        itemsIds.add(item.itemId!);
+      }
+      log("bloc start change ");
+
+      await appGetit.updateItemsIsCompletedToTurue(itemIds: itemsIds);
+      log("bloc end  change ");
+    } catch (e) {
+      log("error in bloc $e");
+    }
+
+    log(checkedItems.toString());
   }
 }

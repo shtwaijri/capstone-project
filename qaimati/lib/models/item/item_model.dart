@@ -17,9 +17,9 @@ class ItemModel with ItemModelMappable {
   @MappableField(key: 'app_user_id')
   final String appUserId;
   @MappableField(key: 'created_at')
-  final String? createdAt;
+  final DateTime? createdAt;
   @MappableField(key: 'closed_at')
-    String? closedAt;
+    DateTime? closedAt;
   //created_by
   @MappableField(key: 'created_by')
   final String? createdBy;

@@ -45,11 +45,11 @@ class ItemModelMapper extends ClassMapperBase<ItemModel> {
   static String _$appUserId(ItemModel v) => v.appUserId;
   static const Field<ItemModel, String> _f$appUserId =
       Field('appUserId', _$appUserId, key: r'app_user_id');
-  static String? _$createdAt(ItemModel v) => v.createdAt;
-  static const Field<ItemModel, String> _f$createdAt =
+  static DateTime? _$createdAt(ItemModel v) => v.createdAt;
+  static const Field<ItemModel, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt, key: r'created_at', opt: true);
-  static String? _$closedAt(ItemModel v) => v.closedAt;
-  static const Field<ItemModel, String> _f$closedAt =
+  static DateTime? _$closedAt(ItemModel v) => v.closedAt;
+  static const Field<ItemModel, DateTime> _f$closedAt =
       Field('closedAt', _$closedAt, key: r'closed_at', opt: true);
 
   @override
@@ -143,8 +143,8 @@ abstract class ItemModelCopyWith<$R, $In extends ItemModel, $Out>
       bool? status,
       String? listId,
       String? appUserId,
-      String? createdAt,
-      String? closedAt});
+      DateTime? createdAt,
+      DateTime? closedAt});
   ItemModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

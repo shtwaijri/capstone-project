@@ -98,3 +98,16 @@ final class SubListErrorState extends SubListState {
   final String message;
   SubListErrorState(this.message);
 }
+
+//ErrorState
+
+final class ErrorState extends SubListState {
+  final String message;
+  ErrorState({required this.message});
+}
+
+
+final class GetCheckedItemsState extends SubListState {}
+
+
+final class GetCompletedItemsState extends SubListState {}
