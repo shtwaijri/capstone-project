@@ -7,6 +7,8 @@ class IncrementNumberEvent extends SubListEvent {}
 
 class DecrementNumberEvent extends SubListEvent {}
 
+class LoadItemsEvent extends SubListEvent {}
+
 class ChooseImportanceEvent extends SubListEvent {
   final bool isImportant;
 
@@ -29,31 +31,18 @@ class AddItemToListEvent extends SubListEvent {
   });
 }
 
-class ToggleItemCheckedEvent extends SubListEvent {
-  final int index;
-  final bool isChecked;
-
-  ToggleItemCheckedEvent({required this.index, required this.isChecked});
-}
-
 class UpdateItemEvent extends SubListEvent {
-  final int index;  
-  final String newItemName;
-  final int newQuantity;
-  final bool newIsImportant;
+  final int index;
+  final ItemModel editedItem;
 
-  UpdateItemEvent({
-    required this.index,
-    required this.newItemName,
-    required this.newQuantity,
-    required this.newIsImportant,
-  });
+  UpdateItemEvent( {required this.editedItem, required this.index});
 }
 
 class DeleteItemEvent extends SubListEvent {
+  ItemModel item;
   final int index;
 
-  DeleteItemEvent({required this.index});
+  DeleteItemEvent({required this.index, required this.item});
 }
 
 class LoadInitialItemDataEvent extends SubListEvent {
@@ -68,6 +57,17 @@ class AddItemEvent extends SubListEvent {
 
   AddItemEvent(this.newItem);
 }
- 
 
 final class CompleteCheckedItemsEvent extends SubListEvent {}
+
+class ToggleItemCheckedEvent extends SubListEvent {
+  final int index;
+  final bool isChecked;
+  String? itemId;
+
+  ToggleItemCheckedEvent({
+    required this.index,
+    required this.isChecked,
+    this.itemId,
+  });
+}

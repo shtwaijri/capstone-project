@@ -7,13 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/alert_dialog/delete_item_alert_dialog.dart';
 import 'package:qaimati/features/sub_list/widgets/button/item_quantity_selector.dart';
+import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
- 
- 
+
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
@@ -21,8 +21,10 @@ void showUpdateDeleteItemBottomSheet({
 }) {
   final bloc = context.read<SubListBloc>();
 
-  bloc.add(LoadInitialItemDataEvent(item: item));
-
+  bloc.itemController.text = item.title;
+  bloc.number = item.quantity;
+  bloc.isItemImportant = item.important;
+  bloc.isItemsChecked = item.status;
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
@@ -32,9 +34,7 @@ void showUpdateDeleteItemBottomSheet({
       return BlocProvider.value(
         value: bloc,
         child: BlocConsumer<SubListBloc, SubListState>(
-          listener: (context, state) {
-           
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return Padding(
               padding: EdgeInsets.only(
@@ -50,10 +50,10 @@ void showUpdateDeleteItemBottomSheet({
                     children: [
                       StyleSize.sizeH24,
                       Text(
-                         maxLines:4 ,
-                        //overflow: TextOverflow.ellipsis, 
-                        overflow:TextOverflow.visible,
-                         bloc.itemController.text,
+                        maxLines: 4,
+                        //overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.visible,
+                        bloc.itemController.text,
                         style: StyleText.bold24(context),
                       ),
                       StyleSize.sizeH16,
@@ -65,8 +65,6 @@ void showUpdateDeleteItemBottomSheet({
                               buildWhen: (previous, current) =>
                                   current is SubListLoadedState,
                               builder: (context, state) {
-                                 
-                                
                                 return ItemQuantitySelector();
                               },
                             ),
@@ -76,13 +74,13 @@ void showUpdateDeleteItemBottomSheet({
                             child: TextField(
                               controller: bloc.itemController,
                               decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 20,
+                                  horizontal: 8,
+                                ),
                                 hintText: "itemName".tr(),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    4.0,
-                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
                                 ),
                               ),
                             ),
@@ -94,7 +92,6 @@ void showUpdateDeleteItemBottomSheet({
                         buildWhen: (previous, current) =>
                             current is SubListLoadedState,
                         builder: (context, state) {
-                         
                           return Container(
                             alignment: Alignment.centerLeft,
                             child: IconButton(
@@ -102,15 +99,16 @@ void showUpdateDeleteItemBottomSheet({
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 context.read<SubListBloc>().add(
-                                      ChooseImportanceEvent(
-                                        isImportant: !bloc.isItemImportant,
-                                      ),
-                                    );
+                                  ChooseImportanceEvent(
+                                    isImportant: !bloc.isItemImportant,
+                                  ),
+                                );
                               },
                               icon: Icon(
                                 !bloc.isItemImportant
                                     ? CupertinoIcons.exclamationmark_square
-                                    : CupertinoIcons.exclamationmark_square_fill,
+                                    : CupertinoIcons
+                                          .exclamationmark_square_fill,
                                 color: StyleColor.red,
                                 size: context.getWidth() * .09,
                               ),
@@ -121,19 +119,32 @@ void showUpdateDeleteItemBottomSheet({
                       Spacer(),
                       UpdateDeleteButtomWidget(
                         onUpdate: () {
-                          if (bloc.itemController.text.isNotEmpty && bloc.number > 0) {
-                            bloc.add(
-                              UpdateItemEvent(
-                                index: itemIndex,
-                                newItemName: bloc.itemController.text,
-                                newQuantity: bloc.number,
-                                newIsImportant: bloc.isItemImportant,
-                              ),
-                            );
-                            Navigator.pop(context); 
+                          if (bloc.itemController.text.isNotEmpty &&
+                              bloc.number > 0) {
+                            if (bloc.currentUserRole == "admin" ||
+                                bloc.authGetit.user!.userId == item.appUserId) {
+                              bloc.add(
+                                UpdateItemEvent(
+                                  index: itemIndex,
+                                  editedItem: item,
+                                ),
+                              );
+                            }
+
+                            // bloc.add(
+                            //   UpdateItemEvent(
+                            //     index: itemIndex,
+                            //     newItemName: bloc.itemController.text,
+                            //     newQuantity: bloc.number,
+                            //     newIsImportant: bloc.isItemImportant,
+                            //   ),
+                            // );
+                            Navigator.pop(context);
                             // bloc.add(ResetBlocStateEvent());
                           } else {
-                            log("Please enter item name and quantity for update");
+                            log(
+                              "Please enter item name and quantity for update",
+                            );
                           }
                         },
                         updateLablel: "itemUpdate".tr(),
@@ -141,9 +152,16 @@ void showUpdateDeleteItemBottomSheet({
                           showDeleteItemAlertDialog(
                             context: context,
                             onDeleteConfirmed: () {
-                              bloc.add(DeleteItemEvent(index: itemIndex));
-                              Navigator.pop(context);  
-                              bloc.add(ResetBlocStateEvent());
+                              if (bloc.currentUserRole == "admin" ||
+                                  bloc.authGetit.user!.userId ==
+                                      item.appUserId) {
+                                bloc.add(
+                                  DeleteItemEvent(index: itemIndex, item: item),
+                                );
+                              }
+                              // bloc.add(DeleteItemEvent(index: itemIndex));
+                              // Navigator.pop(context);
+                              // bloc.add(ResetBlocStateEvent());
                             },
                           );
                         },

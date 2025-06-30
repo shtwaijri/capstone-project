@@ -20,55 +20,66 @@ class ItemModelMapper extends ClassMapperBase<ItemModel> {
   @override
   final String id = 'ItemModel';
 
-  static DateTime _$closedAt(ItemModel v) => v.closedAt;
-  static const Field<ItemModel, DateTime> _f$closedAt =
-      Field('closedAt', _$closedAt, key: r'closed_at');
-  static String _$itemId(ItemModel v) => v.itemId;
+  static String? _$createdBy(ItemModel v) => v.createdBy;
+  static const Field<ItemModel, String> _f$createdBy =
+      Field('createdBy', _$createdBy, key: r'created_by', opt: true);
+  static bool _$important(ItemModel v) => v.important;
+  static const Field<ItemModel, bool> _f$important =
+      Field('important', _$important);
+  static bool _$isCompleted(ItemModel v) => v.isCompleted;
+  static const Field<ItemModel, bool> _f$isCompleted =
+      Field('isCompleted', _$isCompleted, key: r'is_completed');
+  static String? _$itemId(ItemModel v) => v.itemId;
   static const Field<ItemModel, String> _f$itemId =
-      Field('itemId', _$itemId, key: r'item_id');
+      Field('itemId', _$itemId, key: r'item_id', opt: true);
   static String _$title(ItemModel v) => v.title;
   static const Field<ItemModel, String> _f$title = Field('title', _$title);
   static int _$quantity(ItemModel v) => v.quantity;
   static const Field<ItemModel, int> _f$quantity =
       Field('quantity', _$quantity);
-  static String _$status(ItemModel v) => v.status;
-  static const Field<ItemModel, String> _f$status = Field('status', _$status);
-  static String _$subId(ItemModel v) => v.subId;
-  static const Field<ItemModel, String> _f$subId =
-      Field('subId', _$subId, key: r'sub_id');
-  static String _$memberId(ItemModel v) => v.memberId;
-  static const Field<ItemModel, String> _f$memberId =
-      Field('memberId', _$memberId, key: r'member_id');
-  static DateTime _$createdAt(ItemModel v) => v.createdAt;
-  static const Field<ItemModel, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: r'created_at');
-  static bool _$important(ItemModel v) => v.important;
-  static const Field<ItemModel, bool> _f$important =
-      Field('important', _$important);
+  static bool _$status(ItemModel v) => v.status;
+  static const Field<ItemModel, bool> _f$status = Field('status', _$status);
+  static String _$listId(ItemModel v) => v.listId;
+  static const Field<ItemModel, String> _f$listId =
+      Field('listId', _$listId, key: r'list');
+  static String _$appUserId(ItemModel v) => v.appUserId;
+  static const Field<ItemModel, String> _f$appUserId =
+      Field('appUserId', _$appUserId, key: r'app_user_id');
+  static String? _$createdAt(ItemModel v) => v.createdAt;
+  static const Field<ItemModel, String> _f$createdAt =
+      Field('createdAt', _$createdAt, key: r'created_at', opt: true);
+  static String? _$closedAt(ItemModel v) => v.closedAt;
+  static const Field<ItemModel, String> _f$closedAt =
+      Field('closedAt', _$closedAt, key: r'closed_at', opt: true);
 
   @override
   final MappableFields<ItemModel> fields = const {
-    #closedAt: _f$closedAt,
+    #createdBy: _f$createdBy,
+    #important: _f$important,
+    #isCompleted: _f$isCompleted,
     #itemId: _f$itemId,
     #title: _f$title,
     #quantity: _f$quantity,
     #status: _f$status,
-    #subId: _f$subId,
-    #memberId: _f$memberId,
+    #listId: _f$listId,
+    #appUserId: _f$appUserId,
     #createdAt: _f$createdAt,
-    #important: _f$important,
+    #closedAt: _f$closedAt,
   };
 
   static ItemModel _instantiate(DecodingData data) {
-    return ItemModel(data.dec(_f$closedAt),
+    return ItemModel(
+        createdBy: data.dec(_f$createdBy),
+        important: data.dec(_f$important),
+        isCompleted: data.dec(_f$isCompleted),
         itemId: data.dec(_f$itemId),
         title: data.dec(_f$title),
         quantity: data.dec(_f$quantity),
         status: data.dec(_f$status),
-        subId: data.dec(_f$subId),
-        memberId: data.dec(_f$memberId),
+        listId: data.dec(_f$listId),
+        appUserId: data.dec(_f$appUserId),
         createdAt: data.dec(_f$createdAt),
-        important: data.dec(_f$important));
+        closedAt: data.dec(_f$closedAt));
   }
 
   @override
@@ -123,15 +134,17 @@ extension ItemModelValueCopy<$R, $Out> on ObjectCopyWith<$R, ItemModel, $Out> {
 abstract class ItemModelCopyWith<$R, $In extends ItemModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
-      {DateTime? closedAt,
+      {String? createdBy,
+      bool? important,
+      bool? isCompleted,
       String? itemId,
       String? title,
       int? quantity,
-      String? status,
-      String? subId,
-      String? memberId,
-      DateTime? createdAt,
-      bool? important});
+      bool? status,
+      String? listId,
+      String? appUserId,
+      String? createdAt,
+      String? closedAt});
   ItemModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -145,37 +158,43 @@ class _ItemModelCopyWithImpl<$R, $Out>
       ItemModelMapper.ensureInitialized();
   @override
   $R call(
-          {DateTime? closedAt,
-          String? itemId,
+          {Object? createdBy = $none,
+          bool? important,
+          bool? isCompleted,
+          Object? itemId = $none,
           String? title,
           int? quantity,
-          String? status,
-          String? subId,
-          String? memberId,
-          DateTime? createdAt,
-          bool? important}) =>
+          bool? status,
+          String? listId,
+          String? appUserId,
+          Object? createdAt = $none,
+          Object? closedAt = $none}) =>
       $apply(FieldCopyWithData({
-        if (closedAt != null) #closedAt: closedAt,
-        if (itemId != null) #itemId: itemId,
+        if (createdBy != $none) #createdBy: createdBy,
+        if (important != null) #important: important,
+        if (isCompleted != null) #isCompleted: isCompleted,
+        if (itemId != $none) #itemId: itemId,
         if (title != null) #title: title,
         if (quantity != null) #quantity: quantity,
         if (status != null) #status: status,
-        if (subId != null) #subId: subId,
-        if (memberId != null) #memberId: memberId,
-        if (createdAt != null) #createdAt: createdAt,
-        if (important != null) #important: important
+        if (listId != null) #listId: listId,
+        if (appUserId != null) #appUserId: appUserId,
+        if (createdAt != $none) #createdAt: createdAt,
+        if (closedAt != $none) #closedAt: closedAt
       }));
   @override
-  ItemModel $make(CopyWithData data) =>
-      ItemModel(data.get(#closedAt, or: $value.closedAt),
-          itemId: data.get(#itemId, or: $value.itemId),
-          title: data.get(#title, or: $value.title),
-          quantity: data.get(#quantity, or: $value.quantity),
-          status: data.get(#status, or: $value.status),
-          subId: data.get(#subId, or: $value.subId),
-          memberId: data.get(#memberId, or: $value.memberId),
-          createdAt: data.get(#createdAt, or: $value.createdAt),
-          important: data.get(#important, or: $value.important));
+  ItemModel $make(CopyWithData data) => ItemModel(
+      createdBy: data.get(#createdBy, or: $value.createdBy),
+      important: data.get(#important, or: $value.important),
+      isCompleted: data.get(#isCompleted, or: $value.isCompleted),
+      itemId: data.get(#itemId, or: $value.itemId),
+      title: data.get(#title, or: $value.title),
+      quantity: data.get(#quantity, or: $value.quantity),
+      status: data.get(#status, or: $value.status),
+      listId: data.get(#listId, or: $value.listId),
+      appUserId: data.get(#appUserId, or: $value.appUserId),
+      createdAt: data.get(#createdAt, or: $value.createdAt),
+      closedAt: data.get(#closedAt, or: $value.closedAt));
 
   @override
   ItemModelCopyWith<$R2, ItemModel, $Out2> $chain<$R2, $Out2>(

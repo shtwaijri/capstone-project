@@ -15,48 +15,14 @@ final class ChooseImportanceState extends SubListState {
   ChooseImportanceState({required this.isImportant});
 }
 
-class ItemModel {
-  String name;
-  int quantity;
-  bool isImportant;
-  String createdBy;
-  bool isChecked;
-
-  ItemModel({
-    required this.name,
-    required this.quantity,
-    this.isImportant = false,
-    required this.createdBy,
-    this.isChecked = false,
-  });
-
-  ItemModel copyWith({
-    String? name,
-    int? quantity,
-    bool? isImportant,
-    String? createdBy,
-    bool? isChecked,
-  }) {
-    return ItemModel(
-      name: name ?? this.name,
-      quantity: quantity ?? this.quantity,
-      isImportant: isImportant ?? this.isImportant,
-      createdBy: createdBy ?? this.createdBy,
-      isChecked: isChecked ?? this.isChecked,
-    );
-  }
-}
-
- 
 final class SubListLoadedState extends SubListState {
   final List<ItemModel> items;
   final int currentNumber;
   final bool currentIsItemImportant;
 
- 
   SubListLoadedState({
     required this.items,
-     required this.currentNumber,
+    required this.currentNumber,
     required this.currentIsItemImportant,
   });
 
@@ -68,24 +34,67 @@ final class SubListLoadedState extends SubListState {
   }) {
     return SubListLoadedState(
       items: items ?? this.items,
-       currentNumber: currentNumber ?? this.currentNumber,
+      currentNumber: currentNumber ?? this.currentNumber,
       currentIsItemImportant:
           currentIsItemImportant ?? this.currentIsItemImportant,
     );
   }
 }
 
-final class SubListContentState extends SubListState {  
+final class SubListContentState extends SubListState {
   final List<ItemModel> items;
   final List<ItemModel> completedItems;
   final int number;
   final bool isItemImportant;
-  
 
-  SubListContentState({  
+  SubListContentState({
     required this.items,
     required this.completedItems,
     required this.number,
     required this.isItemImportant,
   });
+}
+
+final class ItemsDisplayState extends SubListState {
+  final List<ItemModel> items;
+  final int currentNumber;
+  final bool currentIsItemImportant;
+  final bool isAnyItemChecked; // ⭐️ لـ bottomNavigationBar
+  final String? currentUserRole; // ⭐️ لصلاحيات الزر
+
+  ItemsDisplayState({
+    required this.items,
+    required this.currentNumber,
+    required this.currentIsItemImportant,
+    required this.isAnyItemChecked, // إضافة هذه
+    this.currentUserRole, // إضافة هذه
+  });
+
+  ItemsDisplayState copyWith({
+    List<ItemModel>? items,
+    int? currentNumber,
+    bool? currentIsItemImportant,
+    bool? isAnyItemChecked,
+    String? currentUserRole,
+  }) {
+    return ItemsDisplayState(
+      items: items ?? this.items,
+      currentNumber: currentNumber ?? this.currentNumber,
+      currentIsItemImportant:
+          currentIsItemImportant ?? this.currentIsItemImportant,
+      isAnyItemChecked: isAnyItemChecked ?? this.isAnyItemChecked,
+      currentUserRole: currentUserRole ?? this.currentUserRole,
+    );
+  }
+}
+
+final class UpdateScreentState extends SubListState {}
+
+class LoadItemsState extends SubListState {}
+
+final class SubListLoadingState extends SubListState {}
+
+final class SubListErrorState extends SubListState {
+  final String message;
+  SubListErrorState(this.message);
 }

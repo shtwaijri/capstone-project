@@ -13,18 +13,21 @@ Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
-  // await SupabaseConnect.init();
+   await SupabaseConnect.init();
   await EasyLocalization.ensureInitialized();
+  GetIt.I.registerSingletonAsync<AuthLayer>(() async =>AuthLayer());
+  GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Enable verbose logging for debugging (remove in production)
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  // Initialize with your OneSignal App ID
-  OneSignal.initialize(dotenv.env["appIDOneSignal"].toString(),);
-  // Use this method to prompt for push notifications.
-  // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
-  OneSignal.Notifications.requestPermission(true);
-  GetIt.I.registerSingleton<AuthLayer>(AuthLayer());
-  GetIt.I.registerLazySingleton<AppDatatLayer>(() => AppDatatLayer());
+  
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // // Enable verbose logging for debugging (remove in production)
+  // OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  // // Initialize with your OneSignal App ID
+  // OneSignal.initialize(dotenv.env["appIDOneSignal"].toString(),);
+  // // Use this method to prompt for push notifications.
+  // // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
+  // OneSignal.Notifications.requestPermission(true);
+
 }
