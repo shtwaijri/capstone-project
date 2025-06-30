@@ -7,12 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/alert_dialog/delete_item_alert_dialog.dart';
 import 'package:qaimati/features/sub_list/widgets/button/item_quantity_selector.dart';
+import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
-
+ 
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
@@ -20,8 +21,10 @@ void showUpdateDeleteItemBottomSheet({
 }) {
   final bloc = context.read<SubListBloc>();
 
-  bloc.add(LoadInitialItemDataEvent(item: item));
-
+  bloc.itemController.text = item.title;
+  bloc.number = item.quantity;
+  bloc.isItemImportant = item.important;
+  bloc.isItemsChecked = item.status;
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
@@ -53,7 +56,6 @@ void showUpdateDeleteItemBottomSheet({
                         bloc.itemController.text,
                         style: StyleText.bold24(context),
                       ),
-
                       StyleSize.sizeH16,
                       Row(
                         children: [
@@ -116,39 +118,50 @@ void showUpdateDeleteItemBottomSheet({
                       ),
                       Spacer(),
                       DualActionButtonWidget(
-                        isCancel: false,
-                        isDelete: true,
+                        isCancel:false,
+                        primaryLabel: "itemUpdate".tr(),
                         onPrimaryTap: () {
                           if (bloc.itemController.text.isNotEmpty &&
                               bloc.number > 0) {
-                            bloc.add(
-                              UpdateItemEvent(
-                                index: itemIndex,
-                                newItemName: bloc.itemController.text,
-                                newQuantity: bloc.number,
-                                newIsImportant: bloc.isItemImportant,
-                              ),
-                            );
+                            if (bloc.currentUserRole == "admin" ||
+                                bloc.authGetit.user!.userId == item.appUserId) {
+                              bloc.add(
+                                UpdateItemEvent(
+                                  index: itemIndex,
+                                  editedItem: item,
+                                ),
+                              );
+                            }
+
+                             
                             Navigator.pop(context);
-                            // bloc.add(ResetBlocStateEvent());
-                          } else {
+                           } else {
                             log(
                               "Please enter item name and quantity for update",
                             );
                           }
                         },
-                        primaryLabel: "itemUpdate".tr(),
+                        secondaryLabel: "itemDelete".tr(),
+                        isDelete:true,
                         onSecondaryTap: () {
                           showDeleteItemAlertDialog(
                             context: context,
                             onDeleteConfirmed: () {
-                              bloc.add(DeleteItemEvent(index: itemIndex));
-                              Navigator.pop(context);
-                              bloc.add(ResetBlocStateEvent());
+                              if (bloc.currentUserRole == "admin" ||
+                                  bloc.authGetit.user!.userId ==
+                                      item.appUserId) {
+                                bloc.add(
+                                  DeleteItemEvent(index: itemIndex, item: item),
+                                );
+                                 Navigator.pop(context);
+                              }
+                              // bloc.add(DeleteItemEvent(index: itemIndex));
+                              // Navigator.pop(context);
+                              // bloc.add(ResetBlocStateEvent());
                             },
                           );
                         },
-                        secondaryLabel: "itemDelete".tr(),
+                        
                       ),
                     ],
                   ),
