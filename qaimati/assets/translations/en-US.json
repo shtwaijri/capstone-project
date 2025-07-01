@@ -85,5 +85,6 @@
   "accountEmail": "Change account email",
   "accountPassword": "Change account Password",
   "accountPremium": "Prime Plus",
-  "authLogout": "Log out"
+  "authLogout": "Log out",
+  "unknown": "Unknown"
 }

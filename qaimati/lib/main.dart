@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:get_it/get_it.dart';
+
 import 'package:qaimati/features/auth/auth_screen.dart';
+
 import 'package:qaimati/style/theme/theme.dart';
 import 'package:qaimati/utilities/setup.dart';
 
@@ -38,9 +40,12 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: CustomTheme.lightTheme,
+
       home:
 //       SubListScreen(),
        seenOnboarding ? LoadingScreen() : Onboarding(),
+
+      
     );
   }
 }

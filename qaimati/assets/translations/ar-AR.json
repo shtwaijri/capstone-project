@@ -83,5 +83,6 @@
   "accountEmail": "تغيير بريد الحساب الإلكتروني",
   "accountPassword": "تغيير كلمة مرور الحساب",
   "accountPremium": "برايم ",
-  "authLogout": "تسجيل الخروج"
+  "authLogout": "تسجيل الخروج",
+  "unknown": "غير معروف"
 }
