@@ -5,9 +5,17 @@ import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
+/// A widget that displays a receipt summary with the store name and total amount.
+///
+/// It shows the store name on the left and the total amount on the right
+/// with a Riyal currency icon.
 class ReceiptWidget extends StatelessWidget {
   const ReceiptWidget({super.key, required this.storName, required this.total});
+
+  /// The name of the store or supplier.
   final String storName;
+
+  /// The total amount as a string to display.
   final String total;
 
   @override
@@ -25,8 +33,9 @@ class ReceiptWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // Store name text
             Text(storName, style: StyleText.bold16(context)),
-
+            // Row showing currency icon and total amount
             Row(
               children: [
                 SvgPicture.asset('assets/svg/Riyal.svg', width: 16, height: 16),
