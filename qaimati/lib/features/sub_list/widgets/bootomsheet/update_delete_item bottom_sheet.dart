@@ -12,7 +12,6 @@ import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
-import 'package:qaimati/widgets/update_delete_buttom_widget.dart';
 
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
