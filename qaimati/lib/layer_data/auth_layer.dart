@@ -62,4 +62,21 @@ class AuthLayer {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('userId');
   }
+
+  //method to cplete user profile
+  static Future<void> completeUserProfile({
+    required String userId,
+    required String name,
+    required String? email,
+  }) async {
+    try {
+      await SupabaseConnect.upsertUserProfile(
+        userId: userId,
+        name: name,
+        email: email,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

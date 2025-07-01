@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qaimati/features/Lists/lists_screen.dart';
 import 'package:qaimati/features/auth/bloc/auth_bloc.dart';
-import 'package:qaimati/features/auth/complete_profile_screen.dart';
+import 'package:qaimati/features/auth/complete_profile/complete_profile_screen.dart';
+import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/custom_otp_field.dart';
@@ -91,7 +91,7 @@ class OtpScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const ListsScreen(),
+                            builder: (_) => const NavigationBarScreen(),
                           ),
                         );
                       }
