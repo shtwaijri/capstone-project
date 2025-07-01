@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
-import 'package:qaimati/widgets/custom_items_widget/bloc/check_box_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 
 class CustomItems extends StatelessWidget {
@@ -16,6 +15,7 @@ class CustomItems extends StatelessWidget {
     required this.isImportant,
     required this.itemIndex,
     required this.isItemChecked,
+    required this.itemId, // ⭐️ هذا مهم جداً هنا
     this.isCheckboxEnabled = true,
   });
   final String numOfItems;
@@ -24,6 +24,7 @@ class CustomItems extends StatelessWidget {
   final bool isImportant;
   final int itemIndex;
   final bool isItemChecked;
+  final String itemId; // ⭐️ تعريف itemId
   final bool isCheckboxEnabled;
 
   @override
@@ -31,9 +32,9 @@ class CustomItems extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: context.getWidth() * 0.05, right: context.getWidth() * 0.04),  
+          padding: EdgeInsets.only(left: context.getWidth() * 0.05, right: context.getWidth() * 0.04),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start, 
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Transform.translate(
                 offset: Offset(
@@ -49,40 +50,41 @@ class CustomItems extends StatelessWidget {
                             ToggleItemCheckedEvent(
                               index: itemIndex,
                               isChecked: value!,
+                              itemId: itemId, // ⭐️ استخدام itemId الذي تم تمريره
                             ),
                           );
                         }
                       : null,
                 ),
               ),
-              SizedBox(width: context.getWidth() * 0.01),  
+              SizedBox(width: context.getWidth() * 0.01),
 
               Expanded(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, 
-                  crossAxisAlignment: CrossAxisAlignment.start, 
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,  
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('$numOfItems - ', style: StyleText.bold16(context)),
-                        Flexible( 
+                        Flexible(
                           child: Text(
                             itemName,
                             style: StyleText.bold16(context),
                           ),
                         ),
-                       
+
                         if (isImportant)
-                          Padding(  
+                          Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Icon(Icons.priority_high, color: StyleColor.red),
                           ),
                       ],
                     ),
-                    SizedBox(height: 4), 
+                    SizedBox(height: 4),
 
-                   Text.rich(
+                    Text.rich(
                       TextSpan(
                         text: 'memberCreatedBy'.tr(),
                         style: StyleText.regular12(
@@ -104,7 +106,7 @@ class CustomItems extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 4,),  
+        SizedBox(height: 4,),
         Divider(
           height: 0,
           color: StyleColor.gray,
