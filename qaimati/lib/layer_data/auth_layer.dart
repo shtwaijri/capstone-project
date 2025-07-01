@@ -68,7 +68,22 @@ class AuthLayer {
     return prefs.getString('userId');
   }
 
-  Future<void> getUser(String userId) async {
+   //method to cplete user profile
+  static Future<void> completeUserProfile({
+    required String userId,
+    required String name,
+    required String? email,
+  }) async {
+    try {
+      await SupabaseConnect.upsertUserProfile(
+        userId: userId,
+        name: name,
+        email: email,
+      );
+    } catch (e) {
+      rethrow;
+    }
+   Future<void> getUser(String userId) async {
     try {
       log("📥 Fetching user from Supabase: AuthLayer");
 
@@ -77,5 +92,4 @@ class AuthLayer {
     } catch (_) {
       rethrow;
     }
-  }
 }

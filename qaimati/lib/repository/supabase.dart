@@ -91,6 +91,25 @@ class SupabaseConnect {
     }
   }
 
+  //method to upser user info
+
+  static Future<void> upsertUserProfile({
+    required String userId,
+
+    required String name,
+    required String? email,
+  }) async {
+    try {
+      await supabase!.from("app_user").upsert({
+        'name': name,
+        'email': email,
+        'auth_user_id': userId,
+      });
+    } catch (e) {
+      throw Exception('Failed to upsert user profile');
+    }
+  }
+
   //add  here deleteUser method
 
   static Future<(List<ListModel>, List<ItemModel>)> getUserData(
