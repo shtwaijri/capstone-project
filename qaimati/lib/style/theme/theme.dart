@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 
@@ -32,7 +34,7 @@ class CustomTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: StyleColor.white,
       selectedItemColor: StyleColor.green,
-      unselectedItemColor: StyleColor.gray,
+      unselectedItemColor: StyleColor.green.withOpacity(0.6),
     ),
     cardColor: StyleColor.gray,
     dividerColor: StyleColor.gray,
