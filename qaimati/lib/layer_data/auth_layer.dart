@@ -64,11 +64,11 @@ class AuthLayer {
   //method to get user id
   Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
- //   idUser = prefs.getString('userId');
+    //   idUser = prefs.getString('userId');
     return prefs.getString('userId');
   }
 
-   //method to cplete user profile
+  //method to cplete user profile
   static Future<void> completeUserProfile({
     required String userId,
     required String name,
@@ -83,7 +83,9 @@ class AuthLayer {
     } catch (e) {
       rethrow;
     }
-   Future<void> getUser(String userId) async {
+  }
+
+  Future<void> getUser(String userId) async {
     try {
       log("📥 Fetching user from Supabase: AuthLayer");
 
@@ -92,4 +94,5 @@ class AuthLayer {
     } catch (_) {
       rethrow;
     }
+  }
 }

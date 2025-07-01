@@ -91,15 +91,15 @@ void completeItemBottomsheet({required BuildContext context}) {
                   StyleSize.sizeH16,
                   ButtomWidget(
                     onTab: () {
-                       bloc.add(GetCompletedItemsEvent());
-                       bloc.add(LoadItemsEvent());
-                     // bloc.add(ResetBlocStateEvent());
+                      bloc.add(GetCompletedItemsEvent());
+                      bloc.add(LoadItemsEvent());
+                      // bloc.add(ResetBlocStateEvent());
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BlocProvider.value(
                             value: bloc,
-                            child: CompletedScreen(),
+                            // child: CompletedScreen(),
                           ),
                         ),
                       );

@@ -14,11 +14,10 @@ Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
-   await SupabaseConnect.init();
+  await SupabaseConnect.init();
   await EasyLocalization.ensureInitialized();
-  GetIt.I.registerSingletonAsync<AuthLayer>(() async =>AuthLayer());
+  GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
-
 
   // // Enable verbose logging for debugging (remove in production)
   // OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
@@ -27,7 +26,7 @@ Future<void> setUp() async {
   // // Use this method to prompt for push notifications.
   // // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
   // OneSignal.Notifications.requestPermission(true);
-   final prefs = await SharedPreferences.getInstance();
+  final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
   GetIt.I.registerSingleton<bool>(
     seenOnboarding,
