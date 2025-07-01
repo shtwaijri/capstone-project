@@ -4,14 +4,10 @@ import 'package:get_it/get_it.dart';
 
 import 'package:qaimati/features/auth/auth_screen.dart';
 
+
 import 'package:qaimati/style/theme/theme.dart';
 import 'package:qaimati/utilities/setup.dart';
 
-import 'package:qaimati/features/sub_list/sub_list_screen.dart';
-import 'package:qaimati/features/sub_list/tray.dart';
-import 'package:qaimati/style/theme/theme.dart';  
-import 'package:qaimati/utilities/setup.dart';  
- 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -40,8 +36,11 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: CustomTheme.lightTheme,
-
       home:
+      //       SubListScreen(),
+      // seenOnboarding ? LoadingScreen() : Onboarding(),
+      // seenOnboarding ? AuthScreen() : Onboarding(),
+
 //       SubListScreen(),
        seenOnboarding ? LoadingScreen() : Onboarding(),
 
