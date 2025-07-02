@@ -14,7 +14,7 @@ Future<String?> fetchUserId() async {
 /// Fetches currently logged-in user's id from Supabase session.
 /// Used for authentication and user-related queries.
 String? fetchUserIdFromSupabase() {
-  final userId = GetIt.I.get<AuthLayer>().getCurrentUserId();
+  final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
   if (userId == null) {
     throw Exception('User not logged in');
   }

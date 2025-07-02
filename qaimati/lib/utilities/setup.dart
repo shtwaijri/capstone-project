@@ -29,7 +29,10 @@ Future<void> setUp() async {
   // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
   OneSignal.Notifications.requestPermission(true);
 
+  //to ensure that the current user is saved
   await SupabaseConnect.init();
+  log("session: ${Supabase.instance.client.auth.currentSession}");
+
   await EasyLocalization.ensureInitialized();
   GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
