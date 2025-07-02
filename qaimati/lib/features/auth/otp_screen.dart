@@ -75,8 +75,8 @@ class OtpScreen extends StatelessWidget {
 
                     try {
                       final response = await Supabase.instance.client
-                          .from('profiles')
-                          .select('full_name')
+                          .from('app_user')
+                          .select('name')
                           .eq('id', userId!)
                           .maybeSingle();
 
