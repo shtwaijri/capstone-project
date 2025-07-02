@@ -4,19 +4,11 @@ import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/widgets/select_color.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
-import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
+import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/text_field_widget.dart';
-// import 'package:test_befor_add/screens/lists/bloc/add_list_bloc.dart';
-// import 'package:test_befor_add/screens/select_color.dart';
-// import 'package:test_befor_add/style/style_color.dart';
-// import 'package:test_befor_add/style/style_text.dart';
-// import 'package:test_befor_add/utilities/extensions/screens/get_size_screen.dart';
-// // import 'package:test_befor_add/widgets/buttom_widget.dart';
-// import 'package:test_befor_add/widgets/text_field_widget.dart';
 
 void showAddListButtomSheet({required BuildContext context}) {
   TextEditingController addListController = TextEditingController();
-  // final bloc = context.read<AddListBloc>();
 
   showModalBottomSheet(
     showDragHandle: true,
@@ -47,12 +39,15 @@ void showAddListButtomSheet({required BuildContext context}) {
                         spacing: 16,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Add new list', style: StyleText.bold16(context)),
+                          Text(
+                            'Add new list',
+                            style: StyleText.bold16(context),
+                          ),
                           TextFieldWidget(
                             controller: addListController,
                             textHint: 'List name',
                           ),
-            
+
                           BlocBuilder<AddListBloc, AddListState>(
                             builder: (context, state) {
                               return SelectColor(
@@ -63,37 +58,16 @@ void showAddListButtomSheet({required BuildContext context}) {
                           ),
                         ],
                       ),
-                      // ButtomWidget(
-                      //   onTab: () {},
-                      //   textElevatedButton: 'textElevatedButton',
-                      // ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: StyleColor.green,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 16,
-                          ),
-                          fixedSize: Size(
-                            context.getWidth() * .9,
-                            context.getHeight() * 0.06,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Create list',
-                          style: StyleText.buttonText(context),
-                        ),
+                      ButtomWidget(
+                        onTab: () {},
+                        textElevatedButton: 'Create list',
                       ),
                     ],
                   ),
                 ),
               ),
             );
-          }
+          },
         ),
       );
     },
