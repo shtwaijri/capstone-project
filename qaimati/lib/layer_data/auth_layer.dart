@@ -85,8 +85,8 @@ class AuthLayer {
   }
 
   //method to get user id from the supabase
-  String? getCurrentUserId() {
-    return Supabase.instance.client.auth.currentUser?.id;
+  String? getCurrentSessionId() {
+    return Supabase.instance.client.auth.currentSession?.user.id;
   }
 
   //method to complete user profile

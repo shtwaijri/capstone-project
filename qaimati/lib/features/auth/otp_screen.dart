@@ -75,7 +75,7 @@ class OtpScreen extends StatelessWidget {
                     );
                   } else if (state is ExistingUserState) {
                     final userId =
-                        Supabase.instance.client.auth.currentUser?.id;
+                        Supabase.instance.client.auth.currentSession?.user?.id;
                     if (userId != null) {
                       await GetIt.I.get<AuthLayer>().saveUserId(userId);
                     }
@@ -87,7 +87,9 @@ class OtpScreen extends StatelessWidget {
                       ),
                     );
                   } else if (state is SuccessState) {
-                    final userId = GetIt.I.get<AuthLayer>().getCurrentUserId();
+                    final userId = GetIt.I
+                        .get<AuthLayer>()
+                        .getCurrentSessionId();
 
                     if (userId == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
