@@ -9,8 +9,7 @@ import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/custom_items_widget/custom_items.dart';
-// لا حاجة لاستيراد GetIt هنا إذا لم تستخدمه لـ SubListBloc
-
+ 
 class CompletedScreen extends StatelessWidget {
   const CompletedScreen({super.key});
 
@@ -126,4 +125,5 @@ class CompletedScreen extends StatelessWidget {
       ),
     );
   }
+
 }

@@ -79,6 +79,8 @@
   "receiptDelete": "Delete the receipt",
   "receiptDeleteConfirm": "Are you sure you want to delete this receipt?",
 "checkoutwithoutreceipt":"checkout without receipt",
+"expensesTitle": "Expenses",
+    "listsTitle": "Lists",
 
   "profileTitle": "Profile",
   "settingsTitle": "Setting",
@@ -88,5 +90,6 @@
   "accountEmail": "Change account email",
   "accountPassword": "Change account Password",
   "accountPremium": "Prime Plus",
-  "authLogout": "Log out"
+  "authLogout": "Log out",
+  "unknown": "Unknown"
 }

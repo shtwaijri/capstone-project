@@ -34,6 +34,7 @@ Future<void> setUp() async {
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
   
 
+ 
   final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
   GetIt.I.registerSingleton<bool>(

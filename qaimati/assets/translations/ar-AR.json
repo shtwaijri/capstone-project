@@ -76,6 +76,9 @@
 
   "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
 
+  "expensesTitle": "نفقات",
+    "listsTitle": "القوائم",
+
 
   "profileTitle": "الملف الشخصي",
   "settingsTitle": "الإعدادات",
@@ -85,5 +88,6 @@
   "accountEmail": "تغيير بريد الحساب الإلكتروني",
   "accountPassword": "تغيير كلمة مرور الحساب",
   "accountPremium": "برايم ",
-  "authLogout": "تسجيل الخروج"
+  "authLogout": "تسجيل الخروج",
+  "unknown": "غير معروف"
 }

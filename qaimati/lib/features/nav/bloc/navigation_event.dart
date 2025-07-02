@@ -1,9 +1,9 @@
-// part of 'navigation_bloc.dart';
+part of 'navigation_bloc.dart';
 
-// @immutable
-// sealed class NavigationEvent {}
+@immutable
+sealed class NavigationEvent {}
 
-// class NavigationItemSelected extends NavigationEvent {
-//   final int index;
-//   NavigationItemSelected(this.index);
-// }
+class NavigationItemSelected extends NavigationEvent {
+  final int index;
+  NavigationItemSelected(this.index);
+}

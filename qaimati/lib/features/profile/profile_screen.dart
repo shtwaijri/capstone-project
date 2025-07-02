@@ -1,10 +1,93 @@
-import 'package:flutter/material.dart';
+// import 'dart:core';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+// import 'package:flutter/material.dart';
+// import 'package:qaimati/style/style_color.dart';
+// import 'package:qaimati/style/style_text.dart';
+// import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
+// import 'package:qaimati/widgets/app_bar_widget.dart';
+// import 'package:qaimati/features/profile/widgets/custom_widget_setting.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("ProfileScreen")));
-  }
-}
+// class ProfileScreen extends StatelessWidget {
+//   const ProfileScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBarWidget(
+//         title: 'Profile',
+//         showActions: false,
+//         showSearchBar: false,
+//       ),
+
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: EdgeInsets.symmetric(horizontal: context.getWidth() * 0.05),
+
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+
+//             children: [
+//               Text("name", style: StyleText.bold16(context)),
+//               SizedBox(height: context.getHeight() * 0.03),
+//               Text("name@gmail.com", style: StyleText.bold16(context)),
+//               SizedBox(height: context.getHeight() * 0.03),
+//               Text("Setting", style: StyleText.bold16(context)),
+//               SizedBox(height: context.getHeight() * 0.03),
+
+//               CustomWidgetSetting(
+//                 icon: Icons.language,
+//                 text: 'Change app language',
+//                 style: StyleText.bold16(context),
+//                 iconColor: StyleColor.green,
+//                 iconSize: context.getWidth() * 0.06,
+//               ),
+//               SizedBox(height: context.getHeight() * 0.03),
+
+//               CustomWidgetSetting(
+//                 icon: Icons.color_lens,
+//                 text: 'Change app color',
+//                 style: StyleText.bold16(context),
+//                 iconColor: StyleColor.green,
+//                 iconSize: context.getWidth() * 0.06,
+//               ),
+//               SizedBox(height: context.getHeight() * 0.03),
+//               // Icon(Icons.abc, color: Colors.green),
+//               Text("Account", style: StyleText.bold16(context)),
+//               SizedBox(height: context.getHeight() * 0.03),
+
+//               // Row(
+//               //   children: [Icon(Icons.language), Text("name@Change app language")],
+//               // ),
+//               CustomWidgetSetting(
+//                 icon: Icons.person,
+//                 text: 'Change account name',
+//                 style: StyleText.bold16(context),
+//                 iconColor: StyleColor.green,
+//                 iconSize: context.getWidth() * 0.06,
+//               ),
+//               SizedBox(height: context.getHeight() * 0.03),
+
+//               CustomWidgetSetting(
+//                 icon: Icons.mail,
+//                 text: 'Change account email',
+//                 style: StyleText.bold16(context),
+//                 iconColor: StyleColor.green,
+//                 iconSize: context.getWidth() * 0.06,
+//               ),
+//               SizedBox(height: context.getHeight() * 0.03),
+
+//               CustomWidgetSetting(
+//                 icon: Icons.star,
+//                 text: 'Prime plus',
+//                 style: StyleText.bold16(context),
+//                 iconColor: StyleColor.green,
+//                 iconSize: context.getWidth() * 0.06,
+//               ),
+//               SizedBox(height: context.getHeight() * 0.03),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
