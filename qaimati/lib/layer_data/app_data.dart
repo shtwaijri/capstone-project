@@ -102,7 +102,7 @@ class AppDatatLayer {
     }
   }
 
-    Future<void> updateItemsIsCompletedToTurue({
+  Future<void> updateItemsIsCompletedToTurue({
     required List<String> itemIds,
   }) async {
     try {
@@ -115,7 +115,7 @@ class AppDatatLayer {
       log(
         "❌ updateItemsIsCompletedToTurue: Failed to update isCompleted/closed_at for items: $e\n$stack   . in app layer",
       );
-       rethrow;
+      rethrow;
     }
   }
 }

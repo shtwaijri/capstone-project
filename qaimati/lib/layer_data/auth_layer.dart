@@ -78,6 +78,11 @@ class AuthLayer {
     return userID;
   }
 
+  //method to get user id from the supabase
+  String? getCurrentUserId() {
+    return Supabase.instance.client.auth.currentUser?.id;
+  }
+
   //method to complete user profile
   static Future<void> completeUserProfile({
     required String userId,
