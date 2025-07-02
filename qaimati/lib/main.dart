@@ -15,6 +15,9 @@ void main() async {
 
   await EasyLocalization.ensureInitialized();
   await setUp();
+  //ensure all singletons (like AuthLayer) are initialized before running the app
+  await GetIt.I.allReady();
+
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
