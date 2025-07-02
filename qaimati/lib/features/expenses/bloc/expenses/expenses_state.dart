@@ -5,8 +5,15 @@ sealed class ExpensesState {}
 
 final class ExpensesInitial extends ExpensesState {}
 
-final class SuccessState extends ExpensesState {}
+final class SuccessState extends ExpensesState {
+  final List<ReceiptModel> receipt;
+  SuccessState(this.receipt);
+}
 
-final class ErrorState extends ExpensesState {}
+final class ErrorState extends ExpensesState {
+  final String message;
+
+  ErrorState(this.message);
+}
 
 final class LoadingState extends ExpensesState {}

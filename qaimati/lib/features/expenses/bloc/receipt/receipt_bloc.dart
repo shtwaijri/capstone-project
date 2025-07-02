@@ -5,7 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:qaimati/features/expenses/model/receipt_api_model.dart';
+import 'package:qaimati/features/expenses/model/receipt_model.dart';
 import 'package:qaimati/features/expenses/repository/receipt_api.dart';
+import 'package:qaimati/features/expenses/repository/receipt_supabeas.dart';
 import 'package:qaimati/utilities/helper/image_picker_helper.dart';
 
 part 'receipt_event.dart';
@@ -28,9 +30,18 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
   /// Controller for total amount input field.
   final TextEditingController totalController = TextEditingController();
 
+  late String supplier;
+  late String date;
+  late String time;
+  late String receiptNumber;
+  late double totalAmount;
+  late String currency;
+  // String? receiptFileUrl;
+
   ReceiptBloc() : super(ReceiptInitial()) {
     on<ReceiptEvent>((event, emit) {});
     on<UplaodReceiptEvent>(uplaodReceiptMethod);
+    on<SaveReceiptEvent>(saveMethod);
   }
 
   /// Method to handle uploading a receipt image.
@@ -39,16 +50,41 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     Emitter<ReceiptState> emit,
   ) async {
     emit(LoadingState());
-
     final image = await ImagePickerHelper().pickImage();
     if (image != null) {
       final data = await ReceiptApi().sendReceipt(image);
+
       storController.text = data.supplier;
       totalController.text = data.totalAmount.toString();
+
+      supplier = data.supplier;
+      date = data.date;
+      time = data.time;
+      receiptNumber = data.receiptNumber;
+      totalAmount = data.totalAmount;
+      currency = data.currency;
+
       emit(SuccessState(image, data));
     } else {
       log('No image selected.');
       emit(ReceiptInitial());
     }
+  }
+
+  FutureOr<void> saveMethod(
+    SaveReceiptEvent event,
+    Emitter<ReceiptState> emit,
+  ) async {
+    await ReceiptSupabeas(
+      userId: '264db79b-d37b-4635-899c-35b582db9102',
+    ).addNewReceipt(
+      receipt: ReceiptModel(
+        supplier: supplier,
+        receiptNumber: receiptNumber,
+        totalAmount: totalAmount,
+        currency: currency,
+        createdAt: DateTime.now(),
+      ),
+    );
   }
 }
