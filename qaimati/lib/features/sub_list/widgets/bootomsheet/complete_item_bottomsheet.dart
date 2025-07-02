@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
 import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/completed_screen.dart';
@@ -14,8 +15,7 @@ import 'package:qaimati/widgets/buttom_widget.dart';
 
 void completeItemBottomsheet({required BuildContext context}) {
   final bloc = context.read<SubListBloc>();
-
-  showModalBottomSheet(
+   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
     showDragHandle: true,
@@ -48,9 +48,9 @@ void completeItemBottomsheet({required BuildContext context}) {
                     builder: (context, state) {
                       return Expanded(
                         child: ListView.builder(
-                          itemCount: bloc.checkedItems.length,
+                          itemCount: bloc.checkedItemsToComplete.length,
                           itemBuilder: (context, index) {
-                            final item = bloc.checkedItems[index];
+                            final item = bloc.checkedItemsToComplete[index];
                             return Column(
                               children: [
                                 ListTile(
@@ -79,6 +79,8 @@ void completeItemBottomsheet({required BuildContext context}) {
                   StyleSize.sizeH16,
                   ButtomWidget(
                     onTab: () {
+                      bloc.add(MarkCheckedItemsAsCompletedEvent());
+                      bloc.add(LoadCompletedItemsScreenData());
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -91,16 +93,12 @@ void completeItemBottomsheet({required BuildContext context}) {
                   StyleSize.sizeH16,
                   ButtomWidget(
                     onTab: () {
-                      bloc.add(GetCompletedItemsEvent());
-                      bloc.add(LoadItemsEvent());
-                      // bloc.add(ResetBlocStateEvent());
+                      bloc.add(MarkCheckedItemsAsCompletedEvent());
+                        //bloc.add(LoadCompletedItemsScreenData());
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BlocProvider.value(
-                            value: bloc,
-                            // child: CompletedScreen(),
-                          ),
+                          builder: (context) => ListsScreen(),
                         ),
                       );
                     },

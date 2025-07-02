@@ -1,3 +1,5 @@
+// lib/bloc/sub_list/sub_list_state.dart
+
 part of 'sub_list_bloc.dart';
 
 @immutable
@@ -5,109 +7,43 @@ sealed class SubListState {}
 
 final class SubListInitial extends SubListState {}
 
-final class ChangeNumberState extends SubListState {
-  final int number;
-  ChangeNumberState({required this.number});
-}
-
-final class ChooseImportanceState extends SubListState {
-  final bool isImportant;
-  ChooseImportanceState({required this.isImportant});
-}
+final class SubListLoading extends SubListState {}
 
 final class SubListLoadedState extends SubListState {
-  final List<ItemModel> items;
+  final List<ItemModel> uncompletedItems;
+  final List<ItemModel> completedItems;
+
   final int currentNumber;
   final bool currentIsItemImportant;
+  final bool isItemsChecked;
+  final String? currentUserRole;
+  final String? listName;
 
   SubListLoadedState({
-    required this.items,
-    required this.currentNumber,
-    required this.currentIsItemImportant,
-  });
-
-  SubListLoadedState copyWith({
-    List<ItemModel>? items,
-    int? currentNumber,
-    bool? currentIsItemImportant,
-    int? selectedItemsCount,
-  }) {
-    return SubListLoadedState(
-      items: items ?? this.items,
-      currentNumber: currentNumber ?? this.currentNumber,
-      currentIsItemImportant:
-          currentIsItemImportant ?? this.currentIsItemImportant,
-    );
-  }
-}
-
-final class SubListContentState extends SubListState {
-  final List<ItemModel> items;
-  final List<ItemModel> completedItems;
-  final int number;
-  final bool isItemImportant;
-
-  SubListContentState({
-    required this.items,
+    required this.uncompletedItems,
     required this.completedItems,
-    required this.number,
-    required this.isItemImportant,
+    this.currentNumber = 1,
+    this.currentIsItemImportant = false,
+    this.isItemsChecked = false,
+    this.currentUserRole,
+    this.listName,
   });
 }
 
-final class ItemsDisplayState extends SubListState {
-  final List<ItemModel> items;
-  final int currentNumber;
-  final bool currentIsItemImportant;
-  final bool isAnyItemChecked; // ⭐️ لـ bottomNavigationBar
-  final String? currentUserRole; // ⭐️ لصلاحيات الزر
-
-  ItemsDisplayState({
-    required this.items,
-    required this.currentNumber,
-    required this.currentIsItemImportant,
-    required this.isAnyItemChecked, // إضافة هذه
-    this.currentUserRole, // إضافة هذه
-  });
-
-  ItemsDisplayState copyWith({
-    List<ItemModel>? items,
-    int? currentNumber,
-    bool? currentIsItemImportant,
-    bool? isAnyItemChecked,
-    String? currentUserRole,
-  }) {
-    return ItemsDisplayState(
-      items: items ?? this.items,
-      currentNumber: currentNumber ?? this.currentNumber,
-      currentIsItemImportant:
-          currentIsItemImportant ?? this.currentIsItemImportant,
-      isAnyItemChecked: isAnyItemChecked ?? this.isAnyItemChecked,
-      currentUserRole: currentUserRole ?? this.currentUserRole,
-    );
-  }
+final class CompletedItemsLoadedState extends SubListState {
+  final Map<String, List<ItemModel>> completedItemsByListName;
+  CompletedItemsLoadedState({required this.completedItemsByListName});
 }
 
-final class UpdateScreentState extends SubListState {}
-
-class LoadItemsState extends SubListState {}
-
-final class SubListLoadingState extends SubListState {}
-
-final class SubListErrorState extends SubListState {
+final class SubListError extends SubListState {
   final String message;
-  SubListErrorState(this.message);
+  SubListError({required this.message});
 }
 
-//ErrorState
+final class DeleteItemState extends SubListState {}
 
-final class ErrorState extends SubListState {
-  final String message;
-  ErrorState({required this.message});
-}
+final class CheckoutState extends SubListState {}
 
+final class MarkCheckedItemsAsCompletedState extends SubListState {}
 
-final class GetCheckedItemsState extends SubListState {}
-
-
-final class GetCompletedItemsState extends SubListState {}
+ 
