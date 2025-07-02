@@ -42,11 +42,8 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: CustomTheme.lightTheme,
-<<<<<<< HEAD
-      home: ExpensesScreen(),
-=======
-      home: ListsScreen(), //AuthScreen(),
->>>>>>> origin/dev-main
+
+      home: ExpensesScreen(), //AuthScreen(),
       //       SubListScreen(),
       // seenOnboarding ? LoadingScreen() : Onboarding(),
       // seenOnboarding ? AuthScreen() : Onboarding(),

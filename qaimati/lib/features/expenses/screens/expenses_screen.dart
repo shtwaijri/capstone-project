@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/expenses/bloc/expenses/expenses_bloc.dart';
 import 'package:qaimati/features/expenses/screens/receipt_screen.dart';
+import 'package:qaimati/features/expenses/widgets/calendar_widget.dart';
 import 'package:qaimati/features/expenses/widgets/receipt_widget.dart';
 import 'package:qaimati/features/expenses/widgets/spending_widget.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -37,6 +38,7 @@ class ExpensesScreen extends StatelessWidget {
               child: Column(
                 spacing: 16,
                 children: [
+                  CalendarWidget(),
                   // Widget showing total spending amount
                   SpendingWidget(money: 100),
                   // Thin gray divider line
