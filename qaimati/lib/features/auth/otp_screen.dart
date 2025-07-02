@@ -82,7 +82,7 @@ class OtpScreen extends StatelessWidget {
                       final response = await Supabase.instance.client
                           .from('app_user')
                           .select('name')
-                          .eq('id', userId)
+                          .eq('user_id', userId)
                           .maybeSingle();
 
                       final isNewUser =
