@@ -44,13 +44,12 @@ class MyApp extends StatelessWidget {
       theme: CustomTheme.lightTheme,
       home:
           // ProfileScreen(),
-          AuthScreen(),
-
-      //       SubListScreen(),
-      // seenOnboarding ? LoadingScreen() : Onboarding(),
-      // seenOnboarding ? AuthScreen() : Onboarding(),
-      //       SubListScreen(),
-      // seenOnboarding ? AuthScreen() : Onboarding(),
+          // AuthScreen(),
+          //       SubListScreen(),
+          // seenOnboarding ? LoadingScreen() : Onboarding(),
+          // seenOnboarding ? AuthScreen() : Onboarding(),
+          //       SubListScreen(),
+          seenOnboarding ? AuthScreen() : Onboarding(),
     );
   }
 }
