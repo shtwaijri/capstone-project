@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/repository/supabase.dart';
@@ -11,8 +12,14 @@ class AuthLayer {
   // bool isSignIn = false;
   // String? idUser;
   //bool isSignIn = false;
+  
+
   String? idUser = "cf2eb3c1-0d12-46dd-973e-eceb15dc6695";
   AppUserModel? user;
+
+  AuthLayer(){
+    getUser(idUser!);
+  }
   Future<void> sendOtp({required String email}) async {
     try {
       await SupabaseConnect.sendOtp(email: email);
@@ -24,6 +31,7 @@ class AuthLayer {
   Future<void> verifyOtp({required String email, required String token}) async {
     try {
       await SupabaseConnect.verifyOtp(email: email, token: token);
+      
     } catch (_) {
       rethrow;
     }
@@ -105,6 +113,14 @@ class AuthLayer {
       log("📥 Fetching user from Supabase: AuthLayer");
 
       user = await SupabaseConnect.getUser(userId);
+
+      // ⭐️⭐️⭐️ أضف هذا هنا ⭐️⭐️⭐️
+      if (user != null && user!.userId.isNotEmpty) {
+        OneSignal.login(user!.userId);
+        print("🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.");
+      } else {
+        print("⚠️ OneSignal: User data or ID is null, cannot log in to OneSignal.");
+      }
       log("end AuthLayer ");
     } catch (_) {
       rethrow;

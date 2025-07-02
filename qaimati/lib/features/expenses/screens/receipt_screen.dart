@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,10 +28,8 @@ class ReceiptScreen extends StatelessWidget {
               showActions: false,
               showSearchBar: false,
             ),
-
             body: Padding(
               padding: const EdgeInsets.all(24.0),
-
               child: BlocBuilder<ReceiptBloc, ReceiptState>(
                 builder: (context, state) {
                   if (state is LoadingState) {
@@ -76,7 +72,9 @@ class ReceiptScreen extends StatelessWidget {
                           DualActionButtonWidget(
                             onPrimaryTap: () {},
                             primaryLabel: 'commonCancel'.tr(),
-                            onSecondaryTap: () {},
+                            onSecondaryTap: () {
+                              bloc.add(SaveReceiptEvent());
+                            },
                             secondaryLabel: 'receiptSubmit'.tr(),
                             isDelete: false,
                             isCancel: true,
@@ -116,10 +114,13 @@ class ReceiptScreen extends StatelessWidget {
                           controller: bloc.totalController,
                           textHint: 'receiptEnterTotal'.tr(),
                         ),
+                        // Buttons for cancel and submit actions
                         DualActionButtonWidget(
                           onPrimaryTap: () {},
                           primaryLabel: 'commonCancel'.tr(),
-                          onSecondaryTap: () {},
+                          onSecondaryTap: () {
+                            bloc.add(SaveReceiptEvent());
+                          },
                           secondaryLabel: 'receiptSubmit'.tr(),
                           isDelete: false,
                           isCancel: true,

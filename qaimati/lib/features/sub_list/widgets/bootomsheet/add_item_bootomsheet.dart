@@ -14,8 +14,8 @@ import 'package:qaimati/widgets/buttom_widget.dart';
 
 void showAddItemBottomShaeet({required BuildContext context}) {
   final bloc = context.read<SubListBloc>();
-
-  bloc.add(ResetBlocStateEvent());
+ bloc.resetValues() ;
+  
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
@@ -121,7 +121,8 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                                 itemName: bloc.itemController.text,
                                 quantity: bloc.number,
                                 isImportant: bloc.isItemImportant,
-                                createdBy:bloc.authGetit.user?.name??"",
+                                createdBy:bloc.authGetit.user!.email
+                            
                               ),
                             );
                             Navigator.pop(context);
@@ -138,7 +139,5 @@ void showAddItemBottomShaeet({required BuildContext context}) {
         ),
       );
     },
-  ).whenComplete(() {
-    bloc.add(ResetBlocStateEvent());
-  });
+  ) ;
 }
