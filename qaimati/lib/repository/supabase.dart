@@ -8,7 +8,6 @@ import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/models/list/list_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase/supabase.dart';
 
 class SupabaseConnect {
   static SupabaseClient? supabase;
@@ -18,6 +17,7 @@ class SupabaseConnect {
       await Supabase.initialize(
         anonKey: dotenv.env['anonKey'].toString(),
         url: dotenv.env['url'].toString(),
+        authOptions: const FlutterAuthClientOptions(autoRefreshToken: true),
       );
 
       supabase = Supabase.instance.client;
@@ -71,13 +71,13 @@ class SupabaseConnect {
               .toList();
 
           if (listIds.isEmpty) {
-            return <ListModel>[];  
+            return <ListModel>[];
           }
 
-           final listsData = await supabase!
-              .from('list')  
+          final listsData = await supabase!
+              .from('list')
               .select('*')
-              .inFilter('list_id', listIds);  
+              .inFilter('list_id', listIds);
 
           return listsData
               .map((listMap) => ListModelMapper.fromMap(listMap))
@@ -85,7 +85,7 @@ class SupabaseConnect {
         })
         .handleError((error) {
           log("SupabaseConnect: Error in all user lists stream: $error");
-          return <ListModel>[];  
+          return <ListModel>[];
         });
   }
 
@@ -174,9 +174,6 @@ class SupabaseConnect {
 
   //add  here deleteUser method
 
-   
-  
-
   static Future<void> updateItemStatus({
     required String itemId,
     required bool status,
@@ -241,7 +238,7 @@ class SupabaseConnect {
       return user;
     } catch (e, stack) {
       log("❌ Error fetching user: $e\n$stack");
-       throw Exception(" Error fetching user:$e");
+      throw Exception(" Error fetching user:$e");
     }
   }
 
@@ -344,7 +341,6 @@ class SupabaseConnect {
       );
     }
   }
- 
 
   static Future<void> notifyUsersInList(
     String listId,
