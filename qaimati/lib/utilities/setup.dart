@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:qaimati/features/expenses/receipt_data.dart';
 import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
@@ -32,10 +33,13 @@ Future<void> setUp() async {
   await EasyLocalization.ensureInitialized();
   GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
-  
+   
 
  
-  final prefs = await SharedPreferences.getInstance();
+   GetIt.I.registerSingletonAsync<ReceiptData>(
+    () async => ReceiptData()..loadDataFromSupabase(),
+ 
+   final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
   GetIt.I.registerSingleton<bool>(
     seenOnboarding,
