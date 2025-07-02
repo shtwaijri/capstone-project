@@ -1,9 +1,12 @@
 {
+      "Welcome": "Welcome to Qaimati",
+
   "onboardingTitle": "Quickly add and organize your shopping items in one place",
   "onboardingNext": "Next",
   "onboardingInvite": "Invite others, sync in  real-time",
   "onboardingReceipts": "Manage receipts your for better tracking",
 
+"enterEmail": "Enter your email to create your account or login",
 
 
   "authLogin": "Log In",
@@ -39,18 +42,19 @@
   "itemUpdate": "Update the item",
   "itemDelete": "Delete the item",
   "itemDeleteConfirm": "Are you sure you want to delete this item?",
+  "checkeditems":"checked items" ,
    "Item": "Item",
   "CompleteSelected":"Complete Selected Items ",
      "titlenotempty" :"the title should not be empty ",
   "checkoutComplete": "Complete Check Out",
-
+  "movecompleted":"move to completed without receipt",
   "memberNoMembers": "You haven't added any members yet.",
   "memberAdd": "Add member",
   "memberList": "List members",
   "memberDeleteConfirm": "Are you sure you want to delete this member?",
   "memberCreatedBy": "Created by",
      "deleteItemConfirmation":"Are you sure you want to delete this item?",
-
+   
   "receiptCheckout": "Check Out",
   "receiptAdd": "Add receipt",
   "receiptPhoto": "Add receipt photo",
@@ -70,6 +74,8 @@
   "receiptDelete": "Delete the receipt",
   "receiptDeleteConfirm": "Are you sure you want to delete this receipt?",
 "checkoutwithoutreceipt":"checkout without receipt",
+"expensesTitle": "Expenses",
+    "listsTitle": "Lists",
 
   "profileTitle": "Profile",
   "settingsTitle": "Setting",
@@ -79,5 +85,6 @@
   "accountEmail": "Change account email",
   "accountPassword": "Change account Password",
   "accountPremium": "Prime Plus",
-  "authLogout": "Log out"
+  "authLogout": "Log out",
+  "unknown": "Unknown"
 }

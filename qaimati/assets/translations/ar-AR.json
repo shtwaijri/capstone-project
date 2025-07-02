@@ -1,9 +1,11 @@
 {
+    "Welcome": "مرحبًا بك في قائمتي",
+
   "onboardingTitle": "أضف عناصر التسوق الخاصة بك ونظمها بسرعة في مكان واحد",
   "onboardingNext": "التالي",
   "onboardingInvite": "ادعُ الآخرين، وقم بالمزامنة في الوقت الفعلي",
   "onboardingReceipts": "إدارة الإيصالات الخاصة بك لتتبع أفضل",
-
+"enterEmail": "أدخل بريدك الإلكتروني لإنشاء حسابك أو تسجيل الدخول",
   "authLogin": "تسجيل الدخول",
   "authSignup": "سجّل الآن",
   "authName": "أدخل اسمك",
@@ -41,7 +43,8 @@
    "Item": "العنصر",
    "titlenotempty" :"لا ينبغي أن يكون العنوان فارغًا",
    "CompleteSelected":"إكمال العناصر المحددة",
-
+    "movecompleted":"النقل الى مكتمل بدون فاتورة",
+    "checkeditems":"العناصر المحددة" ,
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",
   "memberAdd": "إضافة عضو",
   "memberList": "عرض الأعضاء",
@@ -68,6 +71,9 @@
 
   "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
 
+  "expensesTitle": "نفقات",
+    "listsTitle": "القوائم",
+
 
   "profileTitle": "الملف الشخصي",
   "settingsTitle": "الإعدادات",
@@ -77,5 +83,6 @@
   "accountEmail": "تغيير بريد الحساب الإلكتروني",
   "accountPassword": "تغيير كلمة مرور الحساب",
   "accountPremium": "برايم ",
-  "authLogout": "تسجيل الخروج"
+  "authLogout": "تسجيل الخروج",
+  "unknown": "غير معروف"
 }

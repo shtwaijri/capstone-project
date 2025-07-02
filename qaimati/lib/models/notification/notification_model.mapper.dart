@@ -20,12 +20,12 @@ class NotificationModelMapper extends ClassMapperBase<NotificationModel> {
   @override
   final String id = 'NotificationModel';
 
-  static String _$notiId(NotificationModel v) => v.notiId;
-  static const Field<NotificationModel, String> _f$notiId =
-      Field('notiId', _$notiId, key: r'noti_id');
-  static String _$memberId(NotificationModel v) => v.memberId;
-  static const Field<NotificationModel, String> _f$memberId =
-      Field('memberId', _$memberId, key: r'member_id');
+  static String _$notificationId(NotificationModel v) => v.notificationId;
+  static const Field<NotificationModel, String> _f$notificationId =
+      Field('notificationId', _$notificationId, key: r'notification_id');
+  static String _$appUserId(NotificationModel v) => v.appUserId;
+  static const Field<NotificationModel, String> _f$appUserId =
+      Field('appUserId', _$appUserId, key: r'app_user_id');
   static String _$title(NotificationModel v) => v.title;
   static const Field<NotificationModel, String> _f$title =
       Field('title', _$title);
@@ -40,8 +40,8 @@ class NotificationModelMapper extends ClassMapperBase<NotificationModel> {
 
   @override
   final MappableFields<NotificationModel> fields = const {
-    #notiId: _f$notiId,
-    #memberId: _f$memberId,
+    #notificationId: _f$notificationId,
+    #appUserId: _f$appUserId,
     #title: _f$title,
     #body: _f$body,
     #isRead: _f$isRead,
@@ -50,8 +50,8 @@ class NotificationModelMapper extends ClassMapperBase<NotificationModel> {
 
   static NotificationModel _instantiate(DecodingData data) {
     return NotificationModel(
-        notiId: data.dec(_f$notiId),
-        memberId: data.dec(_f$memberId),
+        notificationId: data.dec(_f$notificationId),
+        appUserId: data.dec(_f$appUserId),
         title: data.dec(_f$title),
         body: data.dec(_f$body),
         isRead: data.dec(_f$isRead),
@@ -115,8 +115,8 @@ extension NotificationModelValueCopy<$R, $Out>
 abstract class NotificationModelCopyWith<$R, $In extends NotificationModel,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
   $R call(
-      {String? notiId,
-      String? memberId,
+      {String? notificationId,
+      String? appUserId,
       String? title,
       String? body,
       bool? isRead,
@@ -135,15 +135,15 @@ class _NotificationModelCopyWithImpl<$R, $Out>
       NotificationModelMapper.ensureInitialized();
   @override
   $R call(
-          {String? notiId,
-          String? memberId,
+          {String? notificationId,
+          String? appUserId,
           String? title,
           String? body,
           bool? isRead,
           DateTime? createdAt}) =>
       $apply(FieldCopyWithData({
-        if (notiId != null) #notiId: notiId,
-        if (memberId != null) #memberId: memberId,
+        if (notificationId != null) #notificationId: notificationId,
+        if (appUserId != null) #appUserId: appUserId,
         if (title != null) #title: title,
         if (body != null) #body: body,
         if (isRead != null) #isRead: isRead,
@@ -151,8 +151,8 @@ class _NotificationModelCopyWithImpl<$R, $Out>
       }));
   @override
   NotificationModel $make(CopyWithData data) => NotificationModel(
-      notiId: data.get(#notiId, or: $value.notiId),
-      memberId: data.get(#memberId, or: $value.memberId),
+      notificationId: data.get(#notificationId, or: $value.notificationId),
+      appUserId: data.get(#appUserId, or: $value.appUserId),
       title: data.get(#title, or: $value.title),
       body: data.get(#body, or: $value.body),
       isRead: data.get(#isRead, or: $value.isRead),
