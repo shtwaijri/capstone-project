@@ -35,20 +35,6 @@ class AuthLayer {
     }
   }
 
-  //login return AuthResponse from subabase
-  Future<AuthResponse?> login({required String email}) async {
-    try {
-      log("signUp AuthLayer starts");
-      await SupabaseConnect.sendOtp(email: email);
-      log("signUp AuthLayer end ss ");
-    } catch (_) {
-      log("signUp AuthLayer rethrow");
-      rethrow;
-    }
-
-    return null;
-  }
-
   Future<void> updateEmail({required String email}) async {
     try {
       log("updateEmail AuthLayer starts");
@@ -60,7 +46,7 @@ class AuthLayer {
     }
   }
 
-  //method to save user id using shared prefernce
+  //method to save user id in shared prefernce
 
   Future<void> saveUserId(String userId) async {
     final prefs = await SharedPreferences.getInstance();
@@ -68,23 +54,14 @@ class AuthLayer {
     await prefs.setString('userId', userId);
   }
 
-  //retreive the saved userID from shared prefernce
+  //retreive the saved userID using shared prefernce
   Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('userId');
     return userId;
   }
 
-  //methodd to fetch user id
-  Future<String?> fetchUserId() async {
-    final userID = await GetIt.I.get<AuthLayer>().getUserId();
-    if (userID == null) {
-      throw Exception('User Id not found in shared pref');
-    }
-    return userID;
-  }
-
-  //method to get user id from the supabase
+  //method to get user id using the supabase
   String? getCurrentSessionId() {
     return Supabase.instance.client.auth.currentSession?.user.id;
   }
