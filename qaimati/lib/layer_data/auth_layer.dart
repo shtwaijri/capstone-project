@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:get_it/get_it.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/repository/supabase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,7 @@ class AuthLayer {
     }
   }
 
-  //method to save user id
+  //method to save user id using shared prefernce
 
   Future<void> saveUserId(String userId) async {
     final prefs = await SharedPreferences.getInstance();
@@ -61,14 +62,23 @@ class AuthLayer {
     await prefs.setString('userId', userId);
   }
 
-  //method to get user id
+  //retreive the saved userID from shared prefernce
   Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    //   idUser = prefs.getString('userId');
-    return prefs.getString('userId');
+    final userId = prefs.getString('userId');
+    return userId;
   }
 
-  //method to cplete user profile
+  //methodd to fetch user id
+  Future<String?> fetchUserId() async {
+    final userID = await GetIt.I.get<AuthLayer>().getUserId();
+    if (userID == null) {
+      throw Exception('User Id not found in shared pref');
+    }
+    return userID;
+  }
+
+  //method to complete user profile
   static Future<void> completeUserProfile({
     required String userId,
     required String name,
