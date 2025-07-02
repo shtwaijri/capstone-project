@@ -37,7 +37,7 @@ class DualActionButtonWidget extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: isCancel ? StyleColor.gray : StyleColor.green,
             fixedSize: Size(
-              context.getWidth() * .42,
+              context.getWidth() * .40,
               context.getHeight() * 0.06,
             ),
             shape: RoundedRectangleBorder(
@@ -54,9 +54,9 @@ class DualActionButtonWidget extends StatelessWidget {
         // Secondary button
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: isDelete ? StyleColor.red : StyleColor.green,
+            backgroundColor: isDelete ? StyleColor.error : StyleColor.green,
             fixedSize: Size(
-              context.getWidth() * .42,
+              context.getWidth() * .40,
               context.getHeight() * 0.06,
             ),
             shape: RoundedRectangleBorder(

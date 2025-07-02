@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:qaimati/features/expenses/receipt_data.dart';
 import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
@@ -18,7 +19,9 @@ Future<void> setUp() async {
   await EasyLocalization.ensureInitialized();
   GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
-
+  GetIt.I.registerSingletonAsync<ReceiptData>(
+    () async => ReceiptData()..loadDataFromSupabase(),
+  );
   // // Enable verbose logging for debugging (remove in production)
   // OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   // // Initialize with your OneSignal App ID
