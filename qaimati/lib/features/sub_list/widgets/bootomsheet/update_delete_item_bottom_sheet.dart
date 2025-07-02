@@ -17,9 +17,9 @@ import 'package:qaimati/widgets/dual_action_button_widget.dart';
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
-  required int itemIndex,
-}) {
+ }) {
   final bloc = context.read<SubListBloc>();
+   bloc.resetValues() ;
 
   bloc.itemController.text = item.title;
   bloc.number = item.quantity;
@@ -89,8 +89,7 @@ void showUpdateDeleteItemBottomSheet({
                       ),
                       StyleSize.sizeH16,
                       BlocBuilder<SubListBloc, SubListState>(
-                        buildWhen: (previous, current) =>
-                            current is SubListLoadedState,
+                        
                         builder: (context, state) {
                           return Container(
                             alignment: Alignment.centerLeft,
@@ -127,7 +126,7 @@ void showUpdateDeleteItemBottomSheet({
                                 bloc.authGetit.user!.userId == item.appUserId) {
                               bloc.add(
                                 UpdateItemEvent(
-                                  index: itemIndex,
+                          
                                   editedItem: item,
                                 ),
                               );
@@ -151,13 +150,11 @@ void showUpdateDeleteItemBottomSheet({
                                   bloc.authGetit.user!.userId ==
                                       item.appUserId) {
                                 bloc.add(
-                                  DeleteItemEvent(index: itemIndex, item: item),
+                                  DeleteItemEvent( item: item),
                                 );
                                  Navigator.pop(context);
                               }
-                              // bloc.add(DeleteItemEvent(index: itemIndex));
-                              // Navigator.pop(context);
-                              // bloc.add(ResetBlocStateEvent());
+                           
                             },
                           );
                         },
@@ -172,7 +169,5 @@ void showUpdateDeleteItemBottomSheet({
         ),
       );
     },
-  ).whenComplete(() {
-    bloc.add(ResetBlocStateEvent());
-  });
+  ) ;
 }

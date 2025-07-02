@@ -28,11 +28,15 @@
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
   "commonSearch": "بحث",
-  
+  "newitemadded!":"تمت إضافة عنصر جديد!"
+,
   "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",
   "itemNoItems1": "لم تُضِف أي عناصر",
   "itemNoItems2": " إلى القائمة بعد.",
-
+  "item added by":"تمت إضافة العنصر بواسطة",
+  "itemupdatedby":"ام تحديث العنصر بواسطه ",
+"inlist:":"في القائمة" ,
+ "List": "قائمه",
   "itemName": "أدخل اسم العنصر",
   "itemAdd": "أضف العنصر",
   "itemUpdate": "حدّث العنصر",
@@ -41,6 +45,7 @@
      "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
    "Item": "العنصر",
+   "Completed":"مكتملةس",
    "titlenotempty" :"لا ينبغي أن يكون العنوان فارغًا",
    "CompleteSelected":"إكمال العناصر المحددة",
     "movecompleted":"النقل الى مكتمل بدون فاتورة",

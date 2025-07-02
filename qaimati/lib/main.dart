@@ -5,8 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
-import 'package:qaimati/features/sub_list/tray.dart';
-import 'package:qaimati/style/theme/theme.dart';  
+ import 'package:qaimati/style/theme/theme.dart';  
 import 'package:qaimati/utilities/setup.dart';  
  
 void main() async {
