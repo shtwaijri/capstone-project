@@ -5,9 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
-import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item%20bottom_sheet.dart';
-import 'package:qaimati/features/sub_list/widgets/button/checkout_button.dart';
-import 'package:qaimati/models/item/item_model.dart'; // تأكد من وجود هذا الاستيراد
+import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item_bottom_sheet.dart';
+import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/custom_items_widget/custom_items.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -21,7 +20,7 @@ class SubListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SubListBloc()..add(LoadItemsEvent()),
+      create: (context) => SubListBloc()..add(LoadSubListScreenData()),
       child: Builder(
         builder: (context) {
           final bloc = context.read<SubListBloc>();
@@ -45,19 +44,31 @@ class SubListScreen extends StatelessWidget {
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: BlocBuilder<SubListBloc, SubListState>(
+                child: BlocConsumer<SubListBloc, SubListState>(
+                  listener: (context, state) {
+                    if (state is SubListError) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(state.message)));
+                    }
+                  },
                   builder: (context, state) {
-                    return SingleChildScrollView(
-                      child: Column(
+                    if (state is SubListLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is SubListLoadedState) {
+                      final uncompletedItems = state.uncompletedItems;
+
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(bloc.listName??"", style: StyleText.bold24(context)),
+                          Text(
+                            state.listName ?? "List Name".tr(),
+                            style: StyleText.bold24(context),
+                          ),
                           Divider(thickness: .5),
                           StyleSize.sizeH16,
 
-                          // ⭐️ هنا التعديل الرئيسي: استخدام if-else مع الـ Widgets مباشرة
-                          if (bloc.filteredItems.isEmpty) ...[
-                            // ⭐️ استخدام if و spread operator داخل الـ children
+                          if (uncompletedItems.isEmpty) ...[
                             StyleSize.sizeH48,
                             Image.asset("assets/images/2.png"),
                             Center(
@@ -86,59 +97,67 @@ class SubListScreen extends StatelessWidget {
                               ),
                             ),
                           ] else ...[
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: bloc.filteredItems.length,
-                              itemBuilder: (context, index) {
-                                ItemModel item = bloc.filteredItems[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    showUpdateDeleteItemBottomSheet(
-                                      context: context,
-                                      item: item,
-                                      itemIndex: index,
+                            Column(
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: uncompletedItems.length,
+                                  itemBuilder: (context, index) {
+                                    ItemModel item = uncompletedItems[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        showUpdateDeleteItemBottomSheet(
+                                          context: context,
+                                          item: item,
+                                         );
+                                      },
+                                      child: CustomItems(
+                                        itemName: item.title,
+                                        numOfItems: item.quantity.toString(),
+                                        createdBy: item.createdBy ?? "",
+                                        isImportant: item.important,
+                                        itemIndex: index,
+                                        isItemChecked: item.status,
+                                        itemId: item.itemId!,
+                                        isCheckboxEnabled:
+                                            state.currentUserRole == 'admin',
+                                      ),
                                     );
                                   },
-                                  child: CustomItems(
-                                    itemName: item.title,
-                                    numOfItems: item.quantity.toString(),
-                                    createdBy: item.createdBy ?? "",
-                                    isImportant: item.important,
-                                    itemIndex: index,
-                                    isItemChecked: item.status,
-                                    itemId: item.itemId!,
-                                  ),
-                                );
-                              },
+                                ),
+                              ],
                             ),
                           ],
                         ],
-                      ),
-                    );
+                      );
+                    } else if (state is SubListError) {
+                      return Center(child: Text("Error: ${state.message}"));
+                    }
+                    return const Center(child: Text("Loading list items..."));
                   },
                 ),
               ),
             ),
             bottomNavigationBar: BlocBuilder<SubListBloc, SubListState>(
               builder: (context, state) {
-                final bloc = context.read<SubListBloc>();
-
-                // ✅ الزر يظهر فقط إذا فيه عنصر محدد AND المستخدم Admin
-                if (bloc.isItemsChecked && bloc.currentUserRole == 'admin') {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ButtomWidget(
-                      onTab: () {
-                         bloc.add(GetCheckedItemsEvent());
-                         completeItemBottomsheet(context: context);
-                      },
-                      textElevatedButton: "CompleteSelected".tr(),
-                    ),
-                  );
-                } else {
-                  return const SizedBox.shrink();
+                if (state is SubListLoadedState) {
+                  if (state.isItemsChecked &&
+                      state.currentUserRole == 'admin') {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ButtomWidget(
+                        onTab: () {
+                          bloc.add(CheckoutEvent());
+                         // bloc.add(MarkCheckedItemsAsCompletedEvent());
+                          completeItemBottomsheet(context: context);
+                        },
+                        textElevatedButton: "CompleteSelected".tr(),
+                      ),
+                    );
+                  }
                 }
+                return const SizedBox.shrink();
               },
             ),
           );
@@ -149,26 +168,4 @@ class SubListScreen extends StatelessWidget {
 }
 
 
- // bottomNavigationBar: BlocBuilder<SubListBloc, SubListState>(
-            //   builder: (context, state) {
 
-            //     bool currentSelectedItemsCount = false;
-            //     for (var item in bloc.items) {
-            //       if (item.isChecked) {
-            //         currentSelectedItemsCount = true;
-            //         break;
-            //       }
-            //     }
-            //     return currentSelectedItemsCount
-            //         ? Padding(
-            //             padding: const EdgeInsets.all(8.0),
-            //             child: ButtomWidget(
-            //               onTab: () {
-            //                // completeItemBottomsheet(context: context);
-            //               },
-            //               textElevatedButton: "CompleteSelected".tr(),
-            //             ),
-            //           )
-            //         : const SizedBox.shrink();
-            //   },
-            // ),

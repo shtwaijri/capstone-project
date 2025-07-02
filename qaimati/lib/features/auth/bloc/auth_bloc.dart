@@ -40,7 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(LoadingSignUpState());
       await authGetit.sendOtp(email: emailController.text.trim());
-      emit(SuccessState());
+      emit(OtpSentState());
     } catch (error) {
       log("sendOtp error: $error");
       emit(ErrorState(msg: error.toString()));

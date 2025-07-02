@@ -67,7 +67,7 @@ class AuthScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         BlocListener<AuthBloc, AuthState>(
                           listener: (context, state) {
-                            if (state is SuccessState) {
+                            if (state is OtpSentState) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

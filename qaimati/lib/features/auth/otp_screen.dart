@@ -67,17 +67,22 @@ class OtpScreen extends StatelessWidget {
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) async {
                   if (state is SuccessState) {
-                    final user = Supabase.instance.client.auth.currentUser;
-                    final userId = user?.id;
+                    final userId = GetIt.I.get<AuthLayer>().getCurrentUserId();
 
+                    if (userId == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('User is not logged in')),
+                      );
+                      return;
+                    }
                     //to save the current user
-                    await GetIt.I.get<AuthLayer>().saveUserId(userId!);
+                    await GetIt.I.get<AuthLayer>().saveUserId(userId);
 
                     try {
                       final response = await Supabase.instance.client
                           .from('app_user')
                           .select('name')
-                          .eq('id', userId!)
+                          .eq('id', userId)
                           .maybeSingle();
 
                       final isNewUser =
