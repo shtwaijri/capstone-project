@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
 import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/completed_screen.dart';
@@ -93,11 +94,11 @@ void completeItemBottomsheet({required BuildContext context}) {
                   ButtomWidget(
                     onTab: () {
                       bloc.add(MarkCheckedItemsAsCompletedEvent());
-                        bloc.add(LoadCompletedItemsScreenData());
+                        //bloc.add(LoadCompletedItemsScreenData());
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CompletedScreen(),
+                          builder: (context) => ListsScreen(),
                         ),
                       );
                     },
