@@ -5,11 +5,14 @@ import 'package:qaimati/features/Lists/widgets/select_color.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
+import 'package:qaimati/widgets/dual_action_button_widget.dart';
 import 'package:qaimati/widgets/text_field_widget.dart';
 
-void showAddListButtomSheet({required BuildContext context}) {
+void showAddListButtomSheet({
+  required BuildContext context,
+  required bool isEdit,
+}) {
   TextEditingController addListController = TextEditingController();
-
   showModalBottomSheet(
     showDragHandle: true,
     backgroundColor: StyleColor.white,
@@ -58,10 +61,19 @@ void showAddListButtomSheet({required BuildContext context}) {
                           ),
                         ],
                       ),
-                      ButtomWidget(
-                        onTab: () {},
-                        textElevatedButton: 'Create list',
-                      ),
+                      isEdit // if used in add list botton will apearing add list botton, and if used in edit list botton will apearing update and delete buttons
+                          ? DualActionButtonWidget(
+                              onPrimaryTap: () {},
+                              primaryLabel: 'Save',
+                              onSecondaryTap: () {},
+                              secondaryLabel: 'Delete',
+                              isDelete: true,
+                              isCancel: false,
+                            )
+                          : ButtomWidget(
+                              onTab: () {},
+                              textElevatedButton: 'Create list',
+                            ),
                     ],
                   ),
                 ),
