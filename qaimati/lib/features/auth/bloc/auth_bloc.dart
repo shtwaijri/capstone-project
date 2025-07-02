@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 // ignore: unnecessary_import
 import 'package:meta/meta.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -58,7 +59,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: emailController.text.trim(),
         token: event.token.trim(),
       );
-      emit(SuccessState());
+
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        emit(ErrorState(msg: 'User is not logged in'));
+        return;
+      }
+
+      final response = await Supabase.instance.client
+          .from('app_user')
+          .select('name')
+          .eq('auth_user_id', user.id)
+          .maybeSingle();
+      final isNewUser = response == null;
+
+      if (isNewUser) {
+        emit(NewUserState());
+      } else {
+        emit(ExistingUserState());
+      }
     } catch (error) {
       log("verifyOtp error: $error");
       emit(ErrorState(msg: error.toString()));

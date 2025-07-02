@@ -23,3 +23,7 @@ final class OTPUpdatedState extends AuthState {
   List<String> digits;
   OTPUpdatedState({required this.digits});
 }
+
+final class NewUserState extends AuthState {}
+
+final class ExistingUserState extends AuthState {}

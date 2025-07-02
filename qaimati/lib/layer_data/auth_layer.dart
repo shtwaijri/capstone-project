@@ -12,12 +12,11 @@ class AuthLayer {
   // bool isSignIn = false;
   // String? idUser;
   //bool isSignIn = false;
-  
 
   String? idUser = "cf2eb3c1-0d12-46dd-973e-eceb15dc6695";
   AppUserModel? user;
 
-  AuthLayer(){
+  AuthLayer() {
     getUser(idUser!);
   }
   Future<void> sendOtp({required String email}) async {
@@ -31,7 +30,6 @@ class AuthLayer {
   Future<void> verifyOtp({required String email, required String token}) async {
     try {
       await SupabaseConnect.verifyOtp(email: email, token: token);
-      
     } catch (_) {
       rethrow;
     }
@@ -117,9 +115,13 @@ class AuthLayer {
       // ⭐️⭐️⭐️ أضف هذا هنا ⭐️⭐️⭐️
       if (user != null && user!.userId.isNotEmpty) {
         OneSignal.login(user!.userId);
-        print("🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.");
+        print(
+          "🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.",
+        );
       } else {
-        print("⚠️ OneSignal: User data or ID is null, cannot log in to OneSignal.");
+        print(
+          "⚠️ OneSignal: User data or ID is null, cannot log in to OneSignal.",
+        );
       }
       log("end AuthLayer ");
     } catch (_) {

@@ -66,7 +66,27 @@ class OtpScreen extends StatelessWidget {
 
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) async {
-                  if (state is SuccessState) {
+                  if (state is NewUserState) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const CompleteProfileScreen(),
+                      ),
+                    );
+                  } else if (state is ExistingUserState) {
+                    final userId =
+                        Supabase.instance.client.auth.currentUser?.id;
+                    if (userId != null) {
+                      await GetIt.I.get<AuthLayer>().saveUserId(userId);
+                    }
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const NavigationBarScreen(),
+                      ),
+                    );
+                  } else if (state is SuccessState) {
                     final userId = GetIt.I.get<AuthLayer>().getCurrentUserId();
 
                     if (userId == null) {
@@ -75,41 +95,7 @@ class OtpScreen extends StatelessWidget {
                       );
                       return;
                     }
-                    //to save the current user
                     await GetIt.I.get<AuthLayer>().saveUserId(userId);
-
-                    try {
-                      final response = await Supabase.instance.client
-                          .from('app_user')
-                          .select('name')
-                          .eq('user_id', userId)
-                          .maybeSingle();
-
-                      final isNewUser =
-                          response == null ||
-                          response['full_name'] == null ||
-                          response['full_name'].toString().isEmpty;
-
-                      if (isNewUser) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const CompleteProfileScreen(),
-                          ),
-                        );
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const NavigationBarScreen(),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text('Error : $e')));
-                    }
                   } else if (state is ErrorState) {
                     ScaffoldMessenger.of(
                       context,
