@@ -89,5 +89,7 @@
   "accountPassword": "تغيير كلمة مرور الحساب",
   "accountPremium": "برايم ",
   "authLogout": "تسجيل الخروج",
-  "unknown": "غير معروف"
+  "unknown": "غير معروف",
+      "alertEdit": "تعديل"
+
 }

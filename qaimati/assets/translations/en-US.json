@@ -91,5 +91,8 @@
   "accountPassword": "Change account Password",
   "accountPremium": "Prime Plus",
   "authLogout": "Log out",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+    "alertEdit": "Edit"
+
+
 }
