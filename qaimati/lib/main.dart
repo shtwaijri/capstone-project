@@ -10,6 +10,7 @@ import 'package:qaimati/features/intro/onboarding.dart';
 import 'package:qaimati/features/loading/loading_screen.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/features/profile/profile_screen.dart';
+import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 
 import 'package:qaimati/style/theme/theme.dart';
 import 'package:qaimati/utilities/setup.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: CustomTheme.lightTheme,
-      home: homeScreen,
+      home: SubListScreen() //homeScreen,
     );
   }
 }

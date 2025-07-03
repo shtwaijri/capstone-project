@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
 import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
-// import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
@@ -39,24 +37,20 @@ class ListsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ListsButtons(
-                              screen:
-                                  ExpensesScreen(), // or any screen need to go, just push so you cav bach by swaping the stack
                               icon: Icon(
                                 Icons.check_box,
                                 color: StyleColor.green,
                               ),
                               quantity: '0',
-                              lable: 'completed',
+                              lable: 'completed', screen: ExpensesScreen(),
                             ),
                             ListsButtons(
-                              screen:
-                                  ExpensesScreen(), // or any screen need to go, just push so you cav bach by swaping the stack
                               icon: Icon(
                                 Icons.people_alt_rounded,
                                 color: StyleColor.blue,
                               ),
                               quantity: '0',
-                              lable: 'External list',
+                              lable: 'External list', screen: ExpensesScreen(),
                             ),
                           ],
                         ),
