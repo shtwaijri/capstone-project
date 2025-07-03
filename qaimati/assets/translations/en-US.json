@@ -85,10 +85,11 @@
   "profileTitle": "Profile",
   "settingsTitle": "Setting",
   "settingsLanguage": "Change app language",
+      "settingsColor": "Change app color",
+
   "accountTitle": "Account",
   "accountName": "Change account name",
   "accountEmail": "Change account email",
-  "accountPassword": "Change account Password",
   "accountPremium": "Prime Plus",
   "authLogout": "Log out",
   "unknown": "Unknown",

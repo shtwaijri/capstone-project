@@ -12,6 +12,7 @@ import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/features/profile/profile_screen.dart';
 
 import 'package:qaimati/style/theme/theme.dart';
+import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:qaimati/utilities/setup.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -28,8 +29,7 @@ void main() async {
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
-      // fallbackLocale: Locale('ar', 'AR'),
-      // startLocale: Locale('ar', 'AR'),
+
       child: MyApp(),
     ),
   );
@@ -55,12 +55,19 @@ class MyApp extends StatelessWidget {
       }
     }
 
-    return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      theme: CustomTheme.lightTheme,
-      home: homeScreen,
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: ThemeController.themeNotifier,
+      builder: (context, themeMode, _) {
+        return MaterialApp(
+          theme: CustomTheme.lightTheme,
+          darkTheme: CustomTheme.darkTheme,
+          themeMode: themeMode,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          home: homeScreen,
+        );
+      },
     );
   }
 }
