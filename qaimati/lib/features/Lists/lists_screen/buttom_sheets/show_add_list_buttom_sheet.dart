@@ -32,15 +32,18 @@ void showAddListButtomSheet({
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  // this is the  main column, every thing will be in it
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
+                      // this sub clumn will be inside the main column, why i add it? to make spaseBetween buttom and oter widgets on top
                       spacing: 16,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Add new list', style: StyleText.bold16(context)),
                         TextFieldWidget(
+                          // may be i will use 2 text field ================================================= =================================================
                           controller: addListController,
                           textHint: 'List name',
                         ),
