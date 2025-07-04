@@ -4,10 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
+import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/models/item/item_model.dart';
-import 'package:qaimati/models/list/list_model.dart'; // تأكد من استيراد ListModel
+import 'package:qaimati/models/list/list_model.dart';
+import 'package:qaimati/utilities/helper/userId_helper.dart'; // تأكد من استيراد ListModel
 
 part 'sub_list_event.dart';
 part 'sub_list_state.dart';
@@ -18,20 +21,23 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
   bool isItemsChecked = false;
   String? currentUserRole;
   String? listName;
+  // String? idUser;
+  AppUserModel? user;
   List<ItemModel> checkedItemsToComplete = [];
   TextEditingController itemController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final authGetit = GetIt.I.get<AuthLayer>();
   final appGetit = GetIt.I.get<AppDatatLayer>();
-  // bool itemsLoaded = false;
-  // bool listsLoaded = false;
-    Map<String, List<ItemModel>> completedItemsMap = {};
+
+  Map<String, List<ItemModel>> completedItemsMap = {};
   StreamSubscription<List<ItemModel>>? _itemsSubscription;
   StreamSubscription<List<ListModel>>? _listsSubscription;
 
   SubListBloc() : super(SubListInitial()) {
-    initializeUserAndStreams();
+    //initializeUserAndStreams();
     on<LoadSubListScreenData>((event, emit) async {
+      await initializeUserAndStreams();
+
       await _loadInitialScreenData(emit);
       _updateSubListState();
     });
@@ -73,7 +79,9 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
   Future<void> _loadInitialScreenData(Emitter<SubListState> emit) async {
     emit(SubListLoading());
     try {
-      await authGetit.getUser(authGetit.idUser!);
+      // user= await  fetchUser();
+      //idUser=await fetchUserId();
+      // await authGetit.getUser(user!.userId);
 
       if (appGetit.listId != null) {
         try {
@@ -89,13 +97,12 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         }
 
         currentUserRole = await appGetit.getUserRoleForCurrentList(
-          userId: authGetit.idUser!,
+          userId: user!.userId,
           listId: appGetit.listId!,
         );
 
         try {
-           completedItemsMap =
-              appGetit.allCompletedItemsByListName;
+          completedItemsMap = appGetit.allCompletedItemsByListName;
 
           log(
             "SubListBloc: Loaded completed items map for CompletedScreen. Map size: ${completedItemsMap.length}",
@@ -165,9 +172,9 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         status: false,
         isCompleted: false,
         listId: appGetit.listId!,
-        appUserId: authGetit.user!.userId,
+        appUserId: user!.userId,
         important: event.isImportant,
-        createdBy: authGetit.user!.email,
+        createdBy: user!.email,
         createdAt: DateTime.now(),
       ),
     );
@@ -182,7 +189,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         final String notificationTitle =
             "${"newitemadded!".tr()} ${event.itemName}";
         final String notificationMessage =
-            "${"item added by".tr()}  ${authGetit.user!.email}  ${"inlist:".tr()}+ '$currentListName'.";
+            "${"item added by".tr()}  ${user!.email}  ${"inlist:".tr()}+ '$currentListName'.";
 
         log(
           "SubListBloc: Calling notifyUsersInList in AppDatatLayer for list ${appGetit.listId}",
@@ -191,7 +198,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
           appGetit.listId!,
           notificationTitle,
           notificationMessage,
-          authGetit.user!.userId,
+          user!.userId,
         );
         log("SubListBloc: Notification process initiated successfully.");
       } catch (e, stack) {
@@ -251,13 +258,13 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         final String notificationTitle =
             "${"itemupdated!".tr()}  ${editedItem.title}";
         final String notificationMessage =
-            "${"itemupdatedby".tr()} ${authGetit.user!.email}${"inlist:".tr()}+ '$currentListName'.";
+            "${"itemupdatedby".tr()} ${user!.email}${"inlist:".tr()}+ '$currentListName'.";
 
         await AppDatatLayer.notifyUsersInList(
           appGetit.listId!,
           notificationTitle,
           notificationMessage,
-          authGetit.user!.userId,
+          user!.userId,
         );
       }
     } catch (e, stack) {
@@ -299,7 +306,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
           itemIds: checkedItemsToCompleteIds,
         );
 
-         emit(MarkCheckedItemsAsCompletedState());
+        emit(MarkCheckedItemsAsCompletedState());
         log("SubListBloc: Successfully marked items as completed.");
       } else {
         log("SubListBloc: No checked items to mark as completed.");
@@ -379,14 +386,17 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     itemController.dispose();
     _itemsSubscription?.cancel(); // هذا هو المكان الصحيح للإلغاء
     _listsSubscription?.cancel(); // وهذا أيضاً
-  appGetit.allItemsSubscription?.cancel();
+    appGetit.allItemsSubscription?.cancel();
     appGetit.allListsSubscription?.cancel();
-       log("SubListBloc: Streams cancelled and disposed.");
+    log("SubListBloc: Streams cancelled and disposed.");
     return super.close();
   }
 
-  void initializeUserAndStreams() {
-    appGetit.initStreams(authGetit.idUser!);
+  Future<void> initializeUserAndStreams() async {
+    log("initializeUserAndStreams start");
+    user = await fetchUserById();
+    OneSignal.login(user!.userId);
+    appGetit.initStreams(user!.userId);
 
     _itemsSubscription = appGetit.allItemsStream.listen(
       (items) {

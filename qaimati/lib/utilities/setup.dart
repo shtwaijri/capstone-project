@@ -27,7 +27,7 @@ Future<void> setUp() async {
   OneSignal.initialize(dotenv.env["appIDOneSignal"].toString());
   // Use this method to prompt for push notifications.
   // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
-  OneSignal.Notifications.requestPermission(true);
+  OneSignal.Notifications.requestPermission(false);
 
   //to ensure that the current user is saved
   await SupabaseConnect.init();

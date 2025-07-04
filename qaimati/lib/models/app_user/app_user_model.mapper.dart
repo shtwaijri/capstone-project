@@ -27,20 +27,20 @@ class AppUserModelMapper extends ClassMapperBase<AppUserModel> {
   static const Field<AppUserModel, String> _f$name = Field('name', _$name);
   static String _$email(AppUserModel v) => v.email;
   static const Field<AppUserModel, String> _f$email = Field('email', _$email);
-  static String? _$listId(AppUserModel v) => v.listId;
-  static const Field<AppUserModel, String> _f$listId =
-      Field('listId', _$listId, key: r'list_id');
   static DateTime _$createdAt(AppUserModel v) => v.createdAt;
   static const Field<AppUserModel, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt, key: r'created_at');
+  static String? _$authUserId(AppUserModel v) => v.authUserId;
+  static const Field<AppUserModel, String> _f$authUserId =
+      Field('authUserId', _$authUserId, key: r'auth_user_id', opt: true);
 
   @override
   final MappableFields<AppUserModel> fields = const {
     #userId: _f$userId,
     #name: _f$name,
     #email: _f$email,
-    #listId: _f$listId,
     #createdAt: _f$createdAt,
+    #authUserId: _f$authUserId,
   };
 
   static AppUserModel _instantiate(DecodingData data) {
@@ -48,8 +48,8 @@ class AppUserModelMapper extends ClassMapperBase<AppUserModel> {
         userId: data.dec(_f$userId),
         name: data.dec(_f$name),
         email: data.dec(_f$email),
-        listId: data.dec(_f$listId),
-        createdAt: data.dec(_f$createdAt));
+        createdAt: data.dec(_f$createdAt),
+        authUserId: data.dec(_f$authUserId));
   }
 
   @override
@@ -109,8 +109,8 @@ abstract class AppUserModelCopyWith<$R, $In extends AppUserModel, $Out>
       {String? userId,
       String? name,
       String? email,
-      String? listId,
-      DateTime? createdAt});
+      DateTime? createdAt,
+      String? authUserId});
   AppUserModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -127,22 +127,22 @@ class _AppUserModelCopyWithImpl<$R, $Out>
           {String? userId,
           String? name,
           String? email,
-          Object? listId = $none,
-          DateTime? createdAt}) =>
+          DateTime? createdAt,
+          Object? authUserId = $none}) =>
       $apply(FieldCopyWithData({
         if (userId != null) #userId: userId,
         if (name != null) #name: name,
         if (email != null) #email: email,
-        if (listId != $none) #listId: listId,
-        if (createdAt != null) #createdAt: createdAt
+        if (createdAt != null) #createdAt: createdAt,
+        if (authUserId != $none) #authUserId: authUserId
       }));
   @override
   AppUserModel $make(CopyWithData data) => AppUserModel(
       userId: data.get(#userId, or: $value.userId),
       name: data.get(#name, or: $value.name),
       email: data.get(#email, or: $value.email),
-      listId: data.get(#listId, or: $value.listId),
-      createdAt: data.get(#createdAt, or: $value.createdAt));
+      createdAt: data.get(#createdAt, or: $value.createdAt),
+      authUserId: data.get(#authUserId, or: $value.authUserId));
 
   @override
   AppUserModelCopyWith<$R2, AppUserModel, $Out2> $chain<$R2, $Out2>(

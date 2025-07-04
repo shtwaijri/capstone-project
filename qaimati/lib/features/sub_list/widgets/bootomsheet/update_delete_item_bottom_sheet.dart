@@ -125,7 +125,7 @@ void showUpdateDeleteItemBottomSheet({
                           if (bloc.itemController.text.isNotEmpty &&
                               bloc.number > 0) {
                             if (bloc.currentUserRole == "admin" ||
-                                bloc.authGetit.user!.userId == item.appUserId) {
+                                bloc.user!.userId == item.appUserId) {
                               bloc.add(
                                 UpdateItemEvent(
                           
@@ -149,7 +149,7 @@ void showUpdateDeleteItemBottomSheet({
                             context: context,
                             onDeleteConfirmed: () {
                               if (bloc.currentUserRole == "admin" ||
-                                  bloc.authGetit.user!.userId ==
+                                  bloc.user!.userId ==
                                       item.appUserId) {
                                 bloc.add(
                                   DeleteItemEvent( item: item),

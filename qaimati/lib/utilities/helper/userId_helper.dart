@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
+import 'package:qaimati/models/app_user/app_user_model.dart';
 
 ///method to fetch user id from shared prefernce method
 //used for non auth related (like Theme, Language)
@@ -19,4 +22,32 @@ String? fetchUserIdFromSupabase() {
     throw Exception('User not logged in');
   }
   return userId;
+}
+
+Future<AppUserModel?> fetchUserById() async {
+  try {
+    log("stat fetchUserById");
+    final String? id = await fetchUserIdFromSupabase();
+    log("stat fetchUserById id $id");
+
+    if (id == null) {
+      log("stat fetchUserById id $id is null ");
+      throw FormatException("Auth id is null please refresh page");
+    }
+
+    AppUserModel? user = await GetIt.I.get<AuthLayer>().getUserObj(userId: id);
+    log("stat fetchUserById id ${user.toString()}");
+    if (user != null && user.userId.isNotEmpty) {
+      log("stat fetchUserById id ${user.toString()} is not nul");
+
+      return user;
+    }
+          log("stat fetchUserById id ${user.toString()} is nul");
+
+    return null;
+  } catch (e) {
+      log("stat fetchUserById exception $e");
+
+    throw Exception(e);
+  }
 }

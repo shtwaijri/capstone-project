@@ -21,9 +21,9 @@ class CompletedScreen extends StatelessWidget {
           final bloc = context.read<SubListBloc>();
           //  bloc.add(LoadCompletedItemsScreenData());
 
-          for (var element in bloc.completedItemsMap.entries) {
-            log("element $element");
-          }
+          // for (var element in bloc.completedItemsMap.entries) {
+          //   log("element $element");
+          // }
           return Scaffold(
             appBar: AppBar(
               title: Text("Completed".tr()),
@@ -44,9 +44,9 @@ class CompletedScreen extends StatelessWidget {
                 final completedItemsByListName = bloc.completedItemsMap;
                 final listNames = completedItemsByListName.keys.toList();
 
-                if (listNames.isEmpty) {
-                  return Center(child: Text("No completed items found.".tr()));
-                }
+                // if (listNames.isEmpty) {
+                //   return Center(child: Text("No completed items found.".tr()));
+                // }
 
                 return ListView.builder(
                   itemCount: listNames.length,
