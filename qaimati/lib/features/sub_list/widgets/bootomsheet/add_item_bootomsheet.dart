@@ -121,7 +121,7 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                                 itemName: bloc.itemController.text,
                                 quantity: bloc.number,
                                 isImportant: bloc.isItemImportant,
-                                createdBy:bloc.authGetit.user!.email
+                                createdBy:bloc.user!.email
                             
                               ),
                             );

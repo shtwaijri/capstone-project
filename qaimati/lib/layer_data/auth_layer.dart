@@ -13,11 +13,11 @@ class AuthLayer {
   // String? idUser;
   //bool isSignIn = false;
 
-  String? idUser = "cf2eb3c1-0d12-46dd-973e-eceb15dc6695";
+  //String? idUser = "cf2eb3c1-0d12-46dd-973e-eceb15dc6695";
   AppUserModel? user;
 
   AuthLayer() {
-    getUser(idUser!);
+    //getUser(idUser!);
   }
   Future<void> sendOtp({required String email}) async {
     try {
@@ -64,6 +64,10 @@ class AuthLayer {
   //method to get user id using the supabase
   String? getCurrentSessionId() {
     return Supabase.instance.client.auth.currentSession?.user.id;
+  }
+   //method to get user id using the supabase
+   Future<AppUserModel?> getUserObj({required String userId}) {
+    return SupabaseConnect.getUserFromAuth(userId);
   }
 
   //method to complete user profile
