@@ -45,7 +45,7 @@
      "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
    "Item": "العنصر",
-   "Completed":"مكتملةس",
+   "Completed":"مكتملة",
    "titlenotempty" :"لا ينبغي أن يكون العنوان فارغًا",
    "CompleteSelected":"إكمال العناصر المحددة",
     "movecompleted":"النقل الى مكتمل بدون فاتورة",
@@ -76,18 +76,21 @@
 
   "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
 
-  "expensesTitle": "نفقات",
+  "expensesTitle": "النفقات",
     "listsTitle": "القوائم",
 
 
   "profileTitle": "الملف الشخصي",
   "settingsTitle": "الإعدادات",
   "settingsLanguage": "تغيير لغة التطبيق",
+    "settingsColor": "تغيير لون التطبيق",
+
   "accountTitle": "الحساب",
   "accountName": "تغيير اسم الحساب",
-  "accountEmail": "تغيير بريد الحساب الإلكتروني",
-  "accountPassword": "تغيير كلمة مرور الحساب",
+  "accountEmail": "تغيير البريد الإلكتروني",
   "accountPremium": "برايم ",
   "authLogout": "تسجيل الخروج",
-  "unknown": "غير معروف"
+  "unknown": "غير معروف",
+      "alertEdit": "تعديل"
+
 }

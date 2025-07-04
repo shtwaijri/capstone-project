@@ -12,7 +12,11 @@ part 'navigation_state.dart';
 
 /// Manages navigation state by handling navigation item selection events.
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
-  final List<Widget> screens = [ListsScreen(), ExpensesScreen(), ListsScreen()];
+  final List<Widget> screens = [
+    ListsScreen(),
+    ExpensesScreen(),
+    ProfileScreen(),
+  ];
   NavigationBloc() : super(NavigationBarState(0)) {
     on<NavigationEvent>((event, emit) {});
     on<NavigationItemSelected>((event, emit)async {

@@ -46,9 +46,7 @@ Future<void> setUp() async {
     seenOnboarding,
     instanceName: 'seenOnboarding',
   );
-  print(
-    "✅ ====================================seenOnboarding = $seenOnboarding========================",
-  );
+ 
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {

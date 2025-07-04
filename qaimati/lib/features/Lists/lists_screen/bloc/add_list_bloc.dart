@@ -6,7 +6,7 @@ part 'add_list_state.dart';
 
 class AddListBloc extends Bloc<AddListEvent, AddListState> {
   int selectColor = 1;
-  changeColor(int index) {
+  changeColor(int index) { // this function to change color when user click on any color, i will use the select color to store it in datebase
     selectColor = index;
     // ignore: invalid_use_of_visible_for_testing_member
     emit(UpdateState());

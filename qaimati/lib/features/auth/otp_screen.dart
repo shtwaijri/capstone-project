@@ -76,6 +76,7 @@ class OtpScreen extends StatelessWidget {
                   } else if (state is ExistingUserState) {
                     final userId =
                         Supabase.instance.client.auth.currentSession?.user?.id;
+
                     if (userId != null) {
                       await GetIt.I.get<AuthLayer>().saveUserId(userId);
                     }
