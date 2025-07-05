@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:qaimati/layer_data/app_data.dart';
+import 'package:qaimati/models/list/list_model.dart';
 
 part 'add_list_event.dart';
 part 'add_list_state.dart';
 
 class AddListBloc extends Bloc<AddListEvent, AddListState> {
   int selectColor = 1;
+  final appGetit = GetIt.I.get<AppDatatLayer>();
   changeColor(int index) { // this function to change color when user click on any color, i will use the select color to store it in datebase
     selectColor = index;
     // ignore: invalid_use_of_visible_for_testing_member
@@ -14,5 +20,17 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
 
   AddListBloc() : super(AddListInitial()) {
     on<AddListEvent>((event, emit) {});
+    on<CreateListEvent>(addListMethod);
+    on<UpdateListEvent>(updateListMethod);
+    on<DeleteListEvent>(deleteListMethod);
+  }
+
+  FutureOr<void> addListMethod(AddListEvent event, Emitter<AddListState> emit) {
+  }
+
+  FutureOr<void> updateListMethod(UpdateListEvent event, Emitter<AddListState> emit) {
+  }
+
+  FutureOr<void> deleteListMethod(DeleteListEvent event, Emitter<AddListState> emit) {
   }
 }

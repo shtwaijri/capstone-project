@@ -614,7 +614,7 @@ class SupabaseConnect {
 
 
 
-  // ==================================== get role name =============================================
+  // ==================================================== Start get role name ===============================================
   static Future<String> getRoleIdByName(String roleName) async { // will used when get lest to check role
   final result = await supabase!
       .from('roles')
@@ -628,6 +628,7 @@ class SupabaseConnect {
 
   return result['roles_id'] as String;
 }
+  // ==================================================== End get role name ==================================================
   // ================================================== Start getAdminLists ================================================
 static Future<List<ListModel>> getAdminLists() async {
   try {
@@ -694,7 +695,7 @@ log("📦 Raw JSON from list table: $listRows");
     final appUserId = appUser.userId;
 
     // Get role_id for 'member'
-    final memberRoleId = await getRoleIdByName('member');
+    final memberRoleId = await getRoleIdByName('admin');
 
     // Query list_user_role where user is a member
     final roleRows = await supabase!
@@ -743,7 +744,7 @@ static Future<ListModel?> addNewList({
     final listMap = list.toMap();
 
     if (list.listId.isEmpty) {
-      listMap.remove('list_id');
+      listMap.remove('list_id'); // Remove list if list_id is null or empty
     }
 
     // Get current user
@@ -826,7 +827,7 @@ static Future<void> updateList({
     // Update list
     final updateData = {
       'name': list.name,
-      // 'color': list.color,
+      'color': list.color,
     };
 
     await supabase!

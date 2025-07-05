@@ -297,4 +297,205 @@ class AppDatatLayer {
       rethrow;
     }
   }
+
+
+  // ================================================== Start Admin Lists =====================================================
+//   Future<void> loadAdminLists() async {
+//   try {
+//     log("🔄 loadAdminLists: start");
+
+//     final adminLists = await SupabaseConnect.getAdminLists();
+
+//     log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
+
+//     for (final list in adminLists) {
+//       log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
+//     }
+
+//   } catch (e, stack) {
+//     log("❌ loadAdminLists: failed\n$e\n$stack");
+//     rethrow;
+//   }
+// }
+// =================================================== Start Admin Lists =====================================================
+Future<void> loadAdminLists() async {
+  try {
+    log("🔄 loadAdminLists: start");
+
+    final adminLists = await SupabaseConnect.getAdminLists();
+
+    // ✅ تحديث المتغير المحلي
+    lists = adminLists;
+
+    // ✅ بث البيانات للمشتركين في الستريم
+    listsStreamController.add(adminLists);
+
+    log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
+
+    for (final list in adminLists) {
+      log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
+    }
+
+  } catch (e, stack) {
+    log("❌ loadAdminLists: failed\n$e\n$stack");
+    rethrow;
+  }
+}
+
+// ================================================== End Admin Lists =====================================================
+// ================================================== Start member Items ==================================================
+// Future<void> loadMemberLists() async {
+//   try {
+//     log("🔄 loadMemberLists: start");
+
+//     final memberLists = await SupabaseConnect.getMemberLists();
+
+//     log("✅ loadMemberLists: success — loaded ${memberLists.length} lists");
+
+//     for (final list in memberLists) {
+//       log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
+//     }
+
+//   } catch (e, stack) {
+//     log("❌ loadMemberLists: failed\n$e\n$stack");
+//     rethrow;
+//   }
+// }
+
+Future<void> loadMemberLists() async {
+  try {
+    log("🔄 loadMemberLists: start");
+
+    final memberLists = await SupabaseConnect.getMemberLists();
+
+    // تخزين البيانات داخليًا
+    lists = memberLists;
+
+    // بث البيانات إلى أي Widget مشترك في الـ stream
+    listsStreamController.add(lists);
+
+    log("✅ loadMemberLists: success — loaded ${lists.length} lists");
+
+    for (final list in lists) {
+      log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
+    }
+
+  } catch (e, stack) {
+    log("❌ loadMemberLists: failed\n$e\n$stack");
+    rethrow;
+  }
+}
+
+// ================================================== End member Items =====================================================
+// ================================================== Start add New Lists ==================================================
+// Future<void> createNewList(ListModel list) async {
+//   try {
+//     log("🟢 createNewList: started");
+
+//     final newList = await SupabaseConnect.addNewList(list: list);
+
+//     if (newList != null) {
+//       log("✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}");
+//     } else {
+//       log("⚠ createNewList: no list returned");
+//     }
+
+//   } catch (e, stack) {
+//     log("❌ createNewList: failed\n$e\n$stack");
+//     rethrow;
+//   }
+// }
+
+Future<void> createNewList(ListModel list) async {
+  try {
+    log("🟢 createNewList: started");
+
+    final newList = await SupabaseConnect.addNewList(list: list);
+
+    if (newList != null) {
+      // أضف القائمة الجديدة للمخزن المحلي
+      lists.add(newList);
+
+      // بث القوائم الجديدة
+      listsStreamController.add(List.from(lists));
+
+      log("✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}");
+    } else {
+      log("⚠ createNewList: no list returned");
+    }
+
+  } catch (e, stack) {
+    log("❌ createNewList: failed\n$e\n$stack");
+    rethrow;
+  }
+}
+
+// ================================================== End add New Lists ====================================================
+// ================================================== Start Update Lists =====================================================
+// Future<void> submitListUpdate(ListModel list) async {
+//   try {
+//     log("🔄 submitListUpdate: started for listId=${list.listId}");
+
+//     await SupabaseConnect.updateList(list: list);
+
+//     log("✅ submitListUpdate: updated list ${list.listId} (name=${list.name}, color=${list.color})");
+//   } catch (e, stack) {
+//     log("❌ submitListUpdate: failed to update list ${list.listId}\n$e\n$stack");
+//     rethrow;
+//   }
+// }
+
+Future<void> submitListUpdate(ListModel updatedList) async {
+  try {
+    log("🔄 submitListUpdate: started for listId=${updatedList.listId}");
+
+    await SupabaseConnect.updateList(list: updatedList);
+
+    // تحديث العنصر داخل القائمة المحلية
+    final index = lists.indexWhere((l) => l.listId == updatedList.listId);
+    if (index != -1) {
+      lists[index] = updatedList;
+      listsStreamController.add(List.from(lists));
+    }
+
+    log("✅ submitListUpdate: updated list ${updatedList.listId} (name=${updatedList.name}, color=${updatedList.color})");
+  } catch (e, stack) {
+    log("❌ submitListUpdate: failed to update list ${updatedList.listId}\n$e\n$stack");
+    rethrow;
+  }
+}
+
+// ================================================== End Update Lists =======================================================
+// ================================================== Start Delete Lists =====================================================
+// Future<void> confirmDeleteList(String listId) async {
+//   try {
+//     log("🧨 confirmDeleteList: attempting to delete list $listId");
+
+//     await SupabaseConnect.deleteList(listId: listId);
+
+//     log("✅ confirmDeleteList: list $listId deleted successfully");
+//   } catch (e, stack) {
+//     log("❌ confirmDeleteList: failed to delete list $listId\n$e\n$stack");
+//     rethrow;
+//   }
+// }
+
+Future<void> confirmDeleteList(String listId) async {
+  try {
+    log("🧨 confirmDeleteList: attempting to delete list $listId");
+
+    await SupabaseConnect.deleteList(listId: listId);
+
+    // إزالة القائمة من البيانات المحلية
+    lists.removeWhere((l) => l.listId == listId);
+    listsStreamController.add(List.from(lists));
+
+    log("✅ confirmDeleteList: list $listId deleted successfully");
+  } catch (e, stack) {
+    log("❌ confirmDeleteList: failed to delete list $listId\n$e\n$stack");
+    rethrow;
+  }
+}
+
+// ================================================== End Delete Lists =======================================================
 }
