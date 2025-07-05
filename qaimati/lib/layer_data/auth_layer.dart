@@ -93,8 +93,7 @@ class AuthLayer {
 
       user = await SupabaseConnect.getUser(userId);
 
-      // ⭐️⭐️⭐️ أضف هذا هنا ⭐️⭐️⭐️
-      if (user != null && user!.userId.isNotEmpty) {
+       if (user != null && user!.userId.isNotEmpty) {
         OneSignal.login(user!.userId);
         print(
           "🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.",
