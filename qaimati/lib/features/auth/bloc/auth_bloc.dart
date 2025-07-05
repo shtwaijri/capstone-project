@@ -72,15 +72,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         //token is the otp code
         token: event.otp.trim(),
       );
-
       final user = Supabase.instance.client.auth.currentSession?.user;
-
       //check if the user is logged in
       if (user == null) {
         emit(ErrorState(msg: 'User is not logged in'));
         return;
       }
-
       //check if the user exists
       //by using app_user table
       final response = await Supabase.instance.client
@@ -96,12 +93,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (isNewUser) {
         emit(NewUserState());
       } else {
-        //conditios if the user is exists emit the ecisting user state
+        //conditios if the user is exists emit the existing user state
 
         emit(ExistingUserState());
       }
     } catch (error) {
-      //show error message
       emit(ErrorState(msg: error.toString()));
     }
   }

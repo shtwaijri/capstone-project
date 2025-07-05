@@ -61,7 +61,6 @@ class ListsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        // ==================================== here will end external lists and completed lists ====================
                         SizedBox(height: 16.0),
                         Divider(color: StyleColor.gray, thickness: 2.0),
                       ],

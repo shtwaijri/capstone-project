@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -67,8 +69,9 @@ class AuthLayer {
   String? getCurrentSessionId() {
     return Supabase.instance.client.auth.currentSession?.user.id;
   }
-   //method to get user id using the supabase
-   Future<AppUserModel?> getUserObj({required String userId}) {
+
+  //method to get user id using the supabase
+  Future<AppUserModel?> getUserObj({required String userId}) {
     return SupabaseConnect.getUserFromAuth(userId);
   }
 
@@ -95,7 +98,7 @@ class AuthLayer {
 
       user = await SupabaseConnect.getUser(userId);
 
-       if (user != null && user!.userId.isNotEmpty) {
+      if (user != null && user!.userId.isNotEmpty) {
         OneSignal.login(user!.userId);
         print(
           "🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.",
@@ -137,7 +140,9 @@ class AuthLayer {
   //     print('⚠️ فشل تحميل الإعدادات بعد تسجيل الدخول: $e');
   //   }
   // }
+
   //method to load user lang and theme
+
   Future<void> loadUserSettings(BuildContext context) async {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) return;
@@ -151,6 +156,7 @@ class AuthLayer {
 
       final isDark = response['theme_mode'] == 'dark';
       final isArabic = response['language_code'] == 'ar';
+
       //ensure that the screen still exist
       if (!context.mounted) return;
 

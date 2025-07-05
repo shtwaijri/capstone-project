@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,72 +77,43 @@ class OtpScreen extends StatelessWidget {
               //without rebuilding the widget, we use listner to handle the navigation
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) async {
-                  //to ensure if the user logged in
-                  final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
+                  GetIt.I.get<AuthLayer>().getCurrentSessionId();
 
-                  //if the user is new, we navigate him to complete profile
-                  if (state is NewUserState) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CompleteProfileScreen(),
-                      ),
-                    );
-                  } else if (state is ExistingUserState) {
-                    if (userId == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('User is not logged in')),
-                      );
-                      return;
-                    }
-                    try {
+                  if (state is NewUserState || state is ExistingUserState) {
+                    if (context.mounted) {
                       await authLayer.loadUserSettings(context);
-                      //ensure that the screen is exists
-                      if (!context.mounted) return;
-                      //push to the navbarscreen after:
-                      //1-checking if the user verified successfully
-                      //2-load the theme and lang before navigate
-                      Navigator.of(context).pushReplacement(
+                    }
+
+                    //if the user is new, we navigate him to complete profile
+                    if (state is NewUserState) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CompleteProfileScreen(),
+                        ),
+                      );
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
                         MaterialPageRoute(
                           builder: (_) => const NavigationBarScreen(),
                         ),
                       );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("An error occurred, please try again."),
-                        ),
-                      );
                     }
-                  } else if (state is SuccessState) {
-                    if (userId == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('User is not logged in')),
-                      );
-                      return;
-                    }
-                  } else if (state is ErrorState) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.msg)));
                   }
                 },
-
                 child: ButtomWidget(
                   onTab: () {
-                    if (_formKey.currentState!.validate()) {
-                      final digits = context.read<AuthBloc>().otpDigits;
-
-                      //ensure that the otp has all the values
-                      if (digits.every((digit) => digit.isNotEmpty)) {
-                        //join all the fields into one string
-                        final otp = digits.join();
-                        context.read<AuthBloc>().add(VerifyOtpEvent(otp));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(tr('incorrectedOTP'))),
-                        );
-                      }
+                    final digits = context.read<AuthBloc>().otpDigits;
+                    //ensure that the otp has all the values
+                    if (digits.every((digit) => digit.isNotEmpty)) {
+                      //join all the fields into one string
+                      final otp = digits.join();
+                      context.read<AuthBloc>().add(VerifyOtpEvent(otp));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(tr('incorrectedOTP'))),
+                      );
                     }
                   },
                   textElevatedButton: tr('confirmCode'),

@@ -19,30 +19,35 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ClickChangeColorEvent>(_onClickColor);
   }
 
+  //method for updating the name
   FutureOr<void> _onUpdateName(
     UpdateNameEvent event,
     Emitter<ProfileState> emit,
   ) async {
+    //get the user id from authlayer
     final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
 
+    //check if the user logged in
     if (userId == null) {
       emit(ProfileError("User not logged in"));
       return;
     }
 
+    //update the name in app user table
     await Supabase.instance.client
         .from("app_user")
         .update({'name': event.newName})
         .eq("auth_user_id", userId);
 
+    //emit a new state after updating the name
     final currState = state;
-    if (currState is ProfileLoaded) {
+    if (currState is ProfileLoadedState) {
       emit(
-        ProfileLoaded(
-          name: event.newName,
-          email: currState.email,
-          isArabicState: currState.isArabicState,
-          isDarkModeState: currState.isDarkModeState,
+        ProfileLoadedState(
+          name: event.newName, //new name
+          email: currState.email, //retain the old email
+          isArabicState: currState.isArabicState, //retain the old lang
+          isDarkModeState: currState.isDarkModeState, //retain the old theme
         ),
       );
     }
@@ -52,6 +57,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateEmailEvent event,
     Emitter<ProfileState> emit,
   ) async {
+    //get the userId from authlayer
     final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
 
     if (userId == null) {
@@ -60,6 +66,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     try {
+      //update the email using supabase auth service
       await Supabase.instance.client.auth.updateUser(
         UserAttributes(email: event.newEmail),
       );
@@ -69,14 +76,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           .update({'email': event.newEmail})
           .eq("auth_user_id", userId);
 
+      //emit a new state after updating the email
       final currentState = state;
-      if (currentState is ProfileLoaded) {
+      if (currentState is ProfileLoadedState) {
         emit(
-          ProfileLoaded(
-            name: currentState.name,
-            email: event.newEmail,
-            isArabicState: currentState.isArabicState,
-            isDarkModeState: currentState.isDarkModeState,
+          ProfileLoadedState(
+            name: currentState.name, //retain the name
+            email: event.newEmail, //new email
+            isArabicState: currentState.isArabicState, //retain old lang
+            isDarkModeState: currentState.isDarkModeState, //retain old theme
           ),
         );
       }
@@ -92,13 +100,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
 
     try {
-      final userId = Supabase.instance.client.auth.currentUser?.id;
+      final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
 
       if (userId == null) {
         emit(ProfileError("User not logged in"));
         return;
       }
 
+      //fetch the user's profile setting from app user table
       final response = await Supabase.instance.client
           .from("app_user")
           .select('language_code, theme_mode, name, email')
@@ -110,7 +119,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         return;
       }
 
-      final name = response['name'] ?? 'Guest';
+      //extract the data from the response
+      final name = response['name'] ?? 'Guest'; //default guest if null
       final email = response['email'] ?? 'unknown@email.com';
       final isArabic = response['language_code'] == 'ar';
       final isDarkMode = response['theme_mode'] == 'dark';
@@ -118,7 +128,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       ThemeController.toggleTheme(isDarkMode);
 
       emit(
-        ProfileLoaded(
+        ProfileLoadedState(
           name: name,
           email: email,
           isArabicState: isArabic,
@@ -135,13 +145,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
-    final newLangCode = event.isArabic ? 'ar' : 'en';
+    final newLangCode = event.isArabic ? 'ar' : 'en'; //determine the new lang
 
     if (userId == null) {
       emit(ProfileError("User not logged in"));
       return;
     }
 
+    //update the lang in app user table
     final result = await Supabase.instance.client
         .from("app_user")
         .update({'language_code': newLangCode})
@@ -152,14 +163,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       return;
     }
 
+    //emit the updated profile with the new lang
     final currentState = state;
-    if (currentState is ProfileLoaded) {
+    if (currentState is ProfileLoadedState) {
       emit(
-        ProfileLoaded(
-          isArabicState: event.isArabic,
-          isDarkModeState: currentState.isDarkModeState,
-          name: currentState.name,
-          email: currentState.email,
+        ProfileLoadedState(
+          isArabicState: event.isArabic, //update the lang
+          isDarkModeState: currentState.isDarkModeState, //retain theme
+          name: currentState.name, //retain the name
+          email: currentState.email, //retain the email
         ),
       );
     }
@@ -170,22 +182,27 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     final userId = await GetIt.I.get<AuthLayer>().getCurrentSessionId();
-    final newThemeMode = event.isDarkMode ? 'dark' : 'light';
+    final newThemeMode = event.isDarkMode
+        ? 'dark'
+        : 'light'; //determine the new theme
 
     if (userId == null) {
       emit(ProfileError("User not logged in"));
       return;
     }
 
+    //update app user table with the new theme
     await Supabase.instance.client
         .from("app_user")
         .update({'theme_mode': newThemeMode})
         .eq("auth_user_id", userId);
 
+    //emit the updated profile with the new theme
+
     final currenrState = state;
-    if (currenrState is ProfileLoaded) {
+    if (currenrState is ProfileLoadedState) {
       emit(
-        ProfileLoaded(
+        ProfileLoadedState(
           isArabicState: currenrState.isArabicState,
           isDarkModeState: event.isDarkMode,
           name: currenrState.name,

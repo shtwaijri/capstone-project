@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
-
 import 'package:qaimati/features/intro/onboarding.dart';
 import 'package:qaimati/features/loading/loading_screen.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
@@ -25,34 +24,29 @@ void main() async {
   await setUp();
   //ensure all singletons (like AuthLayer) are initialized before running the app
   await GetIt.I.allReady();
-  print(
-    "🚀 المستخدم الحالي ${Supabase.instance.client.auth.currentUser?.email ?? 'No user logged in'}",
-  );
 
   final session = Supabase.instance.client.auth.currentSession;
   Locale startLocale = const Locale('en', 'US');
   ThemeMode startThemeMode = ThemeMode.light;
-  if (session != null) {
-    try {
-      final response = await Supabase.instance.client
-          .from('app_user')
-          .select('language_code, theme_mode')
-          .eq('auth_user_id', session.user.id)
-          .single();
+  // if (session != null) {
+  //   try {
+  //     final response = await Supabase.instance.client
+  //         .from('app_user')
+  //         .select('language_code, theme_mode')
+  //         .eq('auth_user_id', session.user.id)
+  //         .single();
 
-      final isDark = response['theme_mode'] == 'dark';
-      final isArabic = response['language_code'] == 'ar';
-      startLocale = isArabic
-          ? const Locale('ar', 'AR')
-          : const Locale('en', 'US');
-      startThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+  //     final isDark = response['theme_mode'] == 'dark';
+  //     final isArabic = response['language_code'] == 'ar';
+  //     startLocale = isArabic
+  //         ? const Locale('ar', 'AR')
+  //         : const Locale('en', 'US');
+  //     startThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
 
-      ThemeController.toggleTheme(isDark);
-      // await EasyLocalization.ensureInitialized();
+  //     ThemeController.toggleTheme(isDark);
 
-      // ThemeController.toggleTheme(isDark);
-    } catch (e) {}
-  }
+  //   } catch (e) {}
+  // }
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],

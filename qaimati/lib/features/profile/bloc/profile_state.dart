@@ -7,13 +7,13 @@ class ProfileInitial extends ProfileState {}
 
 class ProfileLoading extends ProfileState {}
 
-class ProfileLoaded extends ProfileState {
+class ProfileLoadedState extends ProfileState {
   final String name;
   final String email;
   final bool isArabicState;
   final bool isDarkModeState;
 
-  ProfileLoaded({
+  ProfileLoadedState({
     required this.isArabicState,
     required this.isDarkModeState,
     required this.name,
