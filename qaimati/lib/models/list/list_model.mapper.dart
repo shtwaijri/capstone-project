@@ -25,6 +25,8 @@ class ListModelMapper extends ClassMapperBase<ListModel> {
       Field('listId', _$listId, key: r'list_id');
   static String _$name(ListModel v) => v.name;
   static const Field<ListModel, String> _f$name = Field('name', _$name);
+  static int _$color(ListModel v) => v.color;
+  static const Field<ListModel, int> _f$color = Field('color', _$color);
   static DateTime _$createdAt(ListModel v) => v.createdAt;
   static const Field<ListModel, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt, key: r'created_at');
@@ -33,6 +35,7 @@ class ListModelMapper extends ClassMapperBase<ListModel> {
   final MappableFields<ListModel> fields = const {
     #listId: _f$listId,
     #name: _f$name,
+    #color: _f$color,
     #createdAt: _f$createdAt,
   };
 
@@ -40,6 +43,7 @@ class ListModelMapper extends ClassMapperBase<ListModel> {
     return ListModel(
         listId: data.dec(_f$listId),
         name: data.dec(_f$name),
+        color: data.dec(_f$color),
         createdAt: data.dec(_f$createdAt));
   }
 
@@ -94,7 +98,7 @@ extension ListModelValueCopy<$R, $Out> on ObjectCopyWith<$R, ListModel, $Out> {
 
 abstract class ListModelCopyWith<$R, $In extends ListModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? listId, String? name, DateTime? createdAt});
+  $R call({String? listId, String? name, int? color, DateTime? createdAt});
   ListModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -107,16 +111,18 @@ class _ListModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ListModel> $mapper =
       ListModelMapper.ensureInitialized();
   @override
-  $R call({String? listId, String? name, DateTime? createdAt}) =>
+  $R call({String? listId, String? name, int? color, DateTime? createdAt}) =>
       $apply(FieldCopyWithData({
         if (listId != null) #listId: listId,
         if (name != null) #name: name,
+        if (color != null) #color: color,
         if (createdAt != null) #createdAt: createdAt
       }));
   @override
   ListModel $make(CopyWithData data) => ListModel(
       listId: data.get(#listId, or: $value.listId),
       name: data.get(#name, or: $value.name),
+      color: data.get(#color, or: $value.color),
       createdAt: data.get(#createdAt, or: $value.createdAt));
 
   @override
