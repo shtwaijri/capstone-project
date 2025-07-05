@@ -51,9 +51,7 @@ void main() async {
       // await EasyLocalization.ensureInitialized();
 
       // ThemeController.toggleTheme(isDark);
-    } catch (e) {
-      print("⚠️ فشل تحميل الإعدادات من Supabase: $e");
-    }
+    } catch (e) {}
   }
   runApp(
     EasyLocalization(

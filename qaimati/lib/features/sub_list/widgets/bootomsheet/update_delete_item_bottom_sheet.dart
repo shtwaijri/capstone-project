@@ -15,13 +15,28 @@ import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
 
 
+/// Displays a modal bottom sheet for updating or deleting an existing item.
+///
+/// This bottom sheet pre-populates the fields with the details of the given `item`.
+/// Users can:
+/// - Adjust the item's quantity using `ItemQuantitySelector`.
+/// - Edit the item's name in a `TextField`.
+/// - Toggle the item's importance status.
+/// - Update the item by dispatching an `UpdateItemEvent` to the `SubListBloc`.
+///   An update is only allowed if the current user is an 'admin' or the creator of the item.
+/// - Delete the item by showing a confirmation dialog (`showDeleteItemAlertDialog`)
+///   and then dispatching a `DeleteItemEvent` to the `SubListBloc` if confirmed.
+///   Deletion is also restricted to 'admin' or the item's creator.
+///
+/// [context] The BuildContext from which the bottom sheet is launched.
+/// [item] The `ItemModel` instance whose details are to be displayed and potentially updated/deleted.
 
 void showUpdateDeleteItemBottomSheet({
   required BuildContext context,
   required ItemModel item,
- }) {
+}) {
   final bloc = context.read<SubListBloc>();
-   bloc.resetValues() ;
+  bloc.resetValues();
 
   bloc.itemController.text = item.title;
   bloc.number = item.quantity;
@@ -91,7 +106,6 @@ void showUpdateDeleteItemBottomSheet({
                       ),
                       StyleSize.sizeH16,
                       BlocBuilder<SubListBloc, SubListState>(
-                        
                         builder: (context, state) {
                           return Container(
                             alignment: Alignment.centerLeft,
@@ -119,48 +133,37 @@ void showUpdateDeleteItemBottomSheet({
                       ),
                       Spacer(),
                       DualActionButtonWidget(
-                        isCancel:false,
+                        isCancel: false,
                         primaryLabel: "itemUpdate".tr(),
                         onPrimaryTap: () {
                           if (bloc.itemController.text.isNotEmpty &&
                               bloc.number > 0) {
                             if (bloc.currentUserRole == "admin" ||
-                                bloc.authGetit.user!.userId == item.appUserId) {
-                              bloc.add(
-                                UpdateItemEvent(
-                          
-                                  editedItem: item,
-                                ),
-                              );
+                                bloc.user!.userId == item.appUserId) {
+                              bloc.add(UpdateItemEvent(editedItem: item));
                             }
 
-                             
                             Navigator.pop(context);
-                           } else {
+                          } else {
                             log(
                               "Please enter item name and quantity for update",
                             );
                           }
                         },
                         secondaryLabel: "itemDelete".tr(),
-                        isDelete:true,
+                        isDelete: true,
                         onSecondaryTap: () {
                           showDeleteItemAlertDialog(
                             context: context,
                             onDeleteConfirmed: () {
                               if (bloc.currentUserRole == "admin" ||
-                                  bloc.authGetit.user!.userId ==
-                                      item.appUserId) {
-                                bloc.add(
-                                  DeleteItemEvent( item: item),
-                                );
-                                 Navigator.pop(context);
+                                  bloc.user!.userId == item.appUserId) {
+                                bloc.add(DeleteItemEvent(item: item));
+                                Navigator.pop(context);
                               }
-                           
                             },
                           );
                         },
-                        
                       ),
                     ],
                   ),
@@ -171,5 +174,5 @@ void showUpdateDeleteItemBottomSheet({
         ),
       );
     },
-  ) ;
+  );
 }

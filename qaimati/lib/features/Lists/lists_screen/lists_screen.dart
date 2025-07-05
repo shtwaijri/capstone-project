@@ -4,6 +4,8 @@ import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
 import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
+import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
+import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
@@ -46,7 +48,7 @@ class ListsScreen extends StatelessWidget {
                               quantity: '0',
                               lable: 'completed',
                               screen:
-                                  ExpensesScreen(), // tis screen to go to some page
+                                  CompletedScreen(), // tis screen to go to some page
                             ),
                             ListsButtons(
                               icon: Icon(
@@ -80,12 +82,30 @@ class ListsScreen extends StatelessWidget {
                           isEdit: true,
                         ); // same bottom sheet, if isEdit is true, will show edit list
                       },
-                      child: CustomListtile(
-                        title: 'title',
-                        backgroundColor: StyleColor.orange,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SubListScreen(),
+                            ),
+                          );
+                        },
+                        child: CustomListtile(
+                          title: 'title1',
+                          backgroundColor: StyleColor.orange,
+                        ),
                       ),
                     ),
                     CustomListtile(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SubListScreen(),
+                          ),
+                        );
+                      },
                       title: 'title',
                       backgroundColor: StyleColor.red,
                     ),
