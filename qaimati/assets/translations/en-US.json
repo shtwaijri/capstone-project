@@ -1,21 +1,24 @@
 {
-      "Welcome": "Welcome to Qaimati",
-
+      "welcome": "Welcome to Qaimati",
   "onboardingTitle": "Quickly add and organize your shopping items in one place",
   "onboardingNext": "Next",
   "onboardingInvite": "Invite others, sync in  real-time",
   "onboardingReceipts": "Manage receipts your for better tracking",
-
 "enterEmail": "Enter your email to create your account or login",
+ "emailHint": "Email",
+ "email_invalid": "Invalid email",
+ "enterOTP" : "Please enter the verification code sent to your email",
+"confirmCode":"confirm",
+"incorrectedOTP":"Incorrected OTP",
+"haveProfile": "You already have a profile",
+"notLoggedIn": "User not logged in",
+"nameRequired": "The name is required",
+"CompleteTitle":"Complete your profile",
+"enterName":"Please enter your name to complete your profile",
+"Yourname":"name",
+"Continue":"Continue",
 
 
-  "authLogin": "Log In",
-  "authSignup": "Sign Up",
-  "authName": "Enter your name",
-  "authEmail": "Enter your email",
-  "authPassword": "Password",
-  "authConfirmPassword": "Confirm password",
-  "authForgotPassword": "Forget your password?",
 
 
   "listNoLists": "You haven't created any lists yet.",
@@ -50,7 +53,7 @@
     "List": "List",
     "Completed":"Completed",
   "CompleteSelected":"Complete Selected Items ",
-     "titlenotempty" :"the title should not be empty ",
+     "emailRequired" :"Please enter your email to continue",
   "checkoutComplete": "Complete Check Out",
   "movecompleted":"move to completed without receipt",
   "memberNoMembers": "You haven't added any members yet.",

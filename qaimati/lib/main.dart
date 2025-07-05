@@ -10,10 +10,12 @@ import 'package:qaimati/features/intro/onboarding.dart';
 import 'package:qaimati/features/loading/loading_screen.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/features/profile/profile_screen.dart';
+import 'package:qaimati/layer_data/auth_layer.dart';
 
 import 'package:qaimati/style/theme/theme.dart';
 import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:qaimati/utilities/setup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -23,21 +25,51 @@ void main() async {
   await setUp();
   //ensure all singletons (like AuthLayer) are initialized before running the app
   await GetIt.I.allReady();
+  print(
+    "🚀 المستخدم الحالي ${Supabase.instance.client.auth.currentUser?.email ?? 'No user logged in'}",
+  );
 
+  final session = Supabase.instance.client.auth.currentSession;
+  Locale startLocale = const Locale('en', 'US');
+  ThemeMode startThemeMode = ThemeMode.light;
+  if (session != null) {
+    try {
+      final response = await Supabase.instance.client
+          .from('app_user')
+          .select('language_code, theme_mode')
+          .eq('auth_user_id', session.user.id)
+          .single();
+
+      final isDark = response['theme_mode'] == 'dark';
+      final isArabic = response['language_code'] == 'ar';
+      startLocale = isArabic
+          ? const Locale('ar', 'AR')
+          : const Locale('en', 'US');
+      startThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+
+      ThemeController.toggleTheme(isDark);
+      // await EasyLocalization.ensureInitialized();
+
+      // ThemeController.toggleTheme(isDark);
+    } catch (e) {
+      print("⚠️ فشل تحميل الإعدادات من Supabase: $e");
+    }
+  }
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
+      startLocale: startLocale,
 
-      child: MyApp(),
+      child: MyApp(startThemeMode: startThemeMode),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  final ThemeMode startThemeMode;
+  const MyApp({super.key, required this.startThemeMode});
   @override
   Widget build(BuildContext context) {
     final seenOnboarding = GetIt.I.get<bool>(instanceName: 'seenOnboarding');

@@ -14,6 +14,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     ListsScreen(),
     ExpensesScreen(),
     ProfileScreen(),
+    // ProfileScreen(),
   ];
   NavigationBloc() : super(NavigationBarState(0)) {
     on<NavigationEvent>((event, emit) {});

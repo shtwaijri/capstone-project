@@ -37,14 +37,16 @@ class ListsScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ListsButtons( // cusomt widget 
+                            ListsButtons(
+                              // cusomt widget
                               icon: Icon(
                                 Icons.check_box,
                                 color: StyleColor.green,
                               ),
                               quantity: '0',
                               lable: 'completed',
-                              screen: ExpensesScreen(), // tis screen to go to some page
+                              screen:
+                                  ExpensesScreen(), // tis screen to go to some page
                             ),
                             ListsButtons(
                               icon: Icon(
@@ -65,8 +67,10 @@ class ListsScreen extends StatelessWidget {
                   ),
                 ),
 
-                SliverList( // why sliver? cause i have 2 sections, one for external lists and one for completed lists, and th eother one for my list
-                  delegate: SliverChildListDelegate([ // need to convert to SliverChildBuilderDelegate(...) when get date form database,
+                SliverList(
+                  // why sliver? cause i have 2 sections, one for external lists and one for completed lists, and th eother one for my list
+                  delegate: SliverChildListDelegate([
+                    // need to convert to SliverChildBuilderDelegate(...) when get date form database,
                     GestureDetector(
                       onLongPress: () {
                         // every one will contain to type press, onPress and onLongPress
