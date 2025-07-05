@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Onboarding extends StatelessWidget {
   Onboarding({super.key});
 
-  final List<Map<String, String>> onboardingData = [ // list of map to hold data of each pageView
+  final List<Map<String, String>> onboardingData = [ // list of map to hold data of each pageView, i will put it in git it later
     {
       'image': 'assets/svg/no_items.svg',
       'title': 'Quickly add and organize your shopping items in one plac',

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
@@ -10,13 +9,20 @@ import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 /// It shows the store name on the left and the total amount on the right
 /// with a Riyal currency icon.
 class ReceiptWidget extends StatelessWidget {
-  const ReceiptWidget({super.key, required this.storName, required this.total});
+  const ReceiptWidget({
+    super.key,
+    required this.storName,
+    required this.total,
+    required this.currency,
+  });
 
   /// The name of the store or supplier.
   final String storName;
 
   /// The total amount as a string to display.
   final String total;
+
+  final String currency;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,8 @@ class ReceiptWidget extends StatelessWidget {
             // Row showing currency icon and total amount
             Row(
               children: [
-                SvgPicture.asset('assets/svg/Riyal.svg', width: 16, height: 16),
+                Text(currency, style: StyleText.bold16(context)),
+                // SvgPicture.asset('assets/svg/Riyal.svg', width: 16, height: 16),
                 StyleSize.sizeW8,
                 Text(total, style: StyleText.bold16(context)),
               ],

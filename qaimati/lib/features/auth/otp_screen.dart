@@ -66,45 +66,39 @@ class OtpScreen extends StatelessWidget {
 
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) async {
-                  if (state is SuccessState) {
-                    final user = Supabase.instance.client.auth.currentUser;
-                    final userId = user?.id;
+                  if (state is NewUserState) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const CompleteProfileScreen(),
+                      ),
+                    );
+                  } else if (state is ExistingUserState) {
+                    final userId =
+                        Supabase.instance.client.auth.currentSession?.user?.id;
 
-                    //to save the current user
-                    await GetIt.I.get<AuthLayer>().saveUserId(userId!);
-
-                    try {
-                      final response = await Supabase.instance.client
-                          .from('app_user')
-                          .select('name')
-                          .eq('id', userId!)
-                          .maybeSingle();
-
-                      final isNewUser =
-                          response == null ||
-                          response['full_name'] == null ||
-                          response['full_name'].toString().isEmpty;
-
-                      if (isNewUser) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const CompleteProfileScreen(),
-                          ),
-                        );
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const NavigationBarScreen(),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text('Error : $e')));
+                    if (userId != null) {
+                      await GetIt.I.get<AuthLayer>().saveUserId(userId);
                     }
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const NavigationBarScreen(),
+                      ),
+                    );
+                  } else if (state is SuccessState) {
+                    final userId = GetIt.I
+                        .get<AuthLayer>()
+                        .getCurrentSessionId();
+
+                    if (userId == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('User is not logged in')),
+                      );
+                      return;
+                    }
+                    await GetIt.I.get<AuthLayer>().saveUserId(userId);
                   } else if (state is ErrorState) {
                     ScaffoldMessenger.of(
                       context,

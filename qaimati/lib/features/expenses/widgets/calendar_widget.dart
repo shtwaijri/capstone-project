@@ -1,35 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
-class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({super.key});
-
-  @override
-  State<CalendarWidget> createState() => _CalendarWidgetState();
-}
-
-class _CalendarWidgetState extends State<CalendarWidget> {
-  DateTime displayedDate = DateTime.now();
-
-  void _decrementMonth() {
-    setState(() {
-      displayedDate = DateTime(displayedDate.year, displayedDate.month - 1);
-    });
-  }
-
-  void _incrementMonth() {
-    setState(() {
-      displayedDate = DateTime(displayedDate.year, displayedDate.month + 1);
-    });
-  }
+class CalendarWidget extends StatelessWidget {
+  const CalendarWidget({
+    super.key,
+    this.onDecrementMonth,
+    this.onIncrementMonth,
+    required this.formattedDate,
+  });
+  final String formattedDate;
+  final Function()? onDecrementMonth;
+  final Function()? onIncrementMonth;
 
   @override
   Widget build(BuildContext context) {
-    final String formattedDate = DateFormat.yMMMM().format(displayedDate);
-
     return Container(
       padding: const EdgeInsets.all(16),
       width: context.getWidth(),
@@ -40,10 +26,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           IconButton(
             icon: const Icon(
               Icons.arrow_left,
-              color: StyleColor.black,
+              color: StyleColor.green,
               size: 32,
             ),
-            onPressed: _decrementMonth,
+            onPressed: onDecrementMonth,
           ),
 
           Text(formattedDate, style: StyleText.bold16(context)),
@@ -51,10 +37,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           IconButton(
             icon: const Icon(
               Icons.arrow_right,
-              color: StyleColor.black,
+              color: StyleColor.green,
               size: 32,
             ),
-            onPressed: _incrementMonth,
+            onPressed: onIncrementMonth,
           ),
         ],
       ),

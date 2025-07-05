@@ -9,6 +9,8 @@ final class AuthStateInit extends AuthState {}
 
 final class LoadingSignUpState extends AuthState {}
 
+class OtpSentState extends AuthState {}
+
 final class SuccessState extends AuthState {}
 
 final class ErrorState extends AuthState {
@@ -21,3 +23,7 @@ final class OTPUpdatedState extends AuthState {
   List<String> digits;
   OTPUpdatedState({required this.digits});
 }
+
+final class NewUserState extends AuthState {}
+
+final class ExistingUserState extends AuthState {}

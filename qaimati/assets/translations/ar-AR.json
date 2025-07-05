@@ -28,11 +28,15 @@
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
   "commonSearch": "بحث",
-  
+  "newitemadded!":"تمت إضافة عنصر جديد!"
+,
   "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",
   "itemNoItems1": "لم تُضِف أي عناصر",
   "itemNoItems2": " إلى القائمة بعد.",
-
+  "item added by":"تمت إضافة العنصر بواسطة",
+  "itemupdatedby":"ام تحديث العنصر بواسطه ",
+"inlist:":"في القائمة" ,
+ "List": "قائمه",
   "itemName": "أدخل اسم العنصر",
   "itemAdd": "أضف العنصر",
   "itemUpdate": "حدّث العنصر",
@@ -41,6 +45,7 @@
      "deleteItemConfirmation":"هل أنت متأكد أنك تريد حذف هذا العنصر؟",
   "checkoutComplete": "إتمام عملية الشراء",
    "Item": "العنصر",
+   "Completed":"مكتملة",
    "titlenotempty" :"لا ينبغي أن يكون العنوان فارغًا",
    "CompleteSelected":"إكمال العناصر المحددة",
     "movecompleted":"النقل الى مكتمل بدون فاتورة",
@@ -71,18 +76,21 @@
 
   "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
 
-  "expensesTitle": "نفقات",
+  "expensesTitle": "النفقات",
     "listsTitle": "القوائم",
 
 
   "profileTitle": "الملف الشخصي",
   "settingsTitle": "الإعدادات",
   "settingsLanguage": "تغيير لغة التطبيق",
+    "settingsColor": "تغيير لون التطبيق",
+
   "accountTitle": "الحساب",
   "accountName": "تغيير اسم الحساب",
-  "accountEmail": "تغيير بريد الحساب الإلكتروني",
-  "accountPassword": "تغيير كلمة مرور الحساب",
+  "accountEmail": "تغيير البريد الإلكتروني",
   "accountPremium": "برايم ",
   "authLogout": "تسجيل الخروج",
-  "unknown": "غير معروف"
+  "unknown": "غير معروف",
+      "alertEdit": "تعديل"
+
 }

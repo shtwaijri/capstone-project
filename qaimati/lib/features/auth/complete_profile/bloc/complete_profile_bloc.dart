@@ -44,6 +44,19 @@ class CompleteProfileBloc
         throw Exception('User not authenticated');
       }
 
+      final existingUser = await Supabase.instance.client
+          .from('app_user')
+          .select('name')
+          .eq('auth_user_id', user.id)
+          .maybeSingle();
+
+      if (existingUser != null &&
+          existingUser['name'] != null &&
+          existingUser['name'].toString().isNotEmpty) {
+        emit(CompleteProfileFailure('You already have a profile', error: ''));
+        return;
+      }
+
       await AuthLayer.completeUserProfile(
         userId: user.id,
         name: _name.trim(),
@@ -52,7 +65,7 @@ class CompleteProfileBloc
 
       emit(CompleteProfileSuccess());
     } catch (e) {
-      emit(CompleteProfileFailure(e.toString(), error: ''));
+      emit(CompleteProfileFailure(e.toString(), error: e.toString()));
     }
   }
 }
