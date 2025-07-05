@@ -228,6 +228,7 @@ class SupabaseConnect {
           .single();
 
       // Check if a valid response with a role was returned
+      // ignore: unnecessary_null_comparison
       if (response != null &&
           response['roles'] != null &&
           response.isNotEmpty) {
@@ -341,8 +342,7 @@ class SupabaseConnect {
       // rethrow any errors
       throw Exception('Failed to add new item & send notifcation to users');
     }
-    // Return null if no item was created
-    return null;
+ 
   }
 
   // Function to update an existing item in the 'item' table
