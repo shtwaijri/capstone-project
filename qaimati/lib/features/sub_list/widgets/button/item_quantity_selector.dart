@@ -6,6 +6,16 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
+
+/// A widget that allows users to select and adjust the quantity of an item.
+///
+/// This selector displays the current quantity in a bordered text  
+/// and provides two `IconButton`s for incrementing and decrementing the quantity.
+/// It interacts with the `SubListBloc` by dispatching `IncrementNumberEvent`
+/// and `DecrementNumberEvent` to update the item quantity in the BLoC's state.
+/// The UI rebuilds only when the `SubListLoadedState` is emitted, ensuring
+/// the displayed quantity is always in sync with the BLoC.
+
 class ItemQuantitySelector extends StatelessWidget {
   const ItemQuantitySelector({super.key, });
  

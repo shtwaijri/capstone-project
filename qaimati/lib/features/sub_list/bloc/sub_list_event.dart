@@ -59,3 +59,4 @@ final class CheckoutEvent  extends SubListEvent {}
 
  
  
+ final class LoadCompletedItemsForListsEvent  extends SubListEvent {}

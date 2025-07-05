@@ -11,8 +11,7 @@ final class SubListLoading extends SubListState {}
 
 final class SubListLoadedState extends SubListState {
   final List<ItemModel> uncompletedItems;
-  final List<ItemModel> completedItems;
-
+ 
   final int currentNumber;
   final bool currentIsItemImportant;
   final bool isItemsChecked;
@@ -21,8 +20,7 @@ final class SubListLoadedState extends SubListState {
 
   SubListLoadedState({
     required this.uncompletedItems,
-    required this.completedItems,
-    this.currentNumber = 1,
+     this.currentNumber = 1,
     this.currentIsItemImportant = false,
     this.isItemsChecked = false,
     this.currentUserRole,
@@ -47,3 +45,4 @@ final class CheckoutState extends SubListState {}
 final class MarkCheckedItemsAsCompletedState extends SubListState {}
 
  
+ final class LoadCompletedItemsForListsState  extends SubListState {}

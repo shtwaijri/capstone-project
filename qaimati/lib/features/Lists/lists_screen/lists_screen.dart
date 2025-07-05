@@ -4,7 +4,7 @@ import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
 import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
-import 'package:qaimati/features/sub_list/completed_screen.dart';
+import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
@@ -39,14 +39,16 @@ class ListsScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ListsButtons( // cusomt widget 
+                            ListsButtons(
+                              // cusomt widget
                               icon: Icon(
                                 Icons.check_box,
                                 color: StyleColor.green,
                               ),
                               quantity: '0',
                               lable: 'completed',
-                              screen: CompletedScreen(), // tis screen to go to some page
+                              screen:
+                                  CompletedScreen(), // tis screen to go to some page
                             ),
                             ListsButtons(
                               icon: Icon(
@@ -67,8 +69,10 @@ class ListsScreen extends StatelessWidget {
                   ),
                 ),
 
-                SliverList( // why sliver? cause i have 2 sections, one for external lists and one for completed lists, and th eother one for my list
-                  delegate: SliverChildListDelegate([ // need to convert to SliverChildBuilderDelegate(...) when get date form database,
+                SliverList(
+                  // why sliver? cause i have 2 sections, one for external lists and one for completed lists, and th eother one for my list
+                  delegate: SliverChildListDelegate([
+                    // need to convert to SliverChildBuilderDelegate(...) when get date form database,
                     GestureDetector(
                       onLongPress: () {
                         // every one will contain to type press, onPress and onLongPress
@@ -78,17 +82,30 @@ class ListsScreen extends StatelessWidget {
                           isEdit: true,
                         ); // same bottom sheet, if isEdit is true, will show edit list
                       },
-                      child: CustomListtile(
-                        onPressed:(){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SubListScreen(
-                                
-                              )));
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SubListScreen(),
+                            ),
+                          );
                         },
-                        title: 'title',
-                        backgroundColor: StyleColor.orange,
+                        child: CustomListtile(
+                          title: 'title1',
+                          backgroundColor: StyleColor.orange,
+                        ),
                       ),
                     ),
                     CustomListtile(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SubListScreen(),
+                          ),
+                        );
+                      },
                       title: 'title',
                       backgroundColor: StyleColor.red,
                     ),
