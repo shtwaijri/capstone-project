@@ -33,6 +33,8 @@
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
   "commonSearch": "بحث",
+  "externalList": "القوائم الخارجية",
+  "completed": "مكتملة",
   "newitemadded!":"تمت إضافة عنصر جديد!"
 ,
   "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",

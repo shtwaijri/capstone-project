@@ -695,7 +695,7 @@ log("📦 Raw JSON from list table: $listRows");
     final appUserId = appUser.userId;
 
     // Get role_id for 'member'
-    final memberRoleId = await getRoleIdByName('admin');
+    final memberRoleId = await getRoleIdByName('admin'); // need to conver to member
 
     // Query list_user_role where user is a member
     final roleRows = await supabase!
