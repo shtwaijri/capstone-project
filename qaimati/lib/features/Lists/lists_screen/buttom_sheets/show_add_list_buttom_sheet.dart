@@ -66,7 +66,10 @@ void showAddListButtomSheet({
                               alertDialog(
                                 context: context,
                                 lable: 'list',
-                                onTab: () {},
+                                onTab: () {
+                                  // bloc.add(DeleteListEvent(currentList.listId));
+                                  // Navigator.pop(context);
+                                },
                               );
                             },
                             secondaryLabel: 'Delete',
@@ -75,10 +78,10 @@ void showAddListButtomSheet({
                           )
                         : ButtomWidget(
                             onTab: () {
-                              final name = addListController.text.trim(); // trim to remove any leading or trailing spaces
+                              final name = addListController.text
+                                  .trim(); // trim to remove any leading or trailing spaces
 
                               if (name.isEmpty) {
-                                
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('List name is required'),

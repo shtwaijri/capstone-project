@@ -56,9 +56,23 @@ FutureOr<void> addListMethod(CreateListEvent event, Emitter<AddListState> emit) 
   ) {}
 
   FutureOr<void> deleteListMethod(
-    DeleteListEvent event,
-    Emitter<AddListState> emit,
-  ) {}
+  DeleteListEvent event,
+  Emitter<AddListState> emit,
+) async {
+  emit(AddListLoading());
+
+  try {
+    // حذف القائمة من Supabase
+    await appGetit.confirmDeleteList(event.listId);
+
+    // تحديث البيانات بعد الحذف
+    await appGetit.loadAdminLists();
+    emit(AddListLoaded(appGetit.lists));
+  } catch (e) {
+    emit(AddListError(e.toString()));
+  }
+}
+
 
   FutureOr<void> loadListsMethod(
     LoadListsEvent event,
