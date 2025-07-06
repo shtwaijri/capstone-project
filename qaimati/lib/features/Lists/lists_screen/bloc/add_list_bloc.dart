@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -50,31 +51,53 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     }
   }
 
-  FutureOr<void> updateListMethod(
-    UpdateListEvent event,
-    Emitter<AddListState> emit,
-  ) {}
-
-  FutureOr<void> deleteListMethod(
-  DeleteListEvent event,
+FutureOr<void> updateListMethod(
+  UpdateListEvent event,
   Emitter<AddListState> emit,
 ) async {
   emit(AddListLoading());
 
   try {
-    // نحذف القائمة بناءً على listId اللي أرسلناه في الحدث
-    await appGetit.confirmDeleteList(event.listId);
+    print("🛠 Updating list with: ${event.list.name}, color=${event.list.color}");
 
-    // بعدها نحدث القوائم عشان ترجع بدون العنصر المحذوف
+
+    final updatedList = ListModel(
+      listId: event.list.listId,
+      name: event.list.name,
+      color: selectColor, // اللون الحالي المختار من الـ BLoC
+      createdAt: event.list.createdAt,
+    );
+
+    await appGetit.submitListUpdate(updatedList);
     await appGetit.loadAdminLists();
 
-    // نرجع الحالة الجديدة بالقوائم المحدثة
     emit(AddListLoaded(appGetit.lists));
   } catch (e) {
     emit(AddListError(e.toString()));
   }
 }
 
+
+
+  FutureOr<void> deleteListMethod(
+    DeleteListEvent event,
+    Emitter<AddListState> emit,
+  ) async {
+    emit(AddListLoading());
+
+    try {
+      // نحذف القائمة بناءً على listId اللي أرسلناه في الحدث
+      await appGetit.confirmDeleteList(event.listId);
+
+      // بعدها نحدث القوائم عشان ترجع بدون العنصر المحذوف
+      await appGetit.loadAdminLists();
+
+      // نرجع الحالة الجديدة بالقوائم المحدثة
+      emit(AddListLoaded(appGetit.lists));
+    } catch (e) {
+      emit(AddListError(e.toString()));
+    }
+  }
 
   FutureOr<void> loadListsMethod(
     LoadListsEvent event,

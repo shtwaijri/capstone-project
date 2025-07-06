@@ -8,6 +8,7 @@ import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
 // import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
+import 'package:qaimati/models/list/list_model.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
@@ -88,6 +89,7 @@ class ListsScreen extends StatelessWidget {
                                           context: context,
                                           isEdit: true,
                                           listId: list.listId,
+                                          list: list,
                                         );
                                       },
                                       child: CustomListtile(

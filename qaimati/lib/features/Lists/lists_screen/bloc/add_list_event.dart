@@ -35,6 +35,7 @@ class UpdateListEvent extends AddListEvent {
   UpdateListEvent(this.list);
 }
 
+
 class DeleteListEvent extends AddListEvent {
   final String listId;
 
