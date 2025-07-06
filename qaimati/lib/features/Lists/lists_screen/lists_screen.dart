@@ -22,6 +22,7 @@ class ListsScreen extends StatelessWidget {
       create: (_) => AddListBloc()..add(LoadListsEvent()),
       child: Builder(
         builder: (context) {
+          final bloc = context.read<AddListBloc>();
           return Scaffold(
             appBar: AppBarWidget(
               title: 'Lists',
@@ -90,6 +91,7 @@ class ListsScreen extends StatelessWidget {
                                         title: list.name,
                                         backgroundColor: list.getColor(),
                                         onPressed: () {
+                                          bloc.appGetit.listId = list.listId;
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
