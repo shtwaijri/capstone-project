@@ -53,7 +53,7 @@ class ListsScreen extends StatelessWidget {
                           color: StyleColor.blue,
                         ),
                         quantity: '0',
-                        lable: 'externalList'.tr(),
+                        lable: 'invitedLists'.tr(),
                         screen: MemberLists(),
                       ),
                     ],

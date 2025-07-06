@@ -104,7 +104,7 @@ class OtpScreen extends StatelessWidget {
                         ),
                       );
                     } else {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => const NavigationBarScreen(),
