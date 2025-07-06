@@ -5,8 +5,8 @@ import 'package:qaimati/features/members/invite_model/invite_model.dart';
 import 'package:qaimati/features/members/service.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/models/list_user_role/list_user_role_model.dart';
+import 'package:qaimati/repository/supabase.dart';
 import 'package:qaimati/utilities/helper/userId_helper.dart';
-import 'package:supabase/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class InviteScreen extends StatefulWidget {
@@ -68,28 +68,6 @@ class _InviteScreenState extends State<InviteScreen> {
     }
   }
 
-  //this method is good
-
-  // Future<void> fetchInvitedLists() async {
-  //   final supabase = Supabase.instance.client;
-  //   AppUserModel? user = await fetchUserById();
-
-  //   try {
-  //     final response = await supabase
-  //         .from('invite')
-  //         .select(
-  //           'list_id, invite_status, app_user_id, sender_email, invite_id',
-  //         )
-  //         .eq('receiver_email', user!.email)
-  //         .order('created_at', ascending: false);
-
-  //     invited = List<Map<String, dynamic>>.from(response);
-  //     setState(() {});
-  //   } catch (e) {
-  //     log('Error fetching invited lists: $e');
-  //   }
-  // }
-
   // Fetch notifications for the user, filtered by the receiver's email
   Future<void> _getNotifications() async {
     AppUserModel? user = await fetchUserById();
@@ -115,47 +93,51 @@ class _InviteScreenState extends State<InviteScreen> {
     }
   }
 
-  // Function to accept the invite and update the status
   Future<void> _acceptInvite(String inviteId) async {
     try {
-      // Step 1: Accept the invite and update the status
-      final response = await _supabaseClient
+      final updatedInvite = await _supabaseClient
           .from('invite')
           .update({'invite_status': 'accepted'})
           .eq('invite_id', inviteId)
-          .select();
-
-      log("Invite accepted: ${response.toString()}");
-
-      // Step 2: Fetch user info and role
-      AppUserModel? user = await fetchUserById();
-      final roleResponse = await _supabaseClient
-          .from('invite')
-          .select('role_id')
-          .eq('app_user_id', user!.userId)
-          .order('created_at', ascending: false)
+          .select()
           .single();
 
-      // Assuming 'role_id' is the role the user should have
-      final roleId = roleResponse['role_id'];
+      log("Invite accepted: $updatedInvite");
 
-      // Step 3: Insert into list_user_role to assign role to the user
-      final insertResponse = await _supabaseClient
-          .from('list_user_role')
-          .insert({
-            'app_user_id': user.userId,
-            'list_id': inviteId, // Assuming you use inviteId as listId
-            'role_id': roleId,
-          });
+      AppUserModel? user = await fetchUserById();
 
-      log("Role assigned to user: ${insertResponse.toString()}");
+      final roleId = await SupabaseConnect.getRoleIdByName("member");
 
-      // Refresh the data
+      await _supabaseClient.from('list_user_role').insert({
+        'app_user_id': user!.userId,
+        'list_id': updatedInvite['list_id'],
+        'role_id': roleId,
+      });
+
+      log(
+        "Role assigned to user ${user.userId} in list ${updatedInvite['list_id']}",
+      );
+      await checkMyRole(updatedInvite['list_id']);
+
+      // ✅ Step 5: Refresh UI
       await _getNotifications();
       await fetchInvitedLists();
     } catch (e) {
-      log('Error accepting invite: $e');
+      log('error accepting invite: $e');
     }
+  }
+
+  Future<void> checkMyRole(String listId) async {
+    final user = await fetchUserById();
+    final response = await Supabase.instance.client
+        .from('list_user_role')
+        .select('role_id, role:roles(name)')
+        .eq('list_id', listId)
+        .eq('app_user_id', user!.userId)
+        .single();
+
+    final roleName = response['role']['name'];
+    print(' دور اليوزر في القائمة: $roleName');
   }
 
   @override

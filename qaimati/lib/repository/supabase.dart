@@ -336,14 +336,12 @@ class SupabaseConnect {
           notificationMessage,
           excludeUserId,
         );
-
       }
     } catch (e, stack) {
       log('❌ Error inserting item: $e\n$stack');
       // rethrow any errors
       throw Exception('Failed to add new item & send notifcation to users');
     }
- 
   }
 
   // Function to update an existing item in the 'item' table
@@ -612,276 +610,316 @@ class SupabaseConnect {
     }
   }
 
+  // ==================================================== Start get role name ===============================================
+  static Future<String> getRoleIdByName(String roleName) async {
+    // will used when get lest to check role
+    final result = await supabase!
+        .from('roles')
+        .select('roles_id')
+        .eq('name', roleName)
+        .maybeSingle();
 
+    if (result == null) {
+      throw Exception('❌ Role "$roleName" not found.');
+    }
 
-// ==================================================== Start get role name ===============================================
-  static Future<String> getRoleIdByName(String roleName) async { // will used when get lest to check role
-  final result = await supabase!
-      .from('roles')
-      .select('roles_id')
-      .eq('name', roleName)
-      .maybeSingle();
-
-  if (result == null) {
-    throw Exception('❌ Role "$roleName" not found.');
+    return result['roles_id'] as String;
   }
 
-  return result['roles_id'] as String;
-}
   // ==================================================== End get role name ==================================================
   // ================================================== Start getAdminLists ================================================
-static Future<List<ListModel>> getAdminLists() async {
-  try {
-    log("📥 Fetching admin lists");
+  static Future<List<ListModel>> getAdminLists() async {
+    try {
+      log("📥 Fetching admin lists");
 
-    // to get current user
-    final appUser = await fetchUserById();
-    if (appUser == null) {
-      throw Exception("❌ Failed to fetch current user");
+      // to get current user
+      final appUser = await fetchUserById();
+      if (appUser == null) {
+        throw Exception("❌ Failed to fetch current user");
+      }
+      final appUserId = appUser.userId;
+
+      // get admin role
+      final adminRoleId = await getRoleIdByName('admin');
+
+      // get admin lists
+      final roleRows = await supabase!
+          .from('list_user_role')
+          .select('list_id')
+          .eq('app_user_id', appUserId)
+          .eq('role_id', adminRoleId);
+
+      if (roleRows.isEmpty) {
+        log("🔍 No admin lists found for user $appUserId");
+        return [];
+      }
+
+      final listIds = roleRows
+          .map<String>((row) => row['list_id'] as String)
+          .toList();
+
+      // get list details
+      final listRows = await supabase!
+          .from('list')
+          .select()
+          .inFilter('list_id', listIds);
+      log("📦 Raw JSON from list table: $listRows");
+      final lists = listRows
+          .map<ListModel>((row) => ListModelMapper.fromMap(row))
+          .toList();
+
+      log("✅ Fetched ${lists.length} admin lists for user $appUserId");
+
+      return lists;
+    } catch (e, stack) {
+      log("❌ Error in getAdminLists: $e\n$stack");
+      throw Exception("Failed to fetch admin lists: $e");
     }
-    final appUserId = appUser.userId;
-
-    // get admin role
-    final adminRoleId = await getRoleIdByName('admin');
-
-    // get admin lists
-    final roleRows = await supabase!
-        .from('list_user_role')
-        .select('list_id')
-        .eq('app_user_id', appUserId)
-        .eq('role_id', adminRoleId);
-
-    if (roleRows.isEmpty) {
-      log("🔍 No admin lists found for user $appUserId");
-      return [];
-    }
-
-    final listIds = roleRows.map<String>((row) => row['list_id'] as String).toList();
-
-    // get list details
-    final listRows = await supabase!
-        .from('list')
-        .select()
-        .inFilter('list_id', listIds);
-log("📦 Raw JSON from list table: $listRows");
-    final lists = listRows
-        .map<ListModel>((row) => ListModelMapper.fromMap(row))
-        .toList();
-
-    log("✅ Fetched ${lists.length} admin lists for user $appUserId");
-
-    return lists;
-  } catch (e, stack) {
-    log("❌ Error in getAdminLists: $e\n$stack");
-    throw Exception("Failed to fetch admin lists: $e");
   }
-
-  
-}
 
   // ================================================== End getAdminLists =================================================
 
   // ================================================== Start getmemberLists ==============================================
 
+  //THIS BY AMR
+
+  //   static Future<List<ListModel>> getMemberLists() async {
+  //   try {
+  //     log("📥 Fetching member lists");
+
+  //     // Get current user
+  //     final appUser = await fetchUserById();
+  //     if (appUser == null) {
+  //       throw Exception("❌ Failed to fetch current user");
+  //     }
+  //     final appUserId = appUser.userId;
+
+  //     // Get role_id for 'member'
+  //     final memberRoleId = await getRoleIdByName('admin'); // need to conver to member
+
+  //     // Query list_user_role where user is a member
+  //     final roleRows = await supabase!
+  //         .from('list_user_role')
+  //         .select('list_id')
+  //         .eq('app_user_id', appUserId)
+  //         .eq('role_id', memberRoleId);
+
+  //     if (roleRows.isEmpty) {
+  //       log("🔍 No member lists found for user $appUserId");
+  //       return [];
+  //     }
+
+  //     // Extract list_ids
+  //     final listIds = roleRows.map<String>((row) => row['list_id'] as String).toList();
+
+  //     // Fetch list data
+  //     final listRows = await supabase!
+  //         .from('list')
+  //         .select()
+  //         .inFilter('list_id', listIds);
+
+  //     final lists = listRows
+  //         .map<ListModel>((row) => ListModelMapper.fromMap(row))
+  //         .toList();
+
+  //     log("✅ Fetched ${lists.length} member lists for user $appUserId");
+
+  //     return lists;
+  //   } catch (e, stack) {
+  //     log("❌ Error in getMemberLists: $e\n$stack");
+  //     throw Exception("Failed to fetch member lists: $e");
+  //   }
+  // }
+
+  //SAME METHOD WITH SIMPLE ADDITION BY SHATHA
   static Future<List<ListModel>> getMemberLists() async {
-  try {
-    log("📥 Fetching member lists");
+    try {
+      log("📥 Fetching member lists");
 
-    // Get current user
-    final appUser = await fetchUserById();
-    if (appUser == null) {
-      throw Exception("❌ Failed to fetch current user");
+      // Get current user
+      final appUser = await fetchUserById();
+      if (appUser == null) {
+        throw Exception("❌ Failed to fetch current user");
+      }
+      final appUserId = appUser.userId;
+
+      // Get role_id for 'member'
+      final memberRoleId = await getRoleIdByName(
+        'member',
+      ); // 🔄 Edited by Shatha: changed from 'admin' to 'member'
+
+      // Query list_user_role where user is a member
+      final roleRows = await supabase!
+          .from('list_user_role')
+          .select('list_id')
+          .eq('app_user_id', appUserId)
+          .eq('role_id', memberRoleId);
+
+      if (roleRows.isEmpty) {
+        log("🔍 No member lists found for user $appUserId");
+        return [];
+      }
+
+      // Extract list_ids
+      final listIds = roleRows
+          .map<String>((row) => row['list_id'] as String)
+          .toList();
+
+      // Fetch list data
+      final listRows = await supabase!
+          .from('list')
+          .select()
+          .inFilter('list_id', listIds);
+
+      final lists = listRows
+          .map<ListModel>((row) => ListModelMapper.fromMap(row))
+          .toList();
+
+      log("✅ Fetched ${lists.length} member lists for user $appUserId");
+
+      return lists;
+    } catch (e, stack) {
+      log("❌ Error in getMemberLists: $e\n$stack");
+      throw Exception("Failed to fetch member lists: $e");
     }
-    final appUserId = appUser.userId;
-
-    // Get role_id for 'member'
-    final memberRoleId = await getRoleIdByName('admin'); // need to conver to member
-
-    // Query list_user_role where user is a member
-    final roleRows = await supabase!
-        .from('list_user_role')
-        .select('list_id')
-        .eq('app_user_id', appUserId)
-        .eq('role_id', memberRoleId);
-
-    if (roleRows.isEmpty) {
-      log("🔍 No member lists found for user $appUserId");
-      return [];
-    }
-
-    // Extract list_ids
-    final listIds = roleRows.map<String>((row) => row['list_id'] as String).toList();
-
-    // Fetch list data
-    final listRows = await supabase!
-        .from('list')
-        .select()
-        .inFilter('list_id', listIds);
-
-    final lists = listRows
-        .map<ListModel>((row) => ListModelMapper.fromMap(row))
-        .toList();
-
-    log("✅ Fetched ${lists.length} member lists for user $appUserId");
-
-    return lists;
-  } catch (e, stack) {
-    log("❌ Error in getMemberLists: $e\n$stack");
-    throw Exception("Failed to fetch member lists: $e");
   }
-}
+
   // ================================================== End getmemberLists ================================================
 
-
-
   // ================================================== Start addNewList ==================================================
-static Future<ListModel?> addNewList({
-  required ListModel list,
-}) async {
-  try {
-    log("🚀 Starting addNewList");
+  static Future<ListModel?> addNewList({required ListModel list}) async {
+    try {
+      log("🚀 Starting addNewList");
 
-    final listMap = list.toMap();
+      final listMap = list.toMap();
 
-    if (list.listId.isEmpty) {
-      listMap.remove('list_id'); // Remove list if list_id is null or empty
+      if (list.listId.isEmpty) {
+        listMap.remove('list_id'); // Remove list if list_id is null or empty
+      }
+
+      // Get current user
+      final appUser = await fetchUserById();
+      if (appUser == null) {
+        throw Exception('❌ Failed to get current user');
+      }
+      final appUserId = appUser.userId;
+
+      // Get role_id for 'admin'
+      final adminRoleId = await getRoleIdByName('admin');
+
+      // Add new list
+      final response = await supabase!.from('list').insert(listMap).select();
+
+      if (response.isEmpty) {
+        throw Exception('❌ Failed to insert new list.');
+      }
+
+      final newList = ListModelMapper.fromMap(response.first);
+      log("✅ List created: ${newList.listId}");
+
+      // Link user to list as admin
+      final listUserRoleMap = {
+        'app_user_id': appUserId,
+        'role_id': adminRoleId,
+        'list_id': newList.listId,
+        'assigned_at': DateTime.now().toIso8601String(),
+      };
+
+      await supabase!.from('list_user_role').insert(listUserRoleMap);
+
+      log("✅ User $appUserId assigned as admin to list ${newList.listId}");
+
+      return newList;
+    } catch (e, stack) {
+      log('❌ Error in addNewList: $e\n$stack');
+      throw Exception('Failed to add new list and assign admin role.');
     }
-
-    // Get current user
-    final appUser = await fetchUserById();
-    if (appUser == null) {
-      throw Exception('❌ Failed to get current user');
-    }
-    final appUserId = appUser.userId;
-
-    // Get role_id for 'admin'
-    final adminRoleId = await getRoleIdByName('admin');
-
-    // Add new list
-    final response = await supabase!
-        .from('list')
-        .insert(listMap)
-        .select();
-
-    if (response.isEmpty) {
-      throw Exception('❌ Failed to insert new list.');
-    }
-
-    final newList = ListModelMapper.fromMap(response.first);
-    log("✅ List created: ${newList.listId}");
-
-    // Link user to list as admin
-    final listUserRoleMap = {
-      'app_user_id': appUserId,
-      'role_id': adminRoleId,
-      'list_id': newList.listId,
-      'assigned_at': DateTime.now().toIso8601String(),
-    };
-
-    await supabase!
-        .from('list_user_role')
-        .insert(listUserRoleMap);
-
-    log("✅ User $appUserId assigned as admin to list ${newList.listId}");
-
-    return newList;
-  } catch (e, stack) {
-    log('❌ Error in addNewList: $e\n$stack');
-    throw Exception('Failed to add new list and assign admin role.');
   }
-}
-
 
   // ================================================== End addNewList ==================================================
 
   // ================================================== Start editList ==================================================
-static Future<void> updateList({
-  required ListModel list,
-}) async {
-  try {
-    log("🛠 Starting updateList");
+  static Future<void> updateList({required ListModel list}) async {
+    try {
+      log("🛠 Starting updateList");
 
-    // Get current user
-    final appUser = await fetchUserById();
-    if (appUser == null) {
-      throw Exception('❌ Failed to get current user');
+      // Get current user
+      final appUser = await fetchUserById();
+      if (appUser == null) {
+        throw Exception('❌ Failed to get current user');
+      }
+      final appUserId = appUser.userId;
+
+      // Get role_id for 'admin'
+      final adminRoleId = await getRoleIdByName('admin');
+
+      // Check if user is admin
+      final roleCheck = await supabase!
+          .from('list_user_role')
+          .select()
+          .eq('app_user_id', appUserId)
+          .eq('list_id', list.listId)
+          .eq('role_id', adminRoleId)
+          .maybeSingle();
+
+      if (roleCheck == null) {
+        throw Exception('⛔ User is not admin of this list. Update denied.');
+      }
+
+      // Update list
+      final updateData = {'name': list.name, 'color': list.color};
+
+      await supabase!
+          .from('list')
+          .update(updateData)
+          .eq('list_id', list.listId);
+
+      log("✅ List ${list.listId} updated successfully.");
+    } catch (e, stack) {
+      log("❌ Error in updateList: $e\n$stack");
+      throw Exception("Failed to update list: $e");
     }
-    final appUserId = appUser.userId;
-
-    // Get role_id for 'admin'
-    final adminRoleId = await getRoleIdByName('admin');
-
-    // Check if user is admin
-    final roleCheck = await supabase!
-        .from('list_user_role')
-        .select()
-        .eq('app_user_id', appUserId)
-        .eq('list_id', list.listId)
-        .eq('role_id', adminRoleId)
-        .maybeSingle();
-
-    if (roleCheck == null) {
-      throw Exception('⛔ User is not admin of this list. Update denied.');
-    }
-
-    // Update list
-    final updateData = {
-      'name': list.name,
-      'color': list.color,
-    };
-
-    await supabase!
-        .from('list')
-        .update(updateData)
-        .eq('list_id', list.listId);
-
-    log("✅ List ${list.listId} updated successfully.");
-  } catch (e, stack) {
-    log("❌ Error in updateList: $e\n$stack");
-    throw Exception("Failed to update list: $e");
   }
-}
   // ================================================== End editList ====================================================
 
   // ================================================== Start deleteList ==================================================
 
-  static Future<void> deleteList({
-  required String listId,
-}) async {
-  try {
-    log("🗑 Starting deleteList");
+  static Future<void> deleteList({required String listId}) async {
+    try {
+      log("🗑 Starting deleteList");
 
-    // Get current user
-    final appUser = await fetchUserById();
-    if (appUser == null) {
-      throw Exception("❌ Failed to fetch current user");
+      // Get current user
+      final appUser = await fetchUserById();
+      if (appUser == null) {
+        throw Exception("❌ Failed to fetch current user");
+      }
+      final appUserId = appUser.userId;
+
+      // Get role_id for 'admin'
+      final adminRoleId = await getRoleIdByName('admin');
+
+      // Check if user is admin of this list
+      final roleCheck = await supabase!
+          .from('list_user_role')
+          .select()
+          .eq('app_user_id', appUserId)
+          .eq('list_id', listId)
+          .eq('role_id', adminRoleId)
+          .maybeSingle();
+
+      if (roleCheck == null) {
+        throw Exception('⛔ User is not admin of this list. Deletion denied.');
+      }
+
+      // Delete the list
+      await supabase!.from('list').delete().eq('list_id', listId);
+
+      log("✅ List $listId deleted successfully.");
+    } catch (e, stack) {
+      log("❌ Error in deleteList: $e\n$stack");
+      throw Exception("Failed to delete list: $e");
     }
-    final appUserId = appUser.userId;
-
-    // Get role_id for 'admin'
-    final adminRoleId = await getRoleIdByName('admin');
-
-    // Check if user is admin of this list
-    final roleCheck = await supabase!
-        .from('list_user_role')
-        .select()
-        .eq('app_user_id', appUserId)
-        .eq('list_id', listId)
-        .eq('role_id', adminRoleId)
-        .maybeSingle();
-
-    if (roleCheck == null) {
-      throw Exception('⛔ User is not admin of this list. Deletion denied.');
-    }
-
-    // Delete the list
-    await supabase!.from('list').delete().eq('list_id', listId);
-
-    log("✅ List $listId deleted successfully.");
-  } catch (e, stack) {
-    log("❌ Error in deleteList: $e\n$stack");
-    throw Exception("Failed to delete list: $e");
   }
-}
+
   // ================================================== End deleteList ====================================================
 }

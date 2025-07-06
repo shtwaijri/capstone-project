@@ -75,12 +75,14 @@ class SubListScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    GetIt.I.get<AppDatatLayer>().listId;
+                    final listId = GetIt.I.get<AppDatatLayer>().listId;
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => AddMemberPage()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddMemberPage(listId: listId!),
+                      ),
+                    );
                   },
                   icon: Icon(
                     CupertinoIcons.person_crop_circle_fill_badge_plus,

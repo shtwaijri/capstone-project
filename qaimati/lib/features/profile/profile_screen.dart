@@ -238,25 +238,7 @@ class ProfileScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                            CustomWidgetSetting(
-                              icon: Icons.exit_to_app,
-                              text: tr('اضافة ممبر'),
-                              style: StyleText.bold16(
-                                context,
-                              ).copyWith(color: StyleColor.error),
-                              color: StyleColor.error,
-                              iconSize: context.getWidth() * 0.06,
-                              onTap: () async {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => AddMemberPage(
-                                      listId:
-                                          "c59726cd-8dc9-4285-85ef-6f6574c16b51",
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+
                             CustomWidgetSetting(
                               icon: Icons.exit_to_app,
                               text: tr('noti screen'),
