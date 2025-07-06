@@ -7,7 +7,8 @@ final class ExpensesInitial extends ExpensesState {}
 
 final class SuccessState extends ExpensesState {
   final List<ReceiptModel> receipt;
-  SuccessState(this.receipt);
+  final DateTime displayedDate;
+  SuccessState(this.receipt, this.displayedDate);
 }
 
 final class ErrorState extends ExpensesState {

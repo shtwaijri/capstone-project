@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
@@ -27,7 +26,7 @@ class ButtomWidget extends StatelessWidget {
       ),
       onPressed: onTab,
       child: Center(
-        child: Text(textElevatedButton, style: StyleText.buttonText(context)),
+        child: Text(textElevatedButton, style: StyleText.buttonText16(context)),
       ),
     );
   }
