@@ -27,10 +27,28 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     on<DeleteListEvent>(deleteListMethod);
   }
 
-  FutureOr<void> addListMethod(
-    AddListEvent event,
-    Emitter<AddListState> emit,
-  ) {}
+FutureOr<void> addListMethod(CreateListEvent event, Emitter<AddListState> emit) async {
+  emit(AddListLoading());
+
+  try {
+    final newList = ListModel(
+      listId: '',
+      name: event.name,
+      color: event.color,
+      createdAt: event.createdAt,
+    );
+
+    await appGetit.createNewList(newList);
+    await appGetit.loadAdminLists();
+    emit(AddListLoaded(appGetit.lists));
+  } catch (e) {
+    emit(AddListError(e.toString()));
+  }
+}
+
+
+
+
 
   FutureOr<void> updateListMethod(
     UpdateListEvent event,

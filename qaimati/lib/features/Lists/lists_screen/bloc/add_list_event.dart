@@ -17,9 +17,17 @@ sealed class AddListEvent {}
 class LoadListsEvent extends AddListEvent {}
 
 class CreateListEvent extends AddListEvent {
-  final ListModel list;
-  CreateListEvent(this.list);
+  final String name;
+  final int color; // لو تحتاجه
+  final DateTime createdAt; // حسب الحاجة
+
+  CreateListEvent({
+    required this.name,
+    required this.color,
+    required this.createdAt,
+  });
 }
+
 
 class UpdateListEvent extends AddListEvent {
   final ListModel list;

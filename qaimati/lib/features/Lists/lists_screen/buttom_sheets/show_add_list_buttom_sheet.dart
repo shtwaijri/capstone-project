@@ -75,6 +75,24 @@ void showAddListButtomSheet({
                           )
                         : ButtomWidget(
                             onTab: () {
+                              final name = addListController.text.trim();
+
+                              if (name.isEmpty) {
+                                // هنا تقدر تعرض رسالة للمستخدم مثلاً باستخدام SnackBar
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('List name is required'),
+                                  ),
+                                );
+                                return;
+                              }
+                              context.read<AddListBloc>().add(
+                                CreateListEvent(
+                                  name: name,
+                                  color: bloc.selectColor,
+                                  createdAt: DateTime.now(),
+                                ),
+                              );
                               Navigator.pop(context);
                             },
                             textElevatedButton: 'Create list',

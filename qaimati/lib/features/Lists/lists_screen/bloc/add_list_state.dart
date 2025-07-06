@@ -38,6 +38,22 @@ final class AddListError extends AddListState {
   final String message;
   AddListError(this.message);
 }
+// ============================================ add list state
+// حالة بدء إنشاء القائمة
+final class AddListCreating extends AddListState {}
+
+// حالة نجاح إنشاء القائمة
+final class AddListCreated extends AddListState {
+  final ListModel newList;
+  AddListCreated(this.newList);
+}
+
+// حالة فشل الإنشاء
+final class AddListCreateError extends AddListState {
+  final String message;
+  AddListCreateError(this.message);
+}
+// ============================================ add list state
 
 // لو فعلاً تحتاج حالة لتغيير اللون
 final class AddListColorUpdated extends AddListState {}
