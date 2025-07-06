@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:qaimati/features/members/list_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-//import 'services/list_service.dart'; // استيراد الملف الذي يحتوي على الميثودات
 
 class CreateListScreen extends StatefulWidget {
   @override
