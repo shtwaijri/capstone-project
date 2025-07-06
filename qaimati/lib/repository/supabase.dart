@@ -614,7 +614,7 @@ class SupabaseConnect {
 
 
 
-  // ==================================================== Start get role name ===============================================
+// ==================================================== Start get role name ===============================================
   static Future<String> getRoleIdByName(String roleName) async { // will used when get lest to check role
   final result = await supabase!
       .from('roles')

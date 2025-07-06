@@ -25,6 +25,7 @@ class NavigationBarScreen extends StatelessWidget {
                 );
               }
               return Scaffold(
+                key: ValueKey(context.locale),
                 body: bloc.screens[state.selectedIndex],
                 bottomNavigationBar: BottomNavigationBar(
                   currentIndex: state.selectedIndex,

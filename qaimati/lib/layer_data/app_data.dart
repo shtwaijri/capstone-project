@@ -299,24 +299,6 @@ class AppDatatLayer {
   }
 
 
-  // ================================================== Start Admin Lists =====================================================
-//   Future<void> loadAdminLists() async {
-//   try {
-//     log("🔄 loadAdminLists: start");
-
-//     final adminLists = await SupabaseConnect.getAdminLists();
-
-//     log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
-
-//     for (final list in adminLists) {
-//       log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
-//     }
-
-//   } catch (e, stack) {
-//     log("❌ loadAdminLists: failed\n$e\n$stack");
-//     rethrow;
-//   }
-// }
 // =================================================== Start Admin Lists =====================================================
 Future<void> loadAdminLists() async {
   try {
@@ -344,24 +326,6 @@ Future<void> loadAdminLists() async {
 
 // ================================================== End Admin Lists =====================================================
 // ================================================== Start member Items ==================================================
-// Future<void> loadMemberLists() async {
-//   try {
-//     log("🔄 loadMemberLists: start");
-
-//     final memberLists = await SupabaseConnect.getMemberLists();
-
-//     log("✅ loadMemberLists: success — loaded ${memberLists.length} lists");
-
-//     for (final list in memberLists) {
-//       log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
-//     }
-
-//   } catch (e, stack) {
-//     log("❌ loadMemberLists: failed\n$e\n$stack");
-//     rethrow;
-//   }
-// }
-
 Future<void> loadMemberLists() async {
   try {
     log("🔄 loadMemberLists: start");
@@ -388,24 +352,6 @@ Future<void> loadMemberLists() async {
 
 // ================================================== End member Items =====================================================
 // ================================================== Start add New Lists ==================================================
-// Future<void> createNewList(ListModel list) async {
-//   try {
-//     log("🟢 createNewList: started");
-
-//     final newList = await SupabaseConnect.addNewList(list: list);
-
-//     if (newList != null) {
-//       log("✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}");
-//     } else {
-//       log("⚠ createNewList: no list returned");
-//     }
-
-//   } catch (e, stack) {
-//     log("❌ createNewList: failed\n$e\n$stack");
-//     rethrow;
-//   }
-// }
-
 Future<void> createNewList(ListModel list) async {
   try {
     log("🟢 createNewList: started");
@@ -429,22 +375,8 @@ Future<void> createNewList(ListModel list) async {
     rethrow;
   }
 }
-
 // ================================================== End add New Lists ====================================================
 // ================================================== Start Update Lists =====================================================
-// Future<void> submitListUpdate(ListModel list) async {
-//   try {
-//     log("🔄 submitListUpdate: started for listId=${list.listId}");
-
-//     await SupabaseConnect.updateList(list: list);
-
-//     log("✅ submitListUpdate: updated list ${list.listId} (name=${list.name}, color=${list.color})");
-//   } catch (e, stack) {
-//     log("❌ submitListUpdate: failed to update list ${list.listId}\n$e\n$stack");
-//     rethrow;
-//   }
-// }
-
 Future<void> submitListUpdate(ListModel updatedList) async {
   try {
     log("🔄 submitListUpdate: started for listId=${updatedList.listId}");
@@ -467,19 +399,6 @@ Future<void> submitListUpdate(ListModel updatedList) async {
 
 // ================================================== End Update Lists =======================================================
 // ================================================== Start Delete Lists =====================================================
-// Future<void> confirmDeleteList(String listId) async {
-//   try {
-//     log("🧨 confirmDeleteList: attempting to delete list $listId");
-
-//     await SupabaseConnect.deleteList(listId: listId);
-
-//     log("✅ confirmDeleteList: list $listId deleted successfully");
-//   } catch (e, stack) {
-//     log("❌ confirmDeleteList: failed to delete list $listId\n$e\n$stack");
-//     rethrow;
-//   }
-// }
-
 Future<void> confirmDeleteList(String listId) async {
   try {
     log("🧨 confirmDeleteList: attempting to delete list $listId");
@@ -496,6 +415,5 @@ Future<void> confirmDeleteList(String listId) async {
     rethrow;
   }
 }
-
 // ================================================== End Delete Lists =======================================================
 }

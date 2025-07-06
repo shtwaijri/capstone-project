@@ -75,7 +75,7 @@ void showAddListButtomSheet({
                           )
                         : ButtomWidget(
                             onTab: () {
-                              final name = addListController.text.trim();
+                              final name = addListController.text.trim(); // trim to remove any leading or trailing spaces
 
                               if (name.isEmpty) {
                                 // هنا تقدر تعرض رسالة للمستخدم مثلاً باستخدام SnackBar
@@ -93,7 +93,11 @@ void showAddListButtomSheet({
                                   createdAt: DateTime.now(),
                                 ),
                               );
+                              addListController.clear();
                               Navigator.pop(context);
+                              context.read<AddListBloc>().add(
+                                LoadListsEvent(),
+                              ); // Reload lists manually
                             },
                             textElevatedButton: 'Create list',
                           ),

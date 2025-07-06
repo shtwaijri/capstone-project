@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,29 +11,25 @@ part 'complete_profile_state.dart';
 
 class CompleteProfileBloc
     extends Bloc<CompleteProfileEvent, CompleteProfileState> {
-  String _name = '';
+  // final String _name = '';
 
   CompleteProfileBloc() : super(CompleteProfileInitial()) {
-    on<AddNameEvent>((event, emit) {
-      emit(CompleteProfileInitial(name: event.name));
-      _name = event.name;
-    });
-
     on<SendNameEvent>((event, emit) async {
-      if (_name.trim().isEmpty) {
+      //check if the name is empty
+      if (event.name.trim().isEmpty) {
+        //emit an error if the name is empty
         emit(
           CompleteProfileInitial(
-            name: _name,
-            nameError: 'The name is required',
+            name: event.name,
+            nameError: tr('nameRequired'),
           ),
         );
         return;
       }
-
       await _submitProfile(event, emit);
     });
   }
-
+  //method to handle the process of the submitting profile
   Future<void> _submitProfile(
     SendNameEvent event,
     Emitter<CompleteProfileState> emit,
@@ -39,28 +37,29 @@ class CompleteProfileBloc
     emit(CompleteProfileLoading());
 
     try {
-      final user = Supabase.instance.client.auth.currentUser;
-      if (user == null) {
-        throw Exception('User not authenticated');
+      //get the userID
+      final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
+      if (userId == null) {
+        throw Exception(tr('notLoggedIn'));
       }
-
+      //check if the user already have a profile in supabase
       final existingUser = await Supabase.instance.client
           .from('app_user')
           .select('name')
-          .eq('auth_user_id', user.id)
+          .eq('auth_user_id', userId)
           .maybeSingle();
-
+      //return an error if the user have a profile
       if (existingUser != null &&
           existingUser['name'] != null &&
           existingUser['name'].toString().isNotEmpty) {
-        emit(CompleteProfileFailure('You already have a profile', error: ''));
+        emit(CompleteProfileFailure(tr('haveProfile'), error: ''));
         return;
       }
 
       await AuthLayer.completeUserProfile(
-        userId: user.id,
-        name: _name.trim(),
-        email: user.email,
+        userId: userId,
+        name: event.name.trim(),
+        email: Supabase.instance.client.auth.currentSession?.user.email,
       );
 
       emit(CompleteProfileSuccess());

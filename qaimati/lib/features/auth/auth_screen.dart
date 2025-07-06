@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/auth/bloc/auth_bloc.dart';
 import 'package:qaimati/features/auth/otp_screen.dart';
+import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
@@ -11,9 +12,7 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class AuthScreen extends StatelessWidget {
-  AuthScreen({super.key});
-
-  final _formKey = GlobalKey<FormState>();
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class AuthScreen extends StatelessWidget {
           final bloc = context.read<AuthBloc>();
           return Scaffold(
             appBar: AppBarWidget(
-              title: tr('Welcome to Qaimati'),
+              title: tr('welcome'),
               showActions: true,
               showSearchBar: false,
             ),
@@ -35,76 +34,91 @@ class AuthScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Text(
-                    tr("Enter your email to create your account or login"),
-                    style: StyleText.regular16(context),
-                  ),
+                  Text(tr("enterEmail"), style: StyleText.regular16(context)),
                   const SizedBox(height: 24),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: bloc.emailController,
-                          decoration: InputDecoration(
-                            labelText: tr('Email'),
-                            labelStyle: StyleText.regular16(context),
-                            border: const OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "${tr('authEmail')} ${tr("titlenotempty")}";
-                            }
-                            if (!value.contains('@')) {
-                              return tr('authEmail') +
-                                  " " +
-                                  tr("authForgotPassword");
-                            }
-                            return null;
-                          },
-                          style: StyleText.regular16(context),
+                  Column(
+                    children: [
+                      TextFormField(
+                        //email controller from the authbloc
+                        controller: bloc.emailController,
+                        decoration: InputDecoration(
+                          labelText: tr('emailHint'),
+                          labelStyle: StyleText.regular16(context),
+                          border: const OutlineInputBorder(),
                         ),
-                        const SizedBox(height: 20),
-                        BlocListener<AuthBloc, AuthState>(
-                          listener: (context, state) {
-                            if (state is OtpSentState) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => BlocProvider.value(
-                                    value: context.read<AuthBloc>(),
-                                    child: OtpScreen(),
+                        style: StyleText.regular16(context),
+                      ),
+                      //blocbuilder rebuild the UI after listeing  for the changes in bloc
+                      //for error meassages
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          String errorMsg = "";
+                          if (state is ErrorState) {
+                            errorMsg = state.msg;
+                          }
+                          //display the error msgs if it is not empty
+                          return errorMsg.isNotEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.all(
+                                    context.getWidth() * 0.02,
                                   ),
-                                ),
-                              );
-                            } else if (state is ErrorState) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(state.msg)),
-                              );
-                            }
-                          },
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              elevatedButtonTheme: ElevatedButtonThemeData(
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(
-                                    const Color(0xFFB4DE95),
+                                  child: Align(
+                                    alignment:
+                                        //get the current lang
+                                        (Localizations.localeOf(
+                                              context,
+                                            ).languageCode ==
+                                            'ar')
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          errorMsg,
+                                          style: StyleText.bold12(
+                                            context,
+                                          ).copyWith(color: StyleColor.error),
+                                        ),
+                                      ],
+                                    ),
                                   ),
+                                )
+                              : SizedBox.shrink();
+                        },
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                      //without rebuilding the widget, we use listner to handle the navigation
+                      BlocListener<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          if (state is OtpSentState) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                //using provider.value to keep the same instance of authbloc
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<AuthBloc>(),
+                                  child: OtpScreen(),
                                 ),
                               ),
-                            ),
-                            child: ButtomWidget(
-                              onTab: () {
-                                if (_formKey.currentState?.validate() == true) {
-                                  bloc.add(SendOtpEvent());
-                                }
-                              },
-                              textElevatedButton: tr('onboardingNext'),
-                            ),
-                          ),
+                            );
+                          }
+                        },
+                        //custom elevated button
+                        child: ButtomWidget(
+                          onTab: () {
+                            //validate the email before send the otp
+                            final email = bloc.emailController.text.trim();
+
+                            bloc.add(ValidateEmailEvent(email: email));
+                          },
+                          textElevatedButton: tr('onboardingNext'),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
