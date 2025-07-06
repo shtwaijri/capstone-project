@@ -12,25 +12,46 @@ part 'add_list_state.dart';
 class AddListBloc extends Bloc<AddListEvent, AddListState> {
   int selectColor = 1;
   final appGetit = GetIt.I.get<AppDatatLayer>();
-  changeColor(int index) { // this function to change color when user click on any color, i will use the select color to store it in datebase
+  changeColor(int index) {
+    // this function to change color when user click on any color, i will use the select color to store it in datebase
     selectColor = index;
     // ignore: invalid_use_of_visible_for_testing_member
-    emit(UpdateState());
+    emit(AddListColorUpdated());
   }
 
   AddListBloc() : super(AddListInitial()) {
-    on<AddListEvent>((event, emit) {});
+    // on<AddListEvent>((event, emit) {});
+    on<LoadListsEvent>(loadListsMethod); // << هذا هو الجديد
     on<CreateListEvent>(addListMethod);
     on<UpdateListEvent>(updateListMethod);
     on<DeleteListEvent>(deleteListMethod);
   }
 
-  FutureOr<void> addListMethod(AddListEvent event, Emitter<AddListState> emit) {
-  }
+  FutureOr<void> addListMethod(
+    AddListEvent event,
+    Emitter<AddListState> emit,
+  ) {}
 
-  FutureOr<void> updateListMethod(UpdateListEvent event, Emitter<AddListState> emit) {
-  }
+  FutureOr<void> updateListMethod(
+    UpdateListEvent event,
+    Emitter<AddListState> emit,
+  ) {}
 
-  FutureOr<void> deleteListMethod(DeleteListEvent event, Emitter<AddListState> emit) {
+  FutureOr<void> deleteListMethod(
+    DeleteListEvent event,
+    Emitter<AddListState> emit,
+  ) {}
+
+  FutureOr<void> loadListsMethod(
+    LoadListsEvent event,
+    Emitter<AddListState> emit,
+  ) async {
+    try {
+      emit(AddListLoading());
+      await appGetit.loadAdminLists(); 
+      emit(AddListLoaded(appGetit.lists));
+    } catch (e) {
+      emit(AddListError(e.toString()));
+    }
   }
 }
