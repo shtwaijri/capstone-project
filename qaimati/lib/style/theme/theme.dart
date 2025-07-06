@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
 
 class CustomTheme {
   static final lightTheme = ThemeData(
@@ -11,9 +12,9 @@ class CustomTheme {
       onPrimary: StyleColor.black,
       secondary: StyleColor.blue,
       onSecondary: StyleColor.black,
-      error: StyleColor.red,
-      onError: StyleColor.red,
-      surface: StyleColor.green,
+      error: StyleColor.error,
+      onError: StyleColor.error,
+      surface: StyleColor.white,
       onSurface: StyleColor.black,
     ),
     scaffoldBackgroundColor: StyleColor.white,
@@ -47,9 +48,9 @@ class CustomTheme {
       onPrimary: StyleColor.white,
       secondary: StyleColor.blue,
       onSecondary: StyleColor.white,
-      error: StyleColor.red,
-      onError: StyleColor.red,
-      surface: StyleColor.green,
+      error: StyleColor.error,
+      onError: StyleColor.error,
+      surface: StyleColor.black,
       onSurface: StyleColor.white,
     ),
     scaffoldBackgroundColor: StyleColor.black,

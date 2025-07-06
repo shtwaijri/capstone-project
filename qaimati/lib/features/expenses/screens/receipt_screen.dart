@@ -12,7 +12,17 @@ import 'package:qaimati/widgets/dual_action_button_widget.dart';
 /// Screen to handle receipt image upload and input for store name and total amount.
 /// Uses [ReceiptBloc] for state management.
 class ReceiptScreen extends StatelessWidget {
-  const ReceiptScreen({super.key});
+  const ReceiptScreen({
+    super.key,
+    this.storeName,
+    this.totalAmount,
+    this.imageUrl,
+    this.receiptId,
+  });
+  final String? storeName;
+  final String? totalAmount;
+  final String? imageUrl;
+  final String? receiptId;
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +80,13 @@ class ReceiptScreen extends StatelessWidget {
                           ),
                           // Buttons for cancel and submit actions
                           DualActionButtonWidget(
-                            onPrimaryTap: () {},
+                            onPrimaryTap: () {
+                              Navigator.pop(context);
+                            },
                             primaryLabel: 'commonCancel'.tr(),
                             onSecondaryTap: () {
                               bloc.add(SaveReceiptEvent());
+                              Navigator.pop(context);
                             },
                             secondaryLabel: 'receiptSubmit'.tr(),
                             isDelete: false,
@@ -116,11 +129,11 @@ class ReceiptScreen extends StatelessWidget {
                         ),
                         // Buttons for cancel and submit actions
                         DualActionButtonWidget(
-                          onPrimaryTap: () {},
-                          primaryLabel: 'commonCancel'.tr(),
-                          onSecondaryTap: () {
-                            bloc.add(SaveReceiptEvent());
+                          onPrimaryTap: () {
+                            Navigator.pop(context);
                           },
+                          primaryLabel: 'commonCancel'.tr(),
+                          onSecondaryTap: () {},
                           secondaryLabel: 'receiptSubmit'.tr(),
                           isDelete: false,
                           isCancel: true,

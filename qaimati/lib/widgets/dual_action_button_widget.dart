@@ -37,7 +37,7 @@ class DualActionButtonWidget extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: isCancel ? StyleColor.gray : StyleColor.green,
             fixedSize: Size(
-              context.getWidth() * .40,
+              context.getWidth() * .42,
               context.getHeight() * 0.06,
             ),
             shape: RoundedRectangleBorder(
@@ -45,7 +45,7 @@ class DualActionButtonWidget extends StatelessWidget {
             ),
           ),
           onPressed: onPrimaryTap,
-          child: Text(primaryLabel, style: StyleText.buttonText(context)),
+          child: Text(primaryLabel, style: StyleText.buttonText12(context)),
         ),
 
         // Space between buttons
@@ -56,7 +56,7 @@ class DualActionButtonWidget extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: isDelete ? StyleColor.error : StyleColor.green,
             fixedSize: Size(
-              context.getWidth() * .40,
+              context.getWidth() * .42,
               context.getHeight() * 0.06,
             ),
             shape: RoundedRectangleBorder(
@@ -64,7 +64,7 @@ class DualActionButtonWidget extends StatelessWidget {
             ),
           ),
           onPressed: onSecondaryTap,
-          child: Text(secondaryLabel, style: StyleText.buttonText(context)),
+          child: Text(secondaryLabel, style: StyleText.buttonText12(context)),
         ),
       ],
     );

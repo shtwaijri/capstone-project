@@ -69,10 +69,19 @@ class StyleText {
     );
   }
 
-  static TextStyle buttonText(BuildContext context) {
+  static TextStyle buttonText16(BuildContext context) {
     return TextStyle(
       fontFamily: _getFontFamily(context),
       fontSize: 16,
+      fontWeight: FontWeight.w700,
+      color: StyleColor.white,
+    );
+  }
+
+  static TextStyle buttonText12(BuildContext context) {
+    return TextStyle(
+      fontFamily: _getFontFamily(context),
+      fontSize: 12,
       fontWeight: FontWeight.w700,
       color: StyleColor.white,
     );
