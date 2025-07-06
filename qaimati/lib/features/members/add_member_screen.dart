@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:qaimati/features/members/notification_service.dart';
 import 'package:qaimati/features/members/service.dart';
 
 class AddMemberPage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
           children: [
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: "البريد الإلكتروني"),
+              decoration: InputDecoration(labelText: "email"),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -34,12 +33,14 @@ class _AddMemberPageState extends State<AddMemberPage> {
                 final email = emailController.text.trim();
                 print(email);
                 if (email.isNotEmpty) {
+                  print("starrt");
                   // Send invite
                   await sendInvite(email, widget.listId);
+
                   // Show SnackBar after sending the invite
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text('تم إرسال الدعوة!')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('invite has sent successfully')),
+                  );
                 }
               },
               child: Text("add members"),
