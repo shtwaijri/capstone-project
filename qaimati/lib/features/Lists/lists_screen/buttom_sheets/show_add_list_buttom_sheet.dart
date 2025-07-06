@@ -43,7 +43,7 @@ void showAddListButtomSheet({
                       children: [
                         Text('Add new list', style: StyleText.bold16(context)),
                         TextFieldWidget(
-                          // may be i will use 2 text field ================================================= =================================================
+                          // may be i will use 2 text field ================================================= ================================================= no i dont
                           controller: addListController,
                           textHint: 'List name',
                         ),
@@ -78,7 +78,7 @@ void showAddListButtomSheet({
                               final name = addListController.text.trim(); // trim to remove any leading or trailing spaces
 
                               if (name.isEmpty) {
-                                // هنا تقدر تعرض رسالة للمستخدم مثلاً باستخدام SnackBar
+                                
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('List name is required'),

@@ -23,7 +23,6 @@ class ListsScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            backgroundColor: StyleColor.white,
             appBar: AppBarWidget(
               title: 'Lists',
               showActions: false,
@@ -69,10 +68,6 @@ class ListsScreen extends StatelessWidget {
                       } else if (state is AddListLoaded) {
                         final lists = state.lists;
 
-                        // if (lists.isEmpty) {
-                        //   return EmptyWidget(lable: 'No lists here', img: '');
-                        // }
-
                         return lists.isEmpty
                             ? EmptyWidget(
                                 lable: 'no list here',
@@ -89,7 +84,6 @@ class ListsScreen extends StatelessWidget {
                                         showAddListButtomSheet(
                                           context: context,
                                           isEdit: true,
-                                          
                                         );
                                       },
                                       child: CustomListtile(
@@ -118,47 +112,6 @@ class ListsScreen extends StatelessWidget {
               ),
             ),
 
-            // // need to convert to SliverChildBuilderDelegate(...) when get date form database,
-            // GestureDetector(
-            //   onLongPress: () {
-            //     // every one will contain to type press, onPress and onLongPress
-            //     // onpress ot go to items screen (sublistScreen), onLongPress ot edit or delete list
-            //     showAddListButtomSheet(
-            //       context: context,
-            //       isEdit: true,
-            //     ); // same bottom sheet, if isEdit is true, will show edit list
-            //   },
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => SubListScreen(),
-            //         ),
-            //       );
-            //     },
-            //     child: CustomListtile(
-            //       title: 'title1',
-            //       backgroundColor: StyleColor.orange,
-            //     ),
-            //   ),
-            // ),
-            // CustomListtile(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => SubListScreen(),
-            //       ),
-            //     );
-            //   },
-            //   title: 'title',
-            //   backgroundColor: StyleColor.red,
-            // ),
-            // CustomListtile(
-            //   title: 'title',
-            //   backgroundColor: StyleColor.blue,
-            // ),
             floatingActionButton: FloatingButton(
               onpressed: () {
                 showAddListButtomSheet(

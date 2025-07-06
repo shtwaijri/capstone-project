@@ -306,10 +306,10 @@ Future<void> loadAdminLists() async {
 
     final adminLists = await SupabaseConnect.getAdminLists();
 
-    // ✅ تحديث المتغير المحلي
+    // update vriabe
     lists = adminLists;
 
-    // ✅ بث البيانات للمشتركين في الستريم
+    // share data to stream
     listsStreamController.add(adminLists);
 
     log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
@@ -332,10 +332,10 @@ Future<void> loadMemberLists() async {
 
     final memberLists = await SupabaseConnect.getMemberLists();
 
-    // تخزين البيانات داخليًا
+    // update vriabe
     lists = memberLists;
 
-    // بث البيانات إلى أي Widget مشترك في الـ stream
+    // share data to stream
     listsStreamController.add(lists);
 
     log("✅ loadMemberLists: success — loaded ${lists.length} lists");
@@ -359,10 +359,10 @@ Future<void> createNewList(ListModel list) async {
     final newList = await SupabaseConnect.addNewList(list: list);
 
     if (newList != null) {
-      // أضف القائمة الجديدة للمخزن المحلي
+      
       lists.add(newList);
 
-      // بث القوائم الجديدة
+      
       listsStreamController.add(List.from(lists));
 
       log("✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}");
@@ -383,7 +383,7 @@ Future<void> submitListUpdate(ListModel updatedList) async {
 
     await SupabaseConnect.updateList(list: updatedList);
 
-    // تحديث العنصر داخل القائمة المحلية
+    // update data
     final index = lists.indexWhere((l) => l.listId == updatedList.listId);
     if (index != -1) {
       lists[index] = updatedList;
@@ -405,8 +405,8 @@ Future<void> confirmDeleteList(String listId) async {
 
     await SupabaseConnect.deleteList(listId: listId);
 
-    // إزالة القائمة من البيانات المحلية
-    lists.removeWhere((l) => l.listId == listId);
+    // delete list
+    lists.removeWhere((l) => l.listId == listId); // 1.listid search about list and delete it
     listsStreamController.add(List.from(lists));
 
     log("✅ confirmDeleteList: list $listId deleted successfully");

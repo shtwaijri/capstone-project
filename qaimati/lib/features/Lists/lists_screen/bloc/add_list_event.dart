@@ -18,8 +18,8 @@ class LoadListsEvent extends AddListEvent {}
 
 class CreateListEvent extends AddListEvent {
   final String name;
-  final int color; // لو تحتاجه
-  final DateTime createdAt; // حسب الحاجة
+  final int color; 
+  final DateTime createdAt; 
 
   CreateListEvent({
     required this.name,

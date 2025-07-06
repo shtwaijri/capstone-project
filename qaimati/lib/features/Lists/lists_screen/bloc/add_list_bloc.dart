@@ -21,7 +21,7 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
 
   AddListBloc() : super(AddListInitial()) {
     // on<AddListEvent>((event, emit) {});
-    on<LoadListsEvent>(loadListsMethod); // << هذا هو الجديد
+    on<LoadListsEvent>(loadListsMethod); 
     on<CreateListEvent>(addListMethod);
     on<UpdateListEvent>(updateListMethod);
     on<DeleteListEvent>(deleteListMethod);
