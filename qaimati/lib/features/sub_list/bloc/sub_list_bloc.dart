@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/layer_data/app_data.dart';
-import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/models/list/list_model.dart';

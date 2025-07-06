@@ -23,13 +23,13 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   NavigationBloc() : super(NavigationBarState(0)) {
     on<NavigationEvent>((event, emit) {});
     on<NavigationItemSelected>((event, emit) async {
-      try {
-        final user = await fetchUserById();
-        OneSignal.login(user!.userId);
-        log("OneSignal log in in nav corect ");
-      } catch (e) {
-        log("OneSignal log in in nav $e");
-      }
+      // try {
+      //   final user = await fetchUserById();
+      //   OneSignal.login(user!.userId);
+      //   log("OneSignal log in in nav corect ");
+      // } catch (e) {
+      //   log("OneSignal log in in nav $e");
+      // }
       emit(NavigationBarState(event.index));
     });
   }

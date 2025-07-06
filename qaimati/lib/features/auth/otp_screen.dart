@@ -1,9 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/features/auth/bloc/auth_bloc.dart';
 import 'package:qaimati/features/auth/complete_profile/complete_profile_screen.dart';
 import 'package:qaimati/features/auth/widgets/custom_otp_field.dart';
@@ -11,6 +14,7 @@ import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
+import 'package:qaimati/utilities/helper/userId_helper.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 
@@ -86,6 +90,13 @@ class OtpScreen extends StatelessWidget {
 
                     //if the user is new, we navigate him to complete profile
                     if (state is NewUserState) {
+                      try {
+                        final user = await fetchUserById();
+                        OneSignal.login(user!.userId);
+                        log("OneSignal log in in otp corect ");
+                      } catch (e) {
+                        log("OneSignal log in in otp $e");
+                      }
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
