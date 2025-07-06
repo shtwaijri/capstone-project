@@ -5,10 +5,8 @@ import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
 import 'package:qaimati/features/Lists/lists_screen/member_lists.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
-// import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
-import 'package:qaimati/models/list/list_model.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
@@ -21,7 +19,6 @@ class ListsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      // till now "fineshed select color" no binifit, maybe i need it later
       create: (_) => AddListBloc()..add(LoadListsEvent()),
       child: Builder(
         builder: (context) {

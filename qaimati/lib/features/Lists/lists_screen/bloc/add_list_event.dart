@@ -1,26 +1,16 @@
-// part of 'add_list_bloc.dart';
-
-// @immutable
-// sealed class AddListEvent {}
-
-// class LoadListsEvent extends AddListEvent {}
-// class CreateListEvent extends AddListEvent {}
-// class UpdateListEvent extends AddListEvent {}
-// class DeleteListEvent extends AddListEvent {}
-
-
 part of 'add_list_bloc.dart';
 
 @immutable
 sealed class AddListEvent {}
 
 class LoadListsEvent extends AddListEvent {}
+
 class LoadMemberListsEvent extends AddListEvent {}
 
 class CreateListEvent extends AddListEvent {
   final String name;
-  final int color; 
-  final DateTime createdAt; 
+  final int color;
+  final DateTime createdAt;
 
   CreateListEvent({
     required this.name,
@@ -29,16 +19,13 @@ class CreateListEvent extends AddListEvent {
   });
 }
 
-
 class UpdateListEvent extends AddListEvent {
   final ListModel list;
   UpdateListEvent(this.list);
 }
-
 
 class DeleteListEvent extends AddListEvent {
   final String listId;
 
   DeleteListEvent(this.listId);
 }
-
