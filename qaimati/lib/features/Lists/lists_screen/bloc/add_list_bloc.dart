@@ -21,34 +21,34 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
 
   AddListBloc() : super(AddListInitial()) {
     // on<AddListEvent>((event, emit) {});
-    on<LoadListsEvent>(loadListsMethod); 
+    on<LoadListsEvent>(loadListsMethod);
+    on<LoadMemberListsEvent>(loadMemberListsMethod);
     on<CreateListEvent>(addListMethod);
     on<UpdateListEvent>(updateListMethod);
     on<DeleteListEvent>(deleteListMethod);
   }
 
-FutureOr<void> addListMethod(CreateListEvent event, Emitter<AddListState> emit) async {
-  emit(AddListLoading());
+  FutureOr<void> addListMethod(
+    CreateListEvent event,
+    Emitter<AddListState> emit,
+  ) async {
+    emit(AddListLoading());
 
-  try {
-    final newList = ListModel(
-      listId: '',
-      name: event.name,
-      color: event.color,
-      createdAt: event.createdAt,
-    );
+    try {
+      final newList = ListModel(
+        listId: '',
+        name: event.name,
+        color: event.color,
+        createdAt: event.createdAt,
+      );
 
-    await appGetit.createNewList(newList);
-    await appGetit.loadAdminLists();
-    emit(AddListLoaded(appGetit.lists));
-  } catch (e) {
-    emit(AddListError(e.toString()));
+      await appGetit.createNewList(newList);
+      await appGetit.loadAdminLists();
+      emit(AddListLoaded(appGetit.lists));
+    } catch (e) {
+      emit(AddListError(e.toString()));
+    }
   }
-}
-
-
-
-
 
   FutureOr<void> updateListMethod(
     UpdateListEvent event,
@@ -56,23 +56,22 @@ FutureOr<void> addListMethod(CreateListEvent event, Emitter<AddListState> emit) 
   ) {}
 
   FutureOr<void> deleteListMethod(
-  DeleteListEvent event,
-  Emitter<AddListState> emit,
-) async {
-  emit(AddListLoading());
+    DeleteListEvent event,
+    Emitter<AddListState> emit,
+  ) async {
+    emit(AddListLoading());
 
-  try {
-    // حذف القائمة من Supabase
-    await appGetit.confirmDeleteList(event.listId);
+    try {
+      // حذف القائمة من Supabase
+      await appGetit.confirmDeleteList(event.listId);
 
-    // تحديث البيانات بعد الحذف
-    await appGetit.loadAdminLists();
-    emit(AddListLoaded(appGetit.lists));
-  } catch (e) {
-    emit(AddListError(e.toString()));
+      // تحديث البيانات بعد الحذف
+      await appGetit.loadAdminLists();
+      emit(AddListLoaded(appGetit.lists));
+    } catch (e) {
+      emit(AddListError(e.toString()));
+    }
   }
-}
-
 
   FutureOr<void> loadListsMethod(
     LoadListsEvent event,
@@ -80,7 +79,23 @@ FutureOr<void> addListMethod(CreateListEvent event, Emitter<AddListState> emit) 
   ) async {
     try {
       emit(AddListLoading());
-      await appGetit.loadAdminLists(); 
+      await appGetit.loadAdminLists();
+      emit(AddListLoaded(appGetit.lists));
+    } catch (e) {
+      emit(AddListError(e.toString()));
+    }
+  }
+
+  // FutureOr<void> loadMemberListsMethod(LoadListsEvent event, Emitter<AddListState> emit) {
+  // }
+
+  FutureOr<void> loadMemberListsMethod(
+    LoadMemberListsEvent event,
+    Emitter<AddListState> emit,
+  ) async {
+    try {
+      emit(AddListLoading());
+      await appGetit.loadMemberLists();
       emit(AddListLoaded(appGetit.lists));
     } catch (e) {
       emit(AddListError(e.toString()));
