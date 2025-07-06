@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -16,12 +18,18 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     ListsScreen(),
     ExpensesScreen(),
     ProfileScreen(),
+    // ProfileScreen(),
   ];
   NavigationBloc() : super(NavigationBarState(0)) {
     on<NavigationEvent>((event, emit) {});
-    on<NavigationItemSelected>((event, emit)async {
-      final  user=  await fetchUserById();
-    OneSignal.login(user!.userId);
+    on<NavigationItemSelected>((event, emit) async {
+      // try {
+      //   final user = await fetchUserById();
+      //   OneSignal.login(user!.userId);
+      //   log("OneSignal log in in nav corect ");
+      // } catch (e) {
+      //   log("OneSignal log in in nav $e");
+      // }
       emit(NavigationBarState(event.index));
     });
   }

@@ -12,10 +12,25 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 
+
+/// Displays a modal bottom sheet for adding a new item to a list.
+///
+/// This bottom sheet allows users to:
+/// - Select the quantity of the item using `ItemQuantitySelector`.
+/// - Enter the item's name via a `TextFormField` with validation.
+/// - Mark the item as important or not.
+/// - Add the item to the list by dispatching an `AddItemToListEvent` to the `SubListBloc`.
+///
+/// The `SubListBloc` is provided to the bottom sheet using `BlocProvider.value`
+/// and its state is listened to and built using BlocBuilder`
+/// to update the UI components like the quantity selector and the importance icon.
+///
+/// [context] The BuildContext from which the bottom sheet is launched.
+
 void showAddItemBottomShaeet({required BuildContext context}) {
   final bloc = context.read<SubListBloc>();
- bloc.resetValues() ;
-  
+  bloc.resetValues();
+
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
@@ -24,8 +39,8 @@ void showAddItemBottomShaeet({required BuildContext context}) {
     builder: (context) {
       return BlocProvider.value(
         value: bloc,
-        child: BlocConsumer<SubListBloc, SubListState>(
-          listener: (context, state) {},
+        // Changed from BlocConsumer to BlocBuilder as there's no listener logic
+        child: BlocBuilder<SubListBloc, SubListState>(
           builder: (context, state) {
             return Padding(
               padding: EdgeInsets.only(
@@ -65,7 +80,6 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                                   }
                                   return null;
                                 },
-
                                 controller: bloc.itemController,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
@@ -94,16 +108,15 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 context.read<SubListBloc>().add(
-                                  ChooseImportanceEvent(
-                                    isImportant: !bloc.isItemImportant,
-                                  ),
-                                );
+                                      ChooseImportanceEvent(
+                                        isImportant: !bloc.isItemImportant,
+                                      ),
+                                    );
                               },
                               icon: Icon(
                                 !bloc.isItemImportant
                                     ? CupertinoIcons.exclamationmark_square
-                                    : CupertinoIcons
-                                          .exclamationmark_square_fill,
+                                    : CupertinoIcons.exclamationmark_square_fill,
                                 color: StyleColor.red,
                                 size: context.getWidth() * .09,
                               ),
@@ -114,15 +127,14 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                       Spacer(),
                       ButtomWidget(
                         onTab: () {
-                          if (bloc.formKey.currentState!.validate()
-                              &&bloc.number >= 1) {
+                          if (bloc.formKey.currentState!.validate() &&
+                              bloc.number >= 1) {
                             bloc.add(
                               AddItemToListEvent(
                                 itemName: bloc.itemController.text,
                                 quantity: bloc.number,
                                 isImportant: bloc.isItemImportant,
-                                createdBy:bloc.user!.email
-                            
+                                createdBy: bloc.user!.email,
                               ),
                             );
                             Navigator.pop(context);
@@ -139,5 +151,5 @@ void showAddItemBottomShaeet({required BuildContext context}) {
         ),
       );
     },
-  ) ;
+  );
 }

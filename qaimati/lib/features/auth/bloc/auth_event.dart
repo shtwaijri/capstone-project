@@ -3,12 +3,18 @@ part of 'auth_bloc.dart';
 @immutable
 sealed class AuthEvent {}
 
+class ValidateEmailEvent extends AuthEvent {
+  final String email;
+
+  ValidateEmailEvent({required this.email});
+}
+
 class SendOtpEvent extends AuthEvent {}
 
 class VerifyOtpEvent extends AuthEvent {
-  final String token;
+  final String otp;
 
-  VerifyOtpEvent(this.token);
+  VerifyOtpEvent(this.otp);
 }
 
 class OtpOnChangeEvent extends AuthEvent {

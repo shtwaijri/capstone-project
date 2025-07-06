@@ -43,6 +43,7 @@ Future<void> setUp() async {
     seenOnboarding,
     instanceName: 'seenOnboarding',
   );
+
   GetIt.I.registerSingletonAsync<ReceiptData>(
     () async => ReceiptData()..loadAllDataFromSupabase(),
   );

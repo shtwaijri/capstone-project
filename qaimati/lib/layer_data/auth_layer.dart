@@ -1,9 +1,13 @@
+// ignore_for_file: empty_catches
+
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:get_it/get_it.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/repository/supabase.dart';
+import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -65,8 +69,9 @@ class AuthLayer {
   String? getCurrentSessionId() {
     return Supabase.instance.client.auth.currentSession?.user.id;
   }
-   //method to get user id using the supabase
-   Future<AppUserModel?> getUserObj({required String userId}) {
+
+  //method to get user id using the supabase
+  Future<AppUserModel?> getUserObj({required String userId}) {
     return SupabaseConnect.getUserFromAuth(userId);
   }
 
@@ -93,7 +98,6 @@ class AuthLayer {
 
       user = await SupabaseConnect.getUser(userId);
 
-      // ⭐️⭐️⭐️ أضف هذا هنا ⭐️⭐️⭐️
       if (user != null && user!.userId.isNotEmpty) {
         OneSignal.login(user!.userId);
         print(
@@ -108,5 +112,60 @@ class AuthLayer {
     } catch (_) {
       rethrow;
     }
+  }
+
+  // Future<void> _loadUserSettingsAfterLogin(String userId) async {
+  //   // final user = Supabase.instance.client.auth.currentUser;
+  //   // if (user == null) return;
+
+  //   try {
+  //     final response = await Supabase.instance.client
+  //         .from('app_user')
+  //         .select('language_code, theme_mode')
+  //         .eq('auth_user_id', userId)
+  //         .single();
+
+  //     final isDark = response['theme_mode'] == 'dark';
+  //     final isArabic = response['language_code'] == 'ar';
+
+  //     // التأكد من أن الشاشة موجودة قبل المتابعة
+  //     if (!context.mounted) return;
+
+  //     // تغيير اللغة والثيم بناءً على الإعدادات
+  //     await context.setLocale(
+  //       isArabic ? const Locale('ar', 'AR') : const Locale('en', 'US'),
+  //     );
+  //     ThemeController.toggleTheme(isDark);
+  //   } catch (e) {
+  //     print('⚠️ فشل تحميل الإعدادات بعد تسجيل الدخول: $e');
+  //   }
+  // }
+
+  //method to load user lang and theme
+
+  Future<void> loadUserSettings(BuildContext context) async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final response = await Supabase.instance.client
+          .from('app_user')
+          .select('language_code, theme_mode')
+          .eq('auth_user_id', user.id)
+          .single();
+
+      final isDark = response['theme_mode'] == 'dark';
+      final isArabic = response['language_code'] == 'ar';
+
+      //ensure that the screen still exist
+      if (!context.mounted) return;
+
+      //change the lang and theme according to settings
+      await context.setLocale(
+        isArabic ? const Locale('ar', 'AR') : const Locale('en', 'US'),
+      );
+
+      ThemeController.toggleTheme(isDark);
+    } catch (e) {}
   }
 }

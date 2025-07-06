@@ -105,8 +105,10 @@ class ReceiptSupabase {
 
     final startDate = DateTime(year, month, 1);
     final endDate = (month < 12)
-        ? DateTime(year, month + 1, 1).subtract(const Duration(seconds: 1))
-        : DateTime(year + 1, 1, 1).subtract(const Duration(seconds: 1));
+        ? DateTime(year, month + 1, 1)
+        // .subtract(const Duration(seconds: 1))
+        : DateTime(year + 1, 1, 1);
+    // .subtract(const Duration(seconds: 1));
 
     final allData = await SupabaseConnect.supabase!
         .from('receipt')

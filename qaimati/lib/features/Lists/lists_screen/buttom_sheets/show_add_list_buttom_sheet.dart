@@ -43,7 +43,7 @@ void showAddListButtomSheet({
                       children: [
                         Text('Add new list', style: StyleText.bold16(context)),
                         TextFieldWidget(
-                          // may be i will use 2 text field ================================================= =================================================
+                          // may be i will use 2 text field ================================================= ================================================= no i dont
                           controller: addListController,
                           textHint: 'List name',
                         ),
@@ -66,7 +66,10 @@ void showAddListButtomSheet({
                               alertDialog(
                                 context: context,
                                 lable: 'list',
-                                onTab: () {},
+                                onTab: () {
+                                  // bloc.add(DeleteListEvent(currentList.listId));
+                                  // Navigator.pop(context);
+                                },
                               );
                             },
                             secondaryLabel: 'Delete',
@@ -75,7 +78,29 @@ void showAddListButtomSheet({
                           )
                         : ButtomWidget(
                             onTab: () {
+                              final name = addListController.text
+                                  .trim(); // trim to remove any leading or trailing spaces
+
+                              if (name.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('List name is required'),
+                                  ),
+                                );
+                                return;
+                              }
+                              context.read<AddListBloc>().add(
+                                CreateListEvent(
+                                  name: name,
+                                  color: bloc.selectColor,
+                                  createdAt: DateTime.now(),
+                                ),
+                              );
+                              addListController.clear();
                               Navigator.pop(context);
+                              context.read<AddListBloc>().add(
+                                LoadListsEvent(),
+                              ); // Reload lists manually
                             },
                             textElevatedButton: 'Create list',
                           ),
