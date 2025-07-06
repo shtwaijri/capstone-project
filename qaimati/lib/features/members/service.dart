@@ -1,10 +1,20 @@
+import 'package:qaimati/utilities/helper/userId_helper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 ///method to invite members
+// Future<void> sendInvite(String email, String listId) async {
+//   final response = await Supabase.instance.client.from('invite').insert([
+//     {
+//       'app_user_id': fetchUserById(),
+//       'email': email,
+//       'list_id': listId,
+//       'invite_status': 'pending',
+//     },
+//   ]);
 Future<void> sendInvite(String email, String listId) async {
   final response = await Supabase.instance.client.from('invite').insert([
     {
-      'app_user_id': Supabase.instance.client.auth.currentUser?.id,
+      'app_user_id': fetchUserById(),
       'email': email,
       'list_id': listId,
       'invite_status': 'pending',
@@ -29,23 +39,21 @@ Future<void> sendInvite(String email, String listId) async {
         .eq('invite_id', inviteId);
   }
 
-  Future<List<Map<String, dynamic>>> fetchInvitedLists() async {
-    // الحصول على عميل Supabase
+  Future<List<Map<String, dynamic>>?> fetchInvitedLists() async {
     final supabase = Supabase.instance.client;
 
     try {
-      // استعلام للحصول على القوائم المدعوة
       final response = await supabase
           .from('invite')
           .select('list_id, invite_status')
-          .eq('app_user_id', supabase.auth.currentUser?.id as Object)
-          .eq('invite_status', 'accepted'); // فقط استعلام مباشر دون execute()
+          .eq('app_user_id', fetchUserById)
+          .eq('invite_status', 'accepted');
 
-      // إرجاع البيانات مباشرة
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       print('Error: $e');
-      return []; // في حال حدوث أي خطأ
     }
   }
+
+  return null;
 }
