@@ -27,7 +27,7 @@ class ButtomWidget extends StatelessWidget {
       ),
       onPressed: onTab,
       child: Center(
-        child: Text(textElevatedButton, style: StyleText.buttonText(context)),
+        child: Text(textElevatedButton, style: StyleText.buttonText16(context)),
       ),
     );
   }

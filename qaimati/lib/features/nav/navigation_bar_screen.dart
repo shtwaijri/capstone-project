@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/nav/bloc/navigation_bloc.dart';
+import 'package:qaimati/style/style_text.dart';
 
 // / [NavigationBarScreen] displays the main app screens with a bottom navigation bar.
 ///
@@ -28,6 +29,8 @@ class NavigationBarScreen extends StatelessWidget {
                 key: ValueKey(context.locale),
                 body: bloc.screens[state.selectedIndex],
                 bottomNavigationBar: BottomNavigationBar(
+                  selectedLabelStyle: StyleText.bold16(context),
+                  unselectedLabelStyle: StyleText.regular16(context),
                   currentIndex: state.selectedIndex,
                   onTap: (value) {
                     bloc.add(NavigationItemSelected(value));

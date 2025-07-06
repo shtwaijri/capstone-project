@@ -52,6 +52,7 @@ void main() async {
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
+
       startLocale: startLocale,
 
       child: MyApp(startThemeMode: startThemeMode),

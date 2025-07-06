@@ -2,12 +2,21 @@ import 'package:qaimati/features/expenses/model/receipt_model.dart';
 import 'package:qaimati/features/expenses/repository/receipt_supabeas.dart';
 
 class ReceiptData {
-  List<ReceiptModel> receipts = [];
+  List<ReceiptModel> allReceipts = [];
+  List<ReceiptModel> monthlyReceipts = [];
+  Future<List<ReceiptModel>> loadAllDataFromSupabase() async {
+    allReceipts = await ReceiptSupabase().getAllReceipt();
+    return allReceipts;
+  }
 
-  Future<List<ReceiptModel>> loadDataFromSupabase() async {
-    receipts = await ReceiptSupabeas(
-      userId: "264db79b-d37b-4635-899c-35b582db9102",
-    ).getReceipt();
-    return receipts;
+  Future<List<ReceiptModel>> loadMonthlyDataFromSupabase({
+    required int year,
+    required int month,
+  }) async {
+    allReceipts = await ReceiptSupabase().getMonthlyReceipts(
+      year: year,
+      month: month,
+    );
+    return allReceipts;
   }
 }

@@ -1,12 +1,13 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/expenses/bloc/expenses/expenses_bloc.dart';
 import 'package:qaimati/features/expenses/screens/receipt_screen.dart';
+import 'package:qaimati/features/expenses/widgets/calendar_widget.dart';
 import 'package:qaimati/features/expenses/widgets/receipt_widget.dart';
 import 'package:qaimati/features/expenses/widgets/spending_widget.dart';
+import 'package:qaimati/features/expenses/widgets/update_wigdet.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
@@ -21,10 +22,16 @@ class ExpensesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ExpensesBloc(),
+      create: (context) => ExpensesBloc()
+        ..add(
+          MonthChangedEvent(
+            year: DateTime.now().year,
+            month: DateTime.now().month,
+          ),
+        ),
       child: Builder(
         builder: (context) {
-          final bloc = context.read<ExpensesBloc>()..add(LoadingReceiptEvent());
+          final bloc = context.read<ExpensesBloc>();
           return Scaffold(
             appBar: AppBarWidget(
               title: 'receiptExpenses'.tr(),
@@ -34,94 +41,191 @@ class ExpensesScreen extends StatelessWidget {
 
             body: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                spacing: 16,
-                children: [
-                  // Widget showing total spending amount
-                  SpendingWidget(money: 100),
-                  // Thin gray divider line
-                  Container(color: StyleColor.gray, height: 3),
-                  // Header row with icon and localized text "Receipt Summary"
-                  ListTile(
-                    leading: Icon(
-                      Icons.receipt,
-                      size: 30,
-                      color: StyleColor.green,
-                    ),
-                    title: Text(
-                      'receiptSummary'.tr(),
-                      style: StyleText.bold16(context),
-                    ),
-                  ),
+              child: BlocBuilder<ExpensesBloc, ExpensesState>(
+                builder: (context, state) {
+                  return Column(
+                    spacing: 16,
+                    children: [
+                      CalendarWidget(
+                        formattedDate: DateFormat(
+                          'MMMM yyyy',
+                        ).format(bloc.displayedDate),
+                        onDecrementMonth: () {
+                          final previousMonth = DateTime(
+                            bloc.displayedDate.year,
+                            bloc.displayedDate.month - 1,
+                          );
 
-                  // A receipt summary widget with placeholder data
-                  BlocBuilder<ExpensesBloc, ExpensesState>(
-                    builder: (context, state) {
-                      log("Current state: $state");
-                      if (state is LoadingState) {
-                        // Show loading spinner when processing
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (state is LoadingState) {
-                        // Show loading spinner when processing
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (state is SuccessState && state.receipt.isNotEmpty) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: state.receipt.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  SizedBox(height: 16),
-                                  InkWell(
-                                    onTap: () {
-                                      //   showModalBottomSheet(
-                                      //     context: context,
-                                      //     backgroundColor: StyleColor.grey,
-                                      //     shape: const RoundedRectangleBorder(
-                                      //       borderRadius: BorderRadius.vertical(
-                                      //         top: Radius.circular(20),
-                                      //       ),
-                                      //     ),
-                                      //     isScrollControlled: true,
-                                      //     builder: (context) {
-                                      //       return BlocProvider.value(
-                                      //         value: bloc,
-                                      //         child: TaskDetailsSheet(
-                                      //           task: state.tasks[index],
-                                      //         ),
-                                      //       );
-                                      //     },
-                                      //   );
-                                      // },
-                                    },
-                                    child: ReceiptWidget(
-                                      storName: state.receipt[index].supplier,
-                                      total: state.receipt[index].totalAmount
-                                          .toString(),
-                                    ),
-                                  ),
-                                ],
+                          bloc.displayedDate = previousMonth;
+
+                          bloc.add(
+                            MonthChangedEvent(
+                              year: previousMonth.year,
+                              month: previousMonth.month,
+                            ),
+                          );
+                        },
+                        onIncrementMonth: () {
+                          final nextMonth = DateTime(
+                            bloc.displayedDate.year,
+                            bloc.displayedDate.month + 1,
+                          );
+
+                          bloc.displayedDate = nextMonth;
+
+                          bloc.add(
+                            MonthChangedEvent(
+                              year: nextMonth.year,
+                              month: nextMonth.month,
+                            ),
+                          );
+                        },
+                      ),
+                      // Widget showing total spending amount
+                      SpendingWidget(money: bloc.total),
+                      // Thin gray divider line
+                      Container(color: StyleColor.gray, height: 3),
+                      // Header row with icon and localized text "Receipt Summary"
+                      ListTile(
+                        leading: Icon(
+                          Icons.receipt,
+                          size: 30,
+                          color: StyleColor.green,
+                        ),
+                        title: Text(
+                          'receiptSummary'.tr(),
+                          style: StyleText.bold16(context),
+                        ),
+                      ),
+
+                      // A receipt summary widget with placeholder data
+                      Expanded(
+                        child: Builder(
+                          builder: (context) {
+                            log("Current state: $state");
+                            if (state is LoadingState) {
+                              // Show loading spinner when processing
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            if (state is ErrorState) {
+                              // Show loading spinner when processing
+                              return Center(child: Text(state.message));
+                            }
+                            if (state is SuccessState &&
+                                state.receipt.isNotEmpty) {
+                              return ListView.builder(
+                                itemCount: state.receipt.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(height: 16),
+                                      InkWell(
+                                        onTap: () {
+                                          bloc.storeController.text =
+                                              state.receipt[index].supplier;
+                                          bloc.totalController.text = state
+                                              .receipt[index]
+                                              .totalAmount
+                                              .toString();
+                                          showModalBottomSheet(
+                                            showDragHandle: true,
+
+                                            context: context,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                    top: Radius.circular(20),
+                                                  ),
+                                            ),
+                                            isScrollControlled: true,
+                                            builder: (context) {
+                                              return BlocProvider.value(
+                                                value: bloc,
+                                                child: UpdateWigdet(
+                                                  imageUrl: state
+                                                      .receipt[index]
+                                                      .receiptFileUrl,
+                                                  delete: () {
+                                                    bloc.add(
+                                                      DeleteReceiptEvent(
+                                                        state
+                                                            .receipt[index]
+                                                            .receiptId!,
+                                                      ),
+                                                    );
+                                                    Navigator.pop(context);
+                                                  },
+                                                  update: () {
+                                                    bloc.add(
+                                                      UpdateReceiptEvent(
+                                                        state
+                                                            .receipt[index]
+                                                            .receiptId!,
+                                                        {
+                                                          'supplier': bloc
+                                                              .storeController
+                                                              .text,
+                                                          'total_amount':
+                                                              double.tryParse(
+                                                                bloc
+                                                                    .totalController
+                                                                    .text,
+                                                              ) ??
+                                                              0.0,
+                                                        },
+                                                      ),
+                                                    );
+                                                    Navigator.pop(context);
+                                                  },
+                                                  storeController:
+                                                      bloc.storeController,
+                                                  totalController:
+                                                      bloc.totalController,
+                                                ),
+                                              );
+                                            },
+                                          );
+                                          bloc.add(
+                                            MonthChangedEvent(
+                                              year: bloc.displayedDate.year,
+                                              month: bloc.displayedDate.month,
+                                            ),
+                                          );
+                                        },
+
+                                        child: ReceiptWidget(
+                                          storName:
+                                              state.receipt[index].supplier,
+                                          total: state
+                                              .receipt[index]
+                                              .totalAmount
+                                              .toString(),
+                                          currency:
+                                              state.receipt[index].currency,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
-                            },
-                          ),
-                        );
-                      }
-                      return Text(
-                        "receiptNoReceipts".tr(),
-                        style: StyleText.bold24(context),
-                        textAlign: TextAlign.center,
-                      );
-                    },
-                  ),
-                ],
+                            }
+                            return Text(
+                              "receiptNoReceipts".tr(),
+                              style: StyleText.bold16(context),
+                              textAlign: TextAlign.center,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             // Floating button to navigate to ReceiptScreen to add a new receipt
             floatingActionButton: FloatingButton(
               onpressed: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ReceiptScreen()),
                 );

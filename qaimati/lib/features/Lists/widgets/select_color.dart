@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qaimati/features/Lists/widgets/color_widget.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -17,7 +18,7 @@ class SelectColor extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        Text('Choose color', style: StyleText.bold12(context)),
+        Text('listAddAction'.tr(), style: StyleText.bold12(context)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

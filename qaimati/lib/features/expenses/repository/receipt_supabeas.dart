@@ -1,25 +1,21 @@
+import 'dart:typed_data';
 import 'package:qaimati/features/expenses/model/receipt_model.dart';
 import 'package:qaimati/repository/supabase.dart';
+import 'package:qaimati/utilities/helper/userId_helper.dart';
 
-class ReceiptSupabeas {
-  // SupabaseConnect.supabase
-  //     ?.from('app_user')
-  //     .select('user_id')
-  //     .eq('user_id', "264db79b-d37b-4635-899c-35b582db9102");
-
-  final String userId;
-  ReceiptSupabeas({required this.userId});
-  addNewReceipt({required ReceiptModel receipt}) async {
-    final user = await SupabaseConnect.getUser(userId);
+class ReceiptSupabase {
+  Future<void> addNewReceipt({required ReceiptModel receipt}) async {
+    final user = await fetchUserById();
     if (user == null) throw Exception("User not found");
 
-    await SupabaseConnect.supabase
-        ?.from('receipt')
-        .insert(receipt.mapForAddSupabase());
+    await SupabaseConnect.supabase?.from('receipt').insert({
+      ...receipt.mapForAddSupabase(),
+      'app_user_id': user.userId,
+    });
   }
 
-  Future<List<ReceiptModel>> getReceipt() async {
-    final user = await SupabaseConnect.getUser(userId);
+  Future<List<ReceiptModel>> getAllReceipt() async {
+    final user = await fetchUserById();
     if (user == null) throw Exception("User not found");
 
     final allData = await SupabaseConnect.supabase
@@ -29,26 +25,136 @@ class ReceiptSupabeas {
     if (allData == null || allData.isEmpty) {
       return [];
     }
-    return allData.map((receipt) {
+    try {
+      return allData.map((receipt) {
+        return ReceiptModelMapper.fromMap(receipt);
+      }).toList();
+    } catch (e) {
+      throw Exception("Failed to parse receipt data: $e");
+    }
+  }
+
+  Future<List<ReceiptModel>> updateReceipt(
+    Map<String, dynamic> updatedData,
+    String receiptId,
+  ) async {
+    final user = await fetchUserById();
+    if (user == null) throw Exception("User not found");
+
+    final allData = await SupabaseConnect.supabase!
+        .from('receipt')
+        .update(updatedData)
+        .eq('receipt_id', receiptId)
+        .eq('app_user_id', user.userId)
+        .select();
+
+    if (allData.isEmpty) {
+      return [];
+    }
+
+    return allData.map<ReceiptModel>((receipt) {
       return ReceiptModelMapper.fromMap(receipt);
     }).toList();
   }
 
-  // updateReceipt() async {
-  //   final user = await SupabaseConnect.getUser(
-  //     "264db79b-d37b-4635-899c-35b582db9102",
-  //   );
-  //   if (user == null) throw Exception("User not found");
+  Future<void> deleteReceipt(String receiptId) async {
+    final user = await fetchUserById();
+    if (user == null) throw Exception("User not found");
 
-  //   final allData = await SupabaseConnect.supabase?.from('receipt');
-  //   // .update()
-  //   // .eq('receipt_id', receiptId)
-  //   // .eq('app_user_id', userId);
-  //   if (allData == null || allData.isEmpty) {
-  //     return [];
-  //   }
-  //   return allData.map((receipt) {
-  //     return ReceiptModelMapper.fromMap(receipt);
-  //   }).toList();
-  // }
+    try {
+      final response = await SupabaseConnect.supabase!
+          .from('receipt')
+          .delete()
+          .eq('receipt_id', receiptId)
+          .eq('app_user_id', user.userId);
+
+      print("Delete response: $response");
+
+      return;
+    } catch (e) {
+      throw Exception("Delete failed: $e");
+    }
+  }
+
+  Future<String> uploadReceiptToStorage({
+    required Uint8List receiptData,
+  }) async {
+    final user = await fetchUserById();
+    if (user == null) throw Exception("User not found");
+
+    final time = DateTime.now().millisecondsSinceEpoch;
+    final filePath = '${user.userId}/$time.png';
+
+    final response = await SupabaseConnect.supabase!.storage
+        .from('receipt')
+        .uploadBinary(filePath, receiptData);
+
+    if (response.isEmpty) throw Exception("Upload failed");
+
+    return SupabaseConnect.supabase!.storage
+        .from('receipt')
+        .getPublicUrl(filePath);
+  }
+
+  Future<double> getMonthlyTotalAmount({
+    required int year,
+    required int month,
+  }) async {
+    final user = await fetchUserById();
+    if (user == null) throw Exception("User not found");
+
+    final startDate = DateTime(year, month, 1);
+    final endDate = (month < 12)
+        ? DateTime(year, month + 1, 1)
+        // .subtract(const Duration(seconds: 1))
+        : DateTime(year + 1, 1, 1);
+    // .subtract(const Duration(seconds: 1));
+
+    final allData = await SupabaseConnect.supabase!
+        .from('receipt')
+        .select('total_amount')
+        .eq('app_user_id', user.userId)
+        .gte('date', startDate.toIso8601String())
+        .lte('date', endDate.toIso8601String());
+
+    if (allData.isEmpty) return 0;
+
+    double total = 0;
+    for (final item in allData) {
+      final amount = item['total_amount'];
+      if (amount != null) {
+        total += double.tryParse(amount.toString()) ?? 0;
+      }
+    }
+
+    return total;
+  }
+
+  Future<List<ReceiptModel>> getMonthlyReceipts({
+    required int year,
+    required int month,
+  }) async {
+    final user = await fetchUserById();
+    if (user == null) throw Exception("User not found");
+
+    final startDate = DateTime(year, month, 1);
+    final endDate = (month < 12)
+        ? DateTime(year, month + 1, 1).subtract(const Duration(seconds: 1))
+        : DateTime(year + 1, 1, 1).subtract(const Duration(seconds: 1));
+
+    final allData = await SupabaseConnect.supabase
+        ?.from('receipt')
+        .select("*")
+        .eq('app_user_id', user.userId)
+        .gte('date', startDate.toIso8601String())
+        .lte('date', endDate.toIso8601String());
+
+    if (allData == null || allData.isEmpty) {
+      return [];
+    }
+
+    return allData.map((receipt) {
+      return ReceiptModelMapper.fromMap(receipt);
+    }).toList();
+  }
 }

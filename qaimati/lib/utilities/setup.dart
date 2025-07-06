@@ -37,15 +37,25 @@ Future<void> setUp() async {
   GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
 
-  GetIt.I.registerSingletonAsync<ReceiptData>(
-    () async => ReceiptData()..loadDataFromSupabase(),
-  );
   final prefs = await SharedPreferences.getInstance();
   final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
   GetIt.I.registerSingleton<bool>(
     seenOnboarding,
     instanceName: 'seenOnboarding',
   );
+
+  GetIt.I.registerSingletonAsync<ReceiptData>(
+    () async => ReceiptData()..loadAllDataFromSupabase(),
+  );
+  if (!GetIt.I.isRegistered<ReceiptData>()) {
+    GetIt.I.registerSingletonAsync<ReceiptData>(
+      () async => ReceiptData()
+        ..loadMonthlyDataFromSupabase(
+          year: DateTime.now().year,
+          month: DateTime.now().month,
+        ),
+    );
+  }
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {

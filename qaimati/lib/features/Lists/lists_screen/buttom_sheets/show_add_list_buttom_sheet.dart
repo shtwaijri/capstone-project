@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:qaimati/widgets/text_field_widget.dart';
 void showAddListButtomSheet({
   required BuildContext context,
   required bool isEdit,
+  
 }) {
   TextEditingController addListController = TextEditingController();
   showModalBottomSheet(
@@ -41,11 +43,11 @@ void showAddListButtomSheet({
                       spacing: 16,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Add new list', style: StyleText.bold16(context)),
+                        Text('listNew'.tr(), style: StyleText.bold16(context)),
                         TextFieldWidget(
-                          // may be i will use 2 text field ================================================= =================================================
+                          // may be i will use 2 text field ================================================= ================================================= no i dont
                           controller: addListController,
-                          textHint: 'List name',
+                          textHint: 'listName'.tr(),
                         ),
 
                         BlocBuilder<AddListBloc, AddListState>(
@@ -61,23 +63,48 @@ void showAddListButtomSheet({
                     isEdit // if used in add list botton will apearing add list botton, and if used in edit list botton will apearing update and delete buttons
                         ? DualActionButtonWidget(
                             onPrimaryTap: () {},
-                            primaryLabel: 'Save',
+                            primaryLabel: 'listUpdate'.tr(),
                             onSecondaryTap: () {
                               alertDialog(
                                 context: context,
-                                lable: 'list',
-                                onTab: () {},
+                                lable: 'listDeleteConfirm'.tr(),
+                                onTab: () {
+                                  // bloc.add(DeleteListEvent(currentList.listId));
+                                  Navigator.pop(context);
+                                },
                               );
                             },
-                            secondaryLabel: 'Delete',
+                            secondaryLabel: 'listDelete'.tr(),
                             isDelete: true,
                             isCancel: false,
                           )
                         : ButtomWidget(
                             onTab: () {
+                              final name = addListController.text
+                                  .trim(); // trim to remove any leading or trailing spaces
+
+                              if (name.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('List name is required'),
+                                  ),
+                                );
+                                return;
+                              }
+                              context.read<AddListBloc>().add(
+                                CreateListEvent(
+                                  name: name,
+                                  color: bloc.selectColor,
+                                  createdAt: DateTime.now(),
+                                ),
+                              );
+                              addListController.clear();
                               Navigator.pop(context);
+                              context.read<AddListBloc>().add(
+                                LoadListsEvent(),
+                              ); // Reload lists manually
                             },
-                            textElevatedButton: 'Create list',
+                            textElevatedButton: 'listNew'.tr(),
                           ),
                   ],
                 ),

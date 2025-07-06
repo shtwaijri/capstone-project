@@ -29,8 +29,8 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
 
   /// Controller for total amount input field.
   final TextEditingController totalController = TextEditingController();
-
   late String supplier;
+  late String receiptFileUrl;
   late String date;
   late String time;
   late String receiptNumber;
@@ -53,15 +53,17 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     final image = await ImagePickerHelper().pickImage();
     if (image != null) {
       final data = await ReceiptApi().sendReceipt(image);
-
+      // final pdfFile = await convertImageToPdf(image);
+      // log("PDF saved at: ${pdfFile.path}");
+      // receiptFileUrl = pdfFile.;
+      receiptFileUrl = await ReceiptSupabase().uploadReceiptToStorage(
+        receiptData: image.readAsBytesSync(),
+      );
       storController.text = data.supplier;
       totalController.text = data.totalAmount.toString();
-
-      supplier = data.supplier;
       date = data.date;
       time = data.time;
       receiptNumber = data.receiptNumber;
-      totalAmount = data.totalAmount;
       currency = data.currency;
 
       emit(SuccessState(image, data));
@@ -75,13 +77,12 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     SaveReceiptEvent event,
     Emitter<ReceiptState> emit,
   ) async {
-    await ReceiptSupabeas(
-      userId: '264db79b-d37b-4635-899c-35b582db9102',
-    ).addNewReceipt(
+    await ReceiptSupabase().addNewReceipt(
       receipt: ReceiptModel(
-        supplier: supplier,
+        receiptFileUrl: receiptFileUrl,
+        supplier: storController.text,
         receiptNumber: receiptNumber,
-        totalAmount: totalAmount,
+        totalAmount: double.parse(totalController.text),
         currency: currency,
         createdAt: DateTime.now(),
       ),
