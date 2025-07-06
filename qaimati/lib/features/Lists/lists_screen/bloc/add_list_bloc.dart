@@ -56,22 +56,25 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
   ) {}
 
   FutureOr<void> deleteListMethod(
-    DeleteListEvent event,
-    Emitter<AddListState> emit,
-  ) async {
-    emit(AddListLoading());
+  DeleteListEvent event,
+  Emitter<AddListState> emit,
+) async {
+  emit(AddListLoading());
 
-    try {
-      // حذف القائمة من Supabase
-      await appGetit.confirmDeleteList(event.listId);
+  try {
+    // نحذف القائمة بناءً على listId اللي أرسلناه في الحدث
+    await appGetit.confirmDeleteList(event.listId);
 
-      // تحديث البيانات بعد الحذف
-      await appGetit.loadAdminLists();
-      emit(AddListLoaded(appGetit.lists));
-    } catch (e) {
-      emit(AddListError(e.toString()));
-    }
+    // بعدها نحدث القوائم عشان ترجع بدون العنصر المحذوف
+    await appGetit.loadAdminLists();
+
+    // نرجع الحالة الجديدة بالقوائم المحدثة
+    emit(AddListLoaded(appGetit.lists));
+  } catch (e) {
+    emit(AddListError(e.toString()));
   }
+}
+
 
   FutureOr<void> loadListsMethod(
     LoadListsEvent event,

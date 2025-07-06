@@ -845,7 +845,7 @@ static Future<void> updateList({
 
   // ================================================== Start deleteList ==================================================
 
-  static Future<void> deleteList({
+static Future<void> deleteList({
   required String listId,
 }) async {
   try {
@@ -874,14 +874,18 @@ static Future<void> updateList({
       throw Exception('⛔ User is not admin of this list. Deletion denied.');
     }
 
-    // Delete the list
-    await supabase!.from('list').delete().eq('list_id', listId);
+    // 🔥 Delete all rows in list_user_role that reference this list
+    await supabase!.from('list_user_role').delete().eq('list_id', listId);
+    log("✅ Related roles deleted from list_user_role");
 
+    // 🔥 Now delete the list itself
+    await supabase!.from('list').delete().eq('list_id', listId);
     log("✅ List $listId deleted successfully.");
   } catch (e, stack) {
     log("❌ Error in deleteList: $e\n$stack");
     throw Exception("Failed to delete list: $e");
   }
 }
+
   // ================================================== End deleteList ====================================================
 }

@@ -14,9 +14,10 @@ import 'package:qaimati/widgets/text_field_widget.dart';
 void showAddListButtomSheet({
   required BuildContext context,
   required bool isEdit,
-  
+  String? listId, // ✅ جديد
 }) {
   TextEditingController addListController = TextEditingController();
+
   showModalBottomSheet(
     showDragHandle: true,
     backgroundColor: StyleColor.white,
@@ -31,83 +32,85 @@ void showAddListButtomSheet({
             return Container(
               height: context.getHeight() * 0.6,
               padding: const EdgeInsets.all(16.0),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  // this is the  main column, every thing will be in it
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      // this sub clumn will be inside the main column, why i add it? to make spaseBetween buttom and oter widgets on top
-                      spacing: 16,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('listNew'.tr(), style: StyleText.bold16(context)),
-                        TextFieldWidget(
-                          // may be i will use 2 text field ================================================= ================================================= no i dont
-                          controller: addListController,
-                          textHint: 'listName'.tr(),
-                        ),
-
-                        BlocBuilder<AddListBloc, AddListState>(
-                          builder: (context, state) {
-                            return SelectColor(
-                              selected: bloc.selectColor,
-                              onTapSelect: bloc.changeColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    spacing: 16,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('listNew'.tr(), style: StyleText.bold16(context)),
+                      TextFieldWidget(
+                        controller: addListController,
+                        textHint: 'listName'.tr(),
+                      ),
+                      BlocBuilder<AddListBloc, AddListState>(
+                        builder: (context, state) {
+                          return SelectColor(
+                            selected: bloc.selectColor,
+                            onTapSelect: bloc.changeColor,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  isEdit
+                      ? DualActionButtonWidget(
+                          onPrimaryTap: () {},
+                          primaryLabel: 'listUpdate'.tr(),
+                          onSecondaryTap: () {
+                            alertDialog(
+                              context: context,
+                              lable: 'listDeleteConfirm'.tr(),
+                              onTab: () {
+                                if (listId != null) {
+                                  print('🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 listId to delete: $listId 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥');
+                                  context
+                                      .read<AddListBloc>()
+                                      .add(DeleteListEvent(listId));
+                                }
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                context
+                                    .read<AddListBloc>()
+                                    .add(LoadListsEvent());
+                              },
                             );
                           },
-                        ),
-                      ],
-                    ),
-                    isEdit // if used in add list botton will apearing add list botton, and if used in edit list botton will apearing update and delete buttons
-                        ? DualActionButtonWidget(
-                            onPrimaryTap: () {},
-                            primaryLabel: 'listUpdate'.tr(),
-                            onSecondaryTap: () {
-                              alertDialog(
-                                context: context,
-                                lable: 'listDeleteConfirm'.tr(),
-                                onTab: () {
-                                  // bloc.add(DeleteListEvent(currentList.listId));
-                                  Navigator.pop(context);
-                                },
-                              );
-                            },
-                            secondaryLabel: 'listDelete'.tr(),
-                            isDelete: true,
-                            isCancel: false,
-                          )
-                        : ButtomWidget(
-                            onTab: () {
-                              final name = addListController.text
-                                  .trim(); // trim to remove any leading or trailing spaces
+                          secondaryLabel: 'listDelete'.tr(),
+                          isDelete: true,
+                          isCancel: false,
+                        )
+                      : ButtomWidget(
+                          onTab: () {
+                            final name = addListController.text.trim();
 
-                              if (name.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('List name is required'),
-                                  ),
-                                );
-                                return;
-                              }
-                              context.read<AddListBloc>().add(
-                                CreateListEvent(
-                                  name: name,
-                                  color: bloc.selectColor,
-                                  createdAt: DateTime.now(),
+                            if (name.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('List name is required'),
                                 ),
                               );
-                              addListController.clear();
-                              Navigator.pop(context);
-                              context.read<AddListBloc>().add(
-                                LoadListsEvent(),
-                              ); // Reload lists manually
-                            },
-                            textElevatedButton: 'listNew'.tr(),
-                          ),
-                  ],
-                ),
+                              return;
+                            }
+
+                            context.read<AddListBloc>().add(
+                                  CreateListEvent(
+                                    name: name,
+                                    color: bloc.selectColor,
+                                    createdAt: DateTime.now(),
+                                  ),
+                                );
+                            addListController.clear();
+                            Navigator.pop(context);
+                            context
+                                .read<AddListBloc>()
+                                .add(LoadListsEvent());
+                          },
+                          textElevatedButton: 'listNew'.tr(),
+                        ),
+                ],
               ),
             );
           },
@@ -116,3 +119,4 @@ void showAddListButtomSheet({
     },
   );
 }
+

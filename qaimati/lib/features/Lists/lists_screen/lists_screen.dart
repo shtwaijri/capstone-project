@@ -87,6 +87,7 @@ class ListsScreen extends StatelessWidget {
                                         showAddListButtomSheet(
                                           context: context,
                                           isEdit: true,
+                                          listId: list.listId,
                                         );
                                       },
                                       child: CustomListtile(
