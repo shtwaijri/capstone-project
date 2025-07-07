@@ -4,6 +4,33 @@ import 'package:qaimati/repository/supabase.dart';
 import 'package:qaimati/utilities/helper/userId_helper.dart';
 
 class ReceiptSupabase {
+  Future<void> checkAddReceiptEligibility() async {
+    final user = await fetchUserById();
+    if (user == null) throw Exception("User not found");
+
+    final appUser = await SupabaseConnect.supabase!
+        .from('app_user')
+        .select('is_prime')
+        .eq('user_id', user.userId)
+        .maybeSingle();
+
+    final receipts = await SupabaseConnect.supabase!
+        .from('receipt')
+        .select('receipt_id')
+        .eq('app_user_id', user.userId);
+
+    bool isPrime = false;
+    if (appUser != null && appUser['is_prime'] == true) {
+      isPrime = true;
+    }
+
+    if (!isPrime && receipts.length >= 3) {
+      throw Exception(
+        "وصلت للحد الأقصى (3 فواتير). اشترك في برايم لإضافة المزيد.",
+      );
+    }
+  }
+
   Future<void> addNewReceipt({required ReceiptModel receipt}) async {
     final user = await fetchUserById();
     if (user == null) throw Exception("User not found");

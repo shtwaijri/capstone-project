@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
@@ -44,8 +45,7 @@ class ReceiptWidget extends StatelessWidget {
             // Row showing currency icon and total amount
             Row(
               children: [
-                Text(currency, style: StyleText.bold16(context)),
-                // SvgPicture.asset('assets/svg/Riyal.svg', width: 16, height: 16),
+                SvgPicture.asset('assets/svg/Riyal.svg', width: 16, height: 16),
                 StyleSize.sizeW8,
                 Text(total, style: StyleText.bold16(context)),
               ],

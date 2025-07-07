@@ -203,7 +203,7 @@ class ProfileScreen extends StatelessWidget {
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () {
-                                Navigator.of(context).pushReplacement(
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => PaymentScreen(),
                                   ),
