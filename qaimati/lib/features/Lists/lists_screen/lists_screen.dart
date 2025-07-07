@@ -6,6 +6,8 @@ import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
 import 'package:qaimati/features/Lists/lists_screen/member_lists.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
+import 'package:qaimati/features/members/invite/bloc/invite_bloc.dart';
+import 'package:qaimati/features/members/invite/invite_screen.dart';
 import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -17,19 +19,77 @@ import 'package:qaimati/widgets/floating_button.dart';
 class ListsScreen extends StatelessWidget {
   ListsScreen({super.key});
   final TextEditingController addListController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AddListBloc()..add(LoadListsEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AddListBloc()..add(LoadListsEvent())),
+        BlocProvider(
+          create: (_) => InviteBloc()..add(FetchInvitedListsEvent()),
+        ),
+      ],
       child: Builder(
         builder: (context) {
           final bloc = context.read<AddListBloc>();
           return Scaffold(
-            appBar: AppBarWidget(
-              title: 'listTitle'.tr(),
-              showActions: false,
-              showSearchBar: true,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(
+                140,
+              ), // نفس ارتفاع AppBarWidget
+              child: Stack(
+                children: [
+                  AppBarWidget(
+                    title: 'listTitle'.tr(),
+                    showActions: true,
+                    showSearchBar: true,
+                    actionsIcon: const [],
+                  ),
+
+                  Positioned(
+                    top: 30,
+                    right: 16,
+                    child: BlocBuilder<InviteBloc, InviteState>(
+                      builder: (context, state) {
+                        final hasInvites =
+                            state is InviteLoadedState &&
+                            state.invitedLists.isNotEmpty;
+
+                        return Stack(
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.notifications,
+                                color: Colors.green,
+                                size: 28,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const InvitationsScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            if (hasInvites)
+                              const Positioned(
+                                top: 4,
+                                right: 4,
+                                child: CircleAvatar(
+                                  radius: 5,
+                                  backgroundColor: Colors.red,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
+
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

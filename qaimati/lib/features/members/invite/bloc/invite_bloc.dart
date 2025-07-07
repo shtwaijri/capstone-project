@@ -18,6 +18,7 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
   InviteBloc() : super(InviteInitialState()) {
     on<FetchInvitedListsEvent>(_onFetchInvitations);
     on<AcceptInviteEvent>(_onAcceptInvitation);
+    on<RejectInviteEvent>(_onRejectInvitation);
   }
 
   FutureOr<void> _onAcceptInvitation(
@@ -48,6 +49,23 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
     }
   }
 
+  FutureOr<void> _onRejectInvitation(
+    RejectInviteEvent event,
+    Emitter<InviteState> emit,
+  ) async {
+    try {
+      await _supabaseClient
+          .from('invite')
+          .update({'invite_status': 'rejected'})
+          .eq('invite_id', event.inviteId);
+
+      add(FetchInvitedListsEvent());
+    } catch (e) {
+      log('error rejecting invite: $e');
+      emit(InviteErrorState('Error rejecting invitation'));
+    }
+  }
+
   FutureOr<void> _onFetchInvitations(
     FetchInvitedListsEvent event,
     Emitter<InviteState> emit,
@@ -63,34 +81,26 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
           .eq('receiver_email', user!.email)
           .order('created_at', ascending: false);
 
-      final invited = List<Map<String, dynamic>>.from(response);
+      final pendingInvites = response.where((invite) {
+        return invite['invite_status'] == null ||
+            invite['invite_status'] == 'pending';
+      }).toList();
 
-      final notiResponse = await _supabaseClient
-          .from('invite')
-          .select()
-          .eq('app_user_id', user.userId)
-          .order('created_at', ascending: false);
-
-      final notifications = <InviteModel>[];
-      for (var item in notiResponse) {
-        notifications.add(InviteModelMapper.fromMap(item));
-      }
-
-      final updatedInvites = invited.map((invite) {
-        final listInfo = invite['list'] as Map<String, dynamic>;
-        invite['list_name'] = listInfo['name'] ?? 'Unknown List';
+      final updatedInvites = pendingInvites.map((invite) {
+        final listInfo = invite['list'] as Map<String, dynamic>?;
+        invite['list_name'] = listInfo?['name'] ?? 'Unknown List';
         return invite;
       }).toList();
 
       emit(
         InviteLoadedState(
           invitedLists: updatedInvites,
-          notifications: notifications,
+          notifications: [], // تقدر تحط إشعارات إذا تحتاجها لاحقًا
         ),
       );
     } catch (e) {
       log('Error fetching invited lists: $e');
-      emit(InviteErrorState('Failed to load data'));
+      emit(InviteErrorState('Failed to load invitations'));
     }
   }
 }
