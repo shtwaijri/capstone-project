@@ -26,12 +26,12 @@ class InviteModelMapper extends ClassMapperBase<InviteModel> {
   static String? _$appUserId(InviteModel v) => v.appUserId;
   static const Field<InviteModel, String> _f$appUserId =
       Field('appUserId', _$appUserId, key: r'app_user_id');
-  static String? _$listiId(InviteModel v) => v.listiId;
-  static const Field<InviteModel, String> _f$listiId =
-      Field('listiId', _$listiId, key: r'list_id');
+  static String? _$listId(InviteModel v) => v.listId;
+  static const Field<InviteModel, String> _f$listId =
+      Field('listId', _$listId, key: r'list_id');
   static String? _$inviteStatus(InviteModel v) => v.inviteStatus;
   static const Field<InviteModel, String> _f$inviteStatus =
-      Field('inviteStatus', _$inviteStatus, key: r'invite_ststus');
+      Field('inviteStatus', _$inviteStatus, key: r'invite_status');
   static DateTime _$createdAt(InviteModel v) => v.createdAt;
   static const Field<InviteModel, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt, key: r'created_at');
@@ -49,7 +49,7 @@ class InviteModelMapper extends ClassMapperBase<InviteModel> {
   final MappableFields<InviteModel> fields = const {
     #inviteId: _f$inviteId,
     #appUserId: _f$appUserId,
-    #listiId: _f$listiId,
+    #listId: _f$listId,
     #inviteStatus: _f$inviteStatus,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
@@ -61,7 +61,7 @@ class InviteModelMapper extends ClassMapperBase<InviteModel> {
     return InviteModel(
         inviteId: data.dec(_f$inviteId),
         appUserId: data.dec(_f$appUserId),
-        listiId: data.dec(_f$listiId),
+        listId: data.dec(_f$listId),
         inviteStatus: data.dec(_f$inviteStatus),
         createdAt: data.dec(_f$createdAt),
         updatedAt: data.dec(_f$updatedAt),
@@ -124,7 +124,7 @@ abstract class InviteModelCopyWith<$R, $In extends InviteModel, $Out>
   $R call(
       {String? inviteId,
       String? appUserId,
-      String? listiId,
+      String? listId,
       String? inviteStatus,
       DateTime? createdAt,
       DateTime? updatedAt,
@@ -145,7 +145,7 @@ class _InviteModelCopyWithImpl<$R, $Out>
   $R call(
           {Object? inviteId = $none,
           Object? appUserId = $none,
-          Object? listiId = $none,
+          Object? listId = $none,
           Object? inviteStatus = $none,
           DateTime? createdAt,
           DateTime? updatedAt,
@@ -154,7 +154,7 @@ class _InviteModelCopyWithImpl<$R, $Out>
       $apply(FieldCopyWithData({
         if (inviteId != $none) #inviteId: inviteId,
         if (appUserId != $none) #appUserId: appUserId,
-        if (listiId != $none) #listiId: listiId,
+        if (listId != $none) #listId: listId,
         if (inviteStatus != $none) #inviteStatus: inviteStatus,
         if (createdAt != null) #createdAt: createdAt,
         if (updatedAt != null) #updatedAt: updatedAt,
@@ -165,7 +165,7 @@ class _InviteModelCopyWithImpl<$R, $Out>
   InviteModel $make(CopyWithData data) => InviteModel(
       inviteId: data.get(#inviteId, or: $value.inviteId),
       appUserId: data.get(#appUserId, or: $value.appUserId),
-      listiId: data.get(#listiId, or: $value.listiId),
+      listId: data.get(#listId, or: $value.listId),
       inviteStatus: data.get(#inviteStatus, or: $value.inviteStatus),
       createdAt: data.get(#createdAt, or: $value.createdAt),
       updatedAt: data.get(#updatedAt, or: $value.updatedAt),

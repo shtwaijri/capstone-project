@@ -62,7 +62,7 @@
   "checkoutComplete": "Complete Check Out",
   "movecompleted":"move to completed without receipt",
   "memberNoMembers": "You haven't added any members yet.",
-  "memberAdd": "Add member",
+  "memberAddTitle": "Add member",
   "memberList": "List members",
   "memberDeleteConfirm": "Are you sure you want to delete this member?",
   "memberCreatedBy": "Created by",

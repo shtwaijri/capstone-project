@@ -5,9 +5,10 @@ sealed class InviteEvent {}
 
 class FetchInvitedListsEvent extends InviteEvent {}
 
-class FetchNotificationsEvent extends InviteEvent {}
+class GetNotificationsEvent extends InviteEvent {}
 
 class AcceptInviteEvent extends InviteEvent {
   final String inviteId;
-  AcceptInviteEvent(this.inviteId);
+
+  AcceptInviteEvent({required this.inviteId});
 }
