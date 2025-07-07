@@ -393,7 +393,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     // This connects the device's push notification token to the user's ID in OneSignal.
     try {
       OneSignal.login(user!.userId);
-      appGetit.initStreams(
+      appGetit.initStreamsf(
         user!.userId,
       ); // Initialize the data streams in the AppDatatLayer for the fetched user.
     } catch (e) {
