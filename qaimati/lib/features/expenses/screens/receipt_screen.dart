@@ -86,7 +86,8 @@ class ReceiptScreen extends StatelessWidget {
                             primaryLabel: 'commonCancel'.tr(),
                             onSecondaryTap: () {
                               bloc.add(SaveReceiptEvent());
-                              Navigator.pop(context);
+
+                              Navigator.pop(context, true);
                             },
                             secondaryLabel: 'receiptSubmit'.tr(),
                             isDelete: false,
