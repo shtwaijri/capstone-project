@@ -2,10 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:qaimati/features/members/add_members/add_member_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item_bottom_sheet.dart';
+import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/custom_items_widget/custom_items.dart';
@@ -37,8 +40,9 @@ import 'package:qaimati/widgets/floating_button.dart';
 /// - Uses `BlocBuilder` in the `bottomNavigationBar` to conditionally display
 ///   the completion button based on `isItemsChecked` and `currentUserRole`.
 
-
 class SubListScreen extends StatelessWidget {
+  // final String listId; //added by shatha
+  // final String listName; //added by shatha
   const SubListScreen({super.key});
 
   @override
@@ -54,10 +58,32 @@ class SubListScreen extends StatelessWidget {
                 showAddItemBottomShaeet(context: context);
               },
             ),
+
+            // appBar: AppBar(
+            //   actions: [
+            //     IconButton(
+            //       onPressed: () {},
+            //       icon: Icon(
+            //         CupertinoIcons.person_crop_circle_fill_badge_plus,
+            //         color: StyleColor.green,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            //edited by shatha
             appBar: AppBar(
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final listId = GetIt.I.get<AppDatatLayer>().listId;
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddMemberScreen(listId: listId!),
+                      ),
+                    );
+                  },
                   icon: Icon(
                     CupertinoIcons.person_crop_circle_fill_badge_plus,
                     color: StyleColor.green,
@@ -65,6 +91,7 @@ class SubListScreen extends StatelessWidget {
                 ),
               ],
             ),
+
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -134,7 +161,7 @@ class SubListScreen extends StatelessWidget {
                                         showUpdateDeleteItemBottomSheet(
                                           context: context,
                                           item: item,
-                                         );
+                                        );
                                       },
                                       child: CustomItems(
                                         itemName: item.title,
@@ -173,7 +200,7 @@ class SubListScreen extends StatelessWidget {
                       child: ButtomWidget(
                         onTab: () {
                           bloc.add(CheckoutEvent());
-                         // bloc.add(MarkCheckedItemsAsCompletedEvent());
+                          // bloc.add(MarkCheckedItemsAsCompletedEvent());
                           completeItemBottomsheet(context: context);
                         },
                         textElevatedButton: "CompleteSelected".tr(),
@@ -190,6 +217,3 @@ class SubListScreen extends StatelessWidget {
     );
   }
 }
-
-
-

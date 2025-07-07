@@ -66,7 +66,7 @@ class CompletedScreenBloc
       }
 
       // Initialize the data streams in the AppDatatLayer for the fetched user.
-      appGetit.initStreams(user!.userId);
+      appGetit.initStreamsf(user!.userId);
 
       // Subscribe to the AppDatatLayer's items stream.
       // This BLoC acts as a listener for item updates from the AppDatatLayer.
@@ -103,8 +103,6 @@ class CompletedScreenBloc
           ); // Emit error state.
         },
       );
-
-    
     } catch (e, stack) {
       log(
         "❌ CompletedScreenBloc: Error during stream initialization: $e\n$stack",

@@ -3,18 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:get_it/get_it.dart';
-import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
 import 'package:qaimati/features/intro/onboarding.dart';
-import 'package:qaimati/features/loading/loading_screen.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
-import 'package:qaimati/features/profile/profile_screen.dart';
-import 'package:qaimati/layer_data/auth_layer.dart';
-
 import 'package:qaimati/style/theme/theme.dart';
 import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:qaimati/utilities/setup.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -22,47 +16,44 @@ void main() async {
 
   await EasyLocalization.ensureInitialized();
   await setUp();
-  //ensure all singletons (like AuthLayer) are initialized before running the app
   await GetIt.I.allReady();
 
   final session = Supabase.instance.client.auth.currentSession;
   Locale startLocale = const Locale('en', 'US');
-  ThemeMode startThemeMode = ThemeMode.light;
-  // if (session != null) {
-  //   try {
-  //     final response = await Supabase.instance.client
-  //         .from('app_user')
-  //         .select('language_code, theme_mode')
-  //         .eq('auth_user_id', session.user.id)
-  //         .single();
 
-  //     final isDark = response['theme_mode'] == 'dark';
-  //     final isArabic = response['language_code'] == 'ar';
-  //     startLocale = isArabic
-  //         ? const Locale('ar', 'AR')
-  //         : const Locale('en', 'US');
-  //     startThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+  if (session != null) {
+    try {
+      final response = await Supabase.instance.client
+          .from('app_user')
+          .select('language_code, theme_mode')
+          .eq('auth_user_id', session.user.id)
+          .single();
 
-  //     ThemeController.toggleTheme(isDark);
+      final isDark = response['theme_mode'] == 'dark';
+      final isArabic = response['language_code'] == 'ar';
 
-  //   } catch (e) {}
-  // }
+      startLocale = isArabic
+          ? const Locale('ar', 'AR')
+          : const Locale('en', 'US');
+
+      ThemeController.toggleTheme(isDark);
+    } catch (e) {}
+  }
+
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
-
       startLocale: startLocale,
-
-      child: MyApp(startThemeMode: startThemeMode),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final ThemeMode startThemeMode;
-  const MyApp({super.key, required this.startThemeMode});
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final seenOnboarding = GetIt.I.get<bool>(instanceName: 'seenOnboarding');

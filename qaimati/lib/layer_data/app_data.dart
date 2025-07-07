@@ -31,7 +31,7 @@ class AppDatatLayer {
 
   /// Initializes the real-time streams for items and lists for the given user.
   /// This method sets up listeners to Supabase data changes.
-  void initStreams(String userId) {
+  void initStreamsf(String userId) {
     log("AppDatatLayer: Initializing streams for userId: $userId");
 
     // Cancel any existing subscriptions to prevent memory leaks and duplicate listeners
@@ -133,7 +133,7 @@ class AppDatatLayer {
 
     // Add the found completed items to the map, using the list's name as the key.
     // Assumes list.name is unique for this purpose, or handles collisions as needed.
-    for (var list in lists) {
+    for (ListModel list in lists) {
       final completedItemsForThisList = items
           .where(
             (item) =>
@@ -142,7 +142,7 @@ class AppDatatLayer {
                 item.status == true,
           )
           .toList();
-      allListsAndCompletedItems[list.name] = completedItemsForThisList;
+      allListsAndCompletedItems[list.listId] = completedItemsForThisList;
     }
     log(
       "AppDatatLayer: Generated allCompletedItemsByListName Map. Lists: ${allListsAndCompletedItems.length}",
@@ -298,122 +298,130 @@ class AppDatatLayer {
     }
   }
 
+  // =================================================== Start Admin Lists =====================================================
+  Future<void> loadAdminLists() async {
+    try {
+      log("🔄 loadAdminLists: start");
 
-// =================================================== Start Admin Lists =====================================================
-Future<void> loadAdminLists() async {
-  try {
-    log("🔄 loadAdminLists: start");
+      final adminLists = await SupabaseConnect.getAdminLists();
 
-    final adminLists = await SupabaseConnect.getAdminLists();
+      // update vriabe
+      lists = adminLists;
 
-    // update vriabe
-    lists = adminLists;
+      // share data to stream
+      listsStreamController.add(adminLists);
 
-    // share data to stream
-    listsStreamController.add(adminLists);
+      log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
 
-    log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
-
-    for (final list in adminLists) {
-      log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
+      for (final list in adminLists) {
+        log(
+          "📋 List: id=${list.listId}, name=${list.name}, color=${list.color}",
+        );
+      }
+    } catch (e, stack) {
+      log("❌ loadAdminLists: failed\n$e\n$stack");
+      rethrow;
     }
-
-  } catch (e, stack) {
-    log("❌ loadAdminLists: failed\n$e\n$stack");
-    rethrow;
   }
-}
 
-// ================================================== End Admin Lists =====================================================
-// ================================================== Start member Items ==================================================
-Future<void> loadMemberLists() async {
-  try {
-    log("🔄 loadMemberLists: start");
+  // ================================================== End Admin Lists =====================================================
+  // ================================================== Start member Items ==================================================
+  Future<void> loadMemberLists() async {
+    try {
+      log("🔄 loadMemberLists: start");
 
-    final memberLists = await SupabaseConnect.getMemberLists();
+      final memberLists = await SupabaseConnect.getMemberLists();
 
-    // update vriabe
-    lists = memberLists;
+      // update vriabe
+      lists = memberLists;
 
-    // share data to stream
-    listsStreamController.add(lists);
+      // share data to stream
+      listsStreamController.add(lists);
 
-    log("✅ loadMemberLists: success — loaded ${lists.length} lists");
+      log("✅ loadMemberLists: success — loaded ${lists.length} lists");
 
-    for (final list in lists) {
-      log("📋 List: id=${list.listId}, name=${list.name}, color=${list.color}");
+      for (final list in lists) {
+        log(
+          "📋 List: id=${list.listId}, name=${list.name}, color=${list.color}",
+        );
+      }
+    } catch (e, stack) {
+      log("❌ loadMemberLists: failed\n$e\n$stack");
+      rethrow;
     }
-
-  } catch (e, stack) {
-    log("❌ loadMemberLists: failed\n$e\n$stack");
-    rethrow;
   }
-}
 
-// ================================================== End member Items =====================================================
-// ================================================== Start add New Lists ==================================================
-Future<void> createNewList(ListModel list) async {
-  try {
-    log("🟢 createNewList: started");
+  // ================================================== End member Items =====================================================
+  // ================================================== Start add New Lists ==================================================
+  Future<void> createNewList(ListModel list) async {
+    try {
+      log("🟢 createNewList: started");
 
-    final newList = await SupabaseConnect.addNewList(list: list);
+      final newList = await SupabaseConnect.addNewList(list: list);
 
-    if (newList != null) {
-      
-      lists.add(newList);
+      if (newList != null) {
+        lists.add(newList);
 
-      
+        listsStreamController.add(List.from(lists));
+
+        log(
+          "✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}",
+        );
+      } else {
+        log("⚠ createNewList: no list returned");
+      }
+    } catch (e, stack) {
+      log("❌ createNewList: failed\n$e\n$stack");
+      rethrow;
+    }
+  }
+
+  // ================================================== End add New Lists ====================================================
+  // ================================================== Start Update Lists =====================================================
+  Future<void> submitListUpdate(ListModel updatedList) async {
+    try {
+      log("🔄 submitListUpdate: started for listId=${updatedList.listId}");
+
+      await SupabaseConnect.updateList(list: updatedList);
+
+      // update data
+      final index = lists.indexWhere((l) => l.listId == updatedList.listId);
+      if (index != -1) {
+        lists[index] = updatedList;
+        listsStreamController.add(List.from(lists));
+      }
+
+      log(
+        "✅ submitListUpdate: updated list ${updatedList.listId} (name=${updatedList.name}, color=${updatedList.color})",
+      );
+    } catch (e, stack) {
+      log(
+        "❌ submitListUpdate: failed to update list ${updatedList.listId}\n$e\n$stack",
+      );
+      rethrow;
+    }
+  }
+
+  // ================================================== End Update Lists =======================================================
+  // ================================================== Start Delete Lists =====================================================
+  Future<void> confirmDeleteList(String listId) async {
+    try {
+      log("🧨 confirmDeleteList: attempting to delete list $listId");
+
+      await SupabaseConnect.deleteList(listId: listId);
+
+      // delete list
+      lists.removeWhere(
+        (l) => l.listId == listId,
+      ); // 1.listid search about list and delete it
       listsStreamController.add(List.from(lists));
 
-      log("✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}");
-    } else {
-      log("⚠ createNewList: no list returned");
+      log("✅ confirmDeleteList: list $listId deleted successfully");
+    } catch (e, stack) {
+      log("❌ confirmDeleteList: failed to delete list $listId\n$e\n$stack");
+      rethrow;
     }
-
-  } catch (e, stack) {
-    log("❌ createNewList: failed\n$e\n$stack");
-    rethrow;
   }
-}
-// ================================================== End add New Lists ====================================================
-// ================================================== Start Update Lists =====================================================
-Future<void> submitListUpdate(ListModel updatedList) async {
-  try {
-    log("🔄 submitListUpdate: started for listId=${updatedList.listId}");
 
-    await SupabaseConnect.updateList(list: updatedList);
-
-    // update data
-    final index = lists.indexWhere((l) => l.listId == updatedList.listId);
-    if (index != -1) {
-      lists[index] = updatedList;
-      listsStreamController.add(List.from(lists));
-    }
-
-    log("✅ submitListUpdate: updated list ${updatedList.listId} (name=${updatedList.name}, color=${updatedList.color})");
-  } catch (e, stack) {
-    log("❌ submitListUpdate: failed to update list ${updatedList.listId}\n$e\n$stack");
-    rethrow;
-  }
-}
-
-// ================================================== End Update Lists =======================================================
-// ================================================== Start Delete Lists =====================================================
-Future<void> confirmDeleteList(String listId) async {
-  try {
-    log("🧨 confirmDeleteList: attempting to delete list $listId");
-
-    await SupabaseConnect.deleteList(listId: listId);
-
-    // delete list
-    lists.removeWhere((l) => l.listId == listId); // 1.listid search about list and delete it
-    listsStreamController.add(List.from(lists));
-
-    log("✅ confirmDeleteList: list $listId deleted successfully");
-  } catch (e, stack) {
-    log("❌ confirmDeleteList: failed to delete list $listId\n$e\n$stack");
-    rethrow;
-  }
-}
-// ================================================== End Delete Lists =======================================================
+  // ================================================== End Delete Lists =======================================================
 }

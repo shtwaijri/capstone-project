@@ -114,35 +114,6 @@ class AuthLayer {
     }
   }
 
-  // Future<void> _loadUserSettingsAfterLogin(String userId) async {
-  //   // final user = Supabase.instance.client.auth.currentUser;
-  //   // if (user == null) return;
-
-  //   try {
-  //     final response = await Supabase.instance.client
-  //         .from('app_user')
-  //         .select('language_code, theme_mode')
-  //         .eq('auth_user_id', userId)
-  //         .single();
-
-  //     final isDark = response['theme_mode'] == 'dark';
-  //     final isArabic = response['language_code'] == 'ar';
-
-  //     // التأكد من أن الشاشة موجودة قبل المتابعة
-  //     if (!context.mounted) return;
-
-  //     // تغيير اللغة والثيم بناءً على الإعدادات
-  //     await context.setLocale(
-  //       isArabic ? const Locale('ar', 'AR') : const Locale('en', 'US'),
-  //     );
-  //     ThemeController.toggleTheme(isDark);
-  //   } catch (e) {
-  //     print('⚠️ فشل تحميل الإعدادات بعد تسجيل الدخول: $e');
-  //   }
-  // }
-
-  //method to load user lang and theme
-
   Future<void> loadUserSettings(BuildContext context) async {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) return;

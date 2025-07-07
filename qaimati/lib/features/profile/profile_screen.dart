@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
+import 'package:qaimati/features/members/invitations/invitations_screen.dart';
 import 'package:qaimati/features/prime/payment_screen.dart';
 import 'package:qaimati/features/profile/bloc/profile_bloc.dart';
 import 'package:qaimati/features/profile/widgets/custom_alert_dialog.dart';
@@ -233,6 +234,23 @@ class ProfileScreen extends StatelessWidget {
                                       (route) => false,
                                     );
                                   },
+                                );
+                              },
+                            ),
+
+                            CustomWidgetSetting(
+                              icon: Icons.exit_to_app,
+                              text: tr('noti screen'),
+                              style: StyleText.bold16(
+                                context,
+                              ).copyWith(color: StyleColor.error),
+                              color: StyleColor.error,
+                              iconSize: context.getWidth() * 0.06,
+                              onTap: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => InvitationsScreen(),
+                                  ),
                                 );
                               },
                             ),

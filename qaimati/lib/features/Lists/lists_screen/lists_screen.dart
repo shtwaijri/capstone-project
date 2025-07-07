@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
+import 'package:qaimati/features/Lists/lists_screen/member_lists.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
-import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
+// import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -22,9 +24,10 @@ class ListsScreen extends StatelessWidget {
       create: (_) => AddListBloc()..add(LoadListsEvent()),
       child: Builder(
         builder: (context) {
+          final bloc = context.read<AddListBloc>();
           return Scaffold(
             appBar: AppBarWidget(
-              title: 'Lists',
+              title: 'listTitle'.tr(),
               showActions: false,
               showSearchBar: true,
             ),
@@ -40,9 +43,9 @@ class ListsScreen extends StatelessWidget {
                         // cusomt widget
                         icon: Icon(Icons.check_box, color: StyleColor.green),
                         quantity: '0',
-                        lable: 'completed',
+                        lable: 'completed'.tr(),
                         screen:
-                            CompletedScreen(), // tis screen to go to some page
+                            CompletedScreen(), // this screen to go to some page
                       ),
                       ListsButtons(
                         icon: Icon(
@@ -50,8 +53,8 @@ class ListsScreen extends StatelessWidget {
                           color: StyleColor.blue,
                         ),
                         quantity: '0',
-                        lable: 'External list',
-                        screen: ExpensesScreen(),
+                        lable: 'invitedLists'.tr(),
+                        screen: MemberLists(),
                       ),
                     ],
                   ),
@@ -70,9 +73,9 @@ class ListsScreen extends StatelessWidget {
 
                         return lists.isEmpty
                             ? EmptyWidget(
-                                lable: 'no list here',
+                                lable: 'listNoLists'.tr(),
                                 img: '',
-                                hint: 'add list',
+                                hint: 'listAdd'.tr(),
                               )
                             : Expanded(
                                 child: ListView.builder(
@@ -90,6 +93,7 @@ class ListsScreen extends StatelessWidget {
                                         title: list.name,
                                         backgroundColor: list.getColor(),
                                         onPressed: () {
+                                          bloc.appGetit.listId = list.listId;
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

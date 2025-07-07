@@ -15,6 +15,7 @@ part of 'add_list_bloc.dart';
 sealed class AddListEvent {}
 
 class LoadListsEvent extends AddListEvent {}
+class LoadMemberListsEvent extends AddListEvent {}
 
 class CreateListEvent extends AddListEvent {
   final String name;
