@@ -15,7 +15,7 @@ import 'package:qaimati/widgets/text_field_widget.dart';
 void showAddListButtomSheet({
   required BuildContext context,
   required bool isEdit,
-  String? listId, 
+  String? listId,
   ListModel? list,
 }) {
   TextEditingController addListController = TextEditingController(
@@ -101,9 +101,6 @@ void showAddListButtomSheet({
                               lable: 'listDeleteConfirm'.tr(),
                               onTab: () {
                                 if (listId != null) {
-                                  print(
-                                    '🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 listId to delete: $listId 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥',
-                                  );
                                   context.read<AddListBloc>().add(
                                     DeleteListEvent(listId),
                                   );
