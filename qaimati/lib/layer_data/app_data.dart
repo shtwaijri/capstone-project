@@ -31,7 +31,7 @@ class AppDatatLayer {
 
   /// Initializes the real-time streams for items and lists for the given user.
   /// This method sets up listeners to Supabase data changes.
-  void initStreams(String userId) {
+  void initStreamsf(String userId) {
     log("AppDatatLayer: Initializing streams for userId: $userId");
 
     // Cancel any existing subscriptions to prevent memory leaks and duplicate listeners
