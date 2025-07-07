@@ -12,6 +12,8 @@ part 'add_list_state.dart';
 class AddListBloc extends Bloc<AddListEvent, AddListState> {
   int selectColor = 1;
   final appGetit = GetIt.I.get<AppDatatLayer>();
+
+  var list;
   changeColor(int index) {
     // this function to change color when user click on any color, i will use the select color to store it in datebase
     selectColor = index;
@@ -106,9 +108,6 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
       emit(AddListError(e.toString()));
     }
   }
-
-  // FutureOr<void> loadMemberListsMethod(LoadListsEvent event, Emitter<AddListState> emit) {
-  // }
 
   FutureOr<void> loadMemberListsMethod(
     LoadMemberListsEvent event,

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
@@ -76,33 +77,40 @@ class ListsScreen extends StatelessWidget {
                                 hint: 'listAdd'.tr(),
                               )
                             : Expanded(
-                                child: ListView.builder(
-                                  itemCount: lists.length,
-                                  itemBuilder: (context, index) {
-                                    final list = lists[index];
-                                    return GestureDetector(
-                                      onLongPress: () {
-                                        showAddListButtomSheet(
-                                          context: context,
-                                          isEdit: true,
-                                          listId: list.listId,
-                                          list: list,
+                                child: BlocBuilder<AddListBloc, AddListState>(
+                                  builder: (context, state) {
+                                    return ListView.builder(
+                                      itemCount: lists.length,
+                                      itemBuilder: (context, index) {
+                                        final list = lists[index];
+                                        return GestureDetector(
+                                          onLongPress: () {
+                                            showAddListButtomSheet(
+                                              context: context,
+                                              isEdit: true,
+                                              listId: list.listId,
+                                              list: list,
+                                            );
+
+                                            HapticFeedback.heavyImpact();
+                                          },
+                                          child: CustomListtile(
+                                            title: list.name,
+                                            backgroundColor: list.getColor(),
+                                            onPressed: () {
+                                              bloc.appGetit.listId =
+                                                  list.listId;
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SubListScreen(),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
-                                      child: CustomListtile(
-                                        title: list.name,
-                                        backgroundColor: list.getColor(),
-                                        onPressed: () {
-                                          bloc.appGetit.listId = list.listId;
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SubListScreen(),
-                                            ),
-                                          );
-                                        },
-                                      ),
                                     );
                                   },
                                 ),
