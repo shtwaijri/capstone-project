@@ -132,7 +132,7 @@ class AppDatatLayer {
     }
 
     // Add the found completed items to the map, using the list's name as the key.
-    for (var list in lists) {
+    for (ListModel list in lists) {
       final completedItemsForThisList = items
           .where(
             (item) =>
