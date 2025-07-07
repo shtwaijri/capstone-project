@@ -44,7 +44,7 @@ class ListsScreen extends StatelessWidget {
                         quantity: '0',
                         lable: 'completed'.tr(),
                         screen:
-                            CompletedScreen(), // tis screen to go to some page
+                            CompletedScreen(), // this screen to go to some page
                       ),
                       ListsButtons(
                         icon: Icon(
@@ -52,7 +52,7 @@ class ListsScreen extends StatelessWidget {
                           color: StyleColor.blue,
                         ),
                         quantity: '0',
-                        lable: 'externalList'.tr(),
+                        lable: 'invitedLists'.tr(),
                         screen: MemberLists(),
                       ),
                     ],

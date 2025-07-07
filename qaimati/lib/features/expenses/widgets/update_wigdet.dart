@@ -27,45 +27,47 @@ class UpdateWigdet extends StatelessWidget {
     return Container(
       height: context.getHeight() * 0.7,
       padding: const EdgeInsets.all(16),
-      child: Column(
-        spacing: 16,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(
-            imageUrl!,
-            width: context.getWidth(),
-            height: context.getHeight() * 0.4,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return const Text('🛑 فشل تحميل الصورة');
-            },
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-          Text('receiptStore'.tr(), style: StyleText.bold16(context)),
-          TextFieldWidget(
-            controller: storeController,
-            textHint: 'receiptEnterTotal'.tr(),
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          spacing: 16,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              imageUrl!,
+              width: context.getWidth(),
+              height: context.getHeight() * 0.4,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Text('🛑 فشل تحميل الصورة');
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+            Text('receiptStore'.tr(), style: StyleText.bold16(context)),
+            TextFieldWidget(
+              controller: storeController,
+              textHint: 'receiptEnterTotal'.tr(),
+            ),
 
-          Text('receiptTotalLabel'.tr(), style: StyleText.bold16(context)),
+            Text('receiptTotalLabel'.tr(), style: StyleText.bold16(context)),
 
-          TextFieldWidget(
-            controller: totalController,
-            textHint: 'receiptEnterTotal'.tr(),
-          ),
-          DualActionButtonWidget(
-            onPrimaryTap: update,
-            primaryLabel: 'receiptUpdate'.tr(),
-            onSecondaryTap: delete,
-            secondaryLabel: 'receiptDelete'.tr(),
-            isDelete: true,
-            isCancel: false,
-          ),
-        ],
+            TextFieldWidget(
+              controller: totalController,
+              textHint: 'receiptEnterTotal'.tr(),
+            ),
+            DualActionButtonWidget(
+              onPrimaryTap: update,
+              primaryLabel: 'receiptUpdate'.tr(),
+              onSecondaryTap: delete,
+              secondaryLabel: 'receiptDelete'.tr(),
+              isDelete: true,
+              isCancel: false,
+            ),
+          ],
+        ),
       ),
     );
   }

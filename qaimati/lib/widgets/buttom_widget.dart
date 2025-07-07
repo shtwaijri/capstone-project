@@ -8,6 +8,7 @@ class ButtomWidget extends StatelessWidget {
     super.key,
     required this.onTab,
     required this.textElevatedButton,
+    Null Function()? onPressed,
   });
 
   /// Callback for button press

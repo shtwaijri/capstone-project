@@ -33,8 +33,8 @@
   "commonCancel": "إلغاء",
   "commonDelete": "حذف",
   "commonSearch": "بحث",
-  "externalList": "القوائم الخارجية",
-  "completed": "مكتملة",
+  "invitedLists": " القوائم المدعو إليها",
+  "completed": "القوائم المكتملة",
   "newitemadded!":"تمت إضافة عنصر جديد!"
 ,
   "itemNoItems": "لم تُضِف أي عناصر إلى القائمة بعد.",
@@ -61,7 +61,7 @@
     "movecompleted":"النقل الى مكتمل بدون فاتورة",
     "checkeditems":"العناصر المحددة" ,
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",
-  "memberAdd": "إضافة عضو",
+  "memberAddTitle": "إضافة عضو",
   "memberList": "عرض الأعضاء",
   "memberDeleteConfirm": "هل أنت متأكد من حذف هذا العضو؟",
   "memberCreatedBy": "أُنشئ بواسطة",
@@ -86,7 +86,7 @@
 
   "checkoutwithoutreceipt":"الاستمرار بدون إيصال",
 
-  "expensesTitle": "النفقات",
+  "expensesTitle": "الإنفاق",
     "listsTitle": "القوائم",
 
 
