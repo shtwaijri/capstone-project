@@ -31,7 +31,7 @@ class AppDatatLayer {
 
   /// Initializes the real-time streams for items and lists for the given user.
   /// This method sets up listeners to Supabase data changes.
-  void initStreams(String userId) {
+  void initStreamsf(String userId) {
     log("AppDatatLayer: Initializing streams for userId: $userId");
 
     // Cancel any existing subscriptions to prevent memory leaks and duplicate listeners
@@ -132,7 +132,6 @@ class AppDatatLayer {
     }
 
     // Add the found completed items to the map, using the list's name as the key.
-    // Assumes list.name is unique for this purpose, or handles collisions as needed.
     for (var list in lists) {
       final completedItemsForThisList = items
           .where(
@@ -142,7 +141,8 @@ class AppDatatLayer {
                 item.status == true,
           )
           .toList();
-      allListsAndCompletedItems[list.name] = completedItemsForThisList;
+      allListsAndCompletedItems[list.listId] = completedItemsForThisList;
+      // allListsAndCompletedItems[list.name] = completedItemsForThisList;
     }
     log(
       "AppDatatLayer: Generated allCompletedItemsByListName Map. Lists: ${allListsAndCompletedItems.length}",
