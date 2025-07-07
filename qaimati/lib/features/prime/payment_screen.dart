@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:moyasar/moyasar.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
@@ -89,7 +90,7 @@ class PaymentScreen extends StatelessWidget {
 /// Creates and returns a [PaymentConfig] object for the Moyasar payment plugin.
 PaymentConfig paymentConfig(int amount) {
   return PaymentConfig(
-    publishableApiKey: 'pk_test_ctkjHMLZ2A9xyCkAvw6gqwufcGsMXBBXg9crhDLV',
+    publishableApiKey: dotenv.env['apikey'].toString(),
     amount: amount,
     description: 'order #1324',
   );
