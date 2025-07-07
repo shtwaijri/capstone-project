@@ -35,6 +35,8 @@
   "commonCancel": "Cancel",
   "commonDelete": "Delete",
   "commonSearch": "Search",
+  "invitedLists": "Invited Lists",
+  "completed": "Completed",
 
   "itemNoItems": "You haven't added any items to the list yet.",
   "itemNoItems1": "You haven't added any",
