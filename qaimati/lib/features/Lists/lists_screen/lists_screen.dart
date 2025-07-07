@@ -11,6 +11,7 @@ import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
+import 'package:qaimati/widgets/custom_shimmer_effect.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
 import 'package:qaimati/widgets/floating_button.dart';
 
@@ -64,7 +65,7 @@ class ListsScreen extends StatelessWidget {
                   BlocBuilder<AddListBloc, AddListState>(
                     builder: (context, state) {
                       if (state is AddListLoading) {
-                        return const Center(child: CircularProgressIndicator());
+                        return CustomShimmerEffect( isItem: false); // while data not loaded will show shimmer (UX)
                       } else if (state is AddListError) {
                         return Center(child: Text('Error: ${state.message}'));
                       } else if (state is AddListLoaded) {
