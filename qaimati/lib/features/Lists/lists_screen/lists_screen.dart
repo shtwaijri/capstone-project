@@ -44,7 +44,7 @@ class ListsScreen extends StatelessWidget {
                         quantity: '0',
                         lable: 'completed'.tr(),
                         screen:
-                            CompletedScreen(), // this screen to go to some page
+                            CompletedScreen(), // tis screen to go to some page
                       ),
                       ListsButtons(
                         icon: Icon(

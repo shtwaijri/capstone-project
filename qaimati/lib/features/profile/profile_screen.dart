@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
-import 'package:qaimati/features/members/invite_screen.dart';
+import 'package:qaimati/features/members/invite/invite_screen.dart';
 import 'package:qaimati/features/prime/payment_screen.dart';
 import 'package:qaimati/features/profile/bloc/profile_bloc.dart';
 import 'package:qaimati/features/profile/widgets/custom_alert_dialog.dart';
@@ -249,7 +249,7 @@ class ProfileScreen extends StatelessWidget {
                               onTap: () async {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => InviteScreen(),
+                                    builder: (context) => InvitationsScreen(),
                                   ),
                                 );
                               },
