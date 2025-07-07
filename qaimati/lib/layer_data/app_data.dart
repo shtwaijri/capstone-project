@@ -133,7 +133,7 @@ class AppDatatLayer {
 
     // Add the found completed items to the map, using the list's name as the key.
     // Assumes list.name is unique for this purpose, or handles collisions as needed.
-    for (var list in lists) {
+    for (ListModel list in lists) {
       final completedItemsForThisList = items
           .where(
             (item) =>
@@ -142,7 +142,7 @@ class AppDatatLayer {
                 item.status == true,
           )
           .toList();
-      allListsAndCompletedItems[list.name] = completedItemsForThisList;
+      allListsAndCompletedItems[list.listId] = completedItemsForThisList;
     }
     log(
       "AppDatatLayer: Generated allCompletedItemsByListName Map. Lists: ${allListsAndCompletedItems.length}",
