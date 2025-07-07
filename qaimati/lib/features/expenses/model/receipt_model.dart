@@ -35,7 +35,7 @@ class ReceiptModel with ReceiptModelMappable {
   Map<String, dynamic> mapForAddSupabase() {
     return {
       'supplier': supplier,
-      'date': date ?? '2019-11-02',
+      'date': date ?? DateTime.now().toIso8601String(),
       'time': time ?? '00:00:00',
       'receipt_number': receiptNumber,
       'total_amount': totalAmount,

@@ -12,6 +12,8 @@ part 'add_list_state.dart';
 class AddListBloc extends Bloc<AddListEvent, AddListState> {
   int selectColor = 1;
   final appGetit = GetIt.I.get<AppDatatLayer>();
+
+  var list;
   changeColor(int index) {
     // this function to change color when user click on any color, i will use the select color to store it in datebase
     selectColor = index;
@@ -53,7 +55,29 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
   FutureOr<void> updateListMethod(
     UpdateListEvent event,
     Emitter<AddListState> emit,
-  ) {}
+  ) async {
+    emit(AddListLoading());
+
+    try {
+      print(
+        "🛠 Updating list with: ${event.list.name}, color=${event.list.color}",
+      );
+
+      final updatedList = ListModel(
+        listId: event.list.listId,
+        name: event.list.name,
+        color: selectColor,
+        createdAt: event.list.createdAt,
+      );
+
+      await appGetit.submitListUpdate(updatedList);
+      await appGetit.loadAdminLists();
+
+      emit(AddListLoaded(appGetit.lists));
+    } catch (e) {
+      emit(AddListError(e.toString()));
+    }
+  }
 
   FutureOr<void> deleteListMethod(
     DeleteListEvent event,
@@ -62,11 +86,10 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     emit(AddListLoading());
 
     try {
-      // حذف القائمة من Supabase
       await appGetit.confirmDeleteList(event.listId);
 
-      // تحديث البيانات بعد الحذف
       await appGetit.loadAdminLists();
+
       emit(AddListLoaded(appGetit.lists));
     } catch (e) {
       emit(AddListError(e.toString()));
@@ -85,9 +108,6 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
       emit(AddListError(e.toString()));
     }
   }
-
-  // FutureOr<void> loadMemberListsMethod(LoadListsEvent event, Emitter<AddListState> emit) {
-  // }
 
   FutureOr<void> loadMemberListsMethod(
     LoadMemberListsEvent event,

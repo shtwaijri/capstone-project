@@ -12,7 +12,6 @@ import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
-// import 'package:qaimati/bloc/add_list_bloc.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
 
 class MemberLists extends StatelessWidget {

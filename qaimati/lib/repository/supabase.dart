@@ -839,87 +839,95 @@ class SupabaseConnect {
   // ================================================== End addNewList ==================================================
 
   // ================================================== Start editList ==================================================
-  static Future<void> updateList({required ListModel list}) async {
-    try {
-      log("🛠 Starting updateList");
+  static Future<void> updateList({
+  required ListModel list,
+}) async {
+  try {
+    log("🛠 Starting updateList");
 
-      // Get current user
-      final appUser = await fetchUserById();
-      if (appUser == null) {
-        throw Exception('❌ Failed to get current user');
-      }
-      final appUserId = appUser.userId;
-
-      // Get role_id for 'admin'
-      final adminRoleId = await getRoleIdByName('admin');
-
-      // Check if user is admin
-      final roleCheck = await supabase!
-          .from('list_user_role')
-          .select()
-          .eq('app_user_id', appUserId)
-          .eq('list_id', list.listId)
-          .eq('role_id', adminRoleId)
-          .maybeSingle();
-
-      if (roleCheck == null) {
-        throw Exception('⛔ User is not admin of this list. Update denied.');
-      }
-
-      // Update list
-      final updateData = {'name': list.name, 'color': list.color};
-
-      await supabase!
-          .from('list')
-          .update(updateData)
-          .eq('list_id', list.listId);
-
-      log("✅ List ${list.listId} updated successfully.");
-    } catch (e, stack) {
-      log("❌ Error in updateList: $e\n$stack");
-      throw Exception("Failed to update list: $e");
+    // Get current user
+    final appUser = await fetchUserById();
+    if (appUser == null) {
+      throw Exception('❌ Failed to get current user');
     }
-  }
-  // ================================================== End editList ====================================================
+    final appUserId = appUser.userId;
 
-  // ================================================== Start deleteList ==================================================
+    // Get role_id for 'admin'
+    final adminRoleId = await getRoleIdByName('admin');
 
-  static Future<void> deleteList({required String listId}) async {
-    try {
-      log("🗑 Starting deleteList");
+    // Check if user is admin
+    final roleCheck = await supabase!
+        .from('list_user_role')
+        .select()
+        .eq('app_user_id', appUserId)
+        .eq('list_id', list.listId)
+        .eq('role_id', adminRoleId)
+        .maybeSingle();
 
-      // Get current user
-      final appUser = await fetchUserById();
-      if (appUser == null) {
-        throw Exception("❌ Failed to fetch current user");
-      }
-      final appUserId = appUser.userId;
-
-      // Get role_id for 'admin'
-      final adminRoleId = await getRoleIdByName('admin');
-
-      // Check if user is admin of this list
-      final roleCheck = await supabase!
-          .from('list_user_role')
-          .select()
-          .eq('app_user_id', appUserId)
-          .eq('list_id', listId)
-          .eq('role_id', adminRoleId)
-          .maybeSingle();
-
-      if (roleCheck == null) {
-        throw Exception('⛔ User is not admin of this list. Deletion denied.');
-      }
-
-      // Delete the list
-      await supabase!.from('list').delete().eq('list_id', listId);
-
-      log("✅ List $listId deleted successfully.");
-    } catch (e, stack) {
-      log("❌ Error in deleteList: $e\n$stack");
-      throw Exception("Failed to delete list: $e");
+    if (roleCheck == null) {
+      throw Exception('⛔ User is not admin of this list. Update denied.');
     }
+
+    // Update list
+    final updateData = {
+      'name': list.name,
+      'color': list.color,
+    };
+
+    await supabase!
+        .from('list')
+        .update(updateData)
+        .eq('list_id', list.listId);
+
+    log("✅ List ${list.listId} updated successfully.");
+  } catch (e, stack) {
+    log("❌ Error in updateList: $e\n$stack");
+    throw Exception("Failed to update list: $e");
   }
+}
+
+  // =================================================== End editList ===================================================
+static Future<void> deleteList({
+  required String listId,
+}) async {
+  try {
+    log("🗑 Starting deleteList");
+
+    // Get current user
+    final appUser = await fetchUserById();
+    if (appUser == null) {
+      throw Exception("❌ Failed to fetch current user");
+    }
+    final appUserId = appUser.userId;
+
+    // Get role_id for 'admin'
+    final adminRoleId = await getRoleIdByName('admin');
+
+    // Check if user is admin of this list
+    final roleCheck = await supabase!
+        .from('list_user_role')
+        .select()
+        .eq('app_user_id', appUserId)
+        .eq('list_id', listId)
+        .eq('role_id', adminRoleId)
+        .maybeSingle();
+
+    if (roleCheck == null) {
+      throw Exception('⛔ User is not admin of this list. Deletion denied.');
+    }
+
+    // 🔥 Delete all rows in list_user_role that reference this list
+    await supabase!.from('list_user_role').delete().eq('list_id', listId);
+    log("✅ Related roles deleted from list_user_role");
+
+    // 🔥 Now delete the list itself
+    await supabase!.from('list').delete().eq('list_id', listId);
+    log("✅ List $listId deleted successfully.");
+  } catch (e, stack) {
+    log("❌ Error in deleteList: $e\n$stack");
+    throw Exception("Failed to delete list: $e");
+  }
+}
 
   // ================================================== End deleteList ====================================================
 }
