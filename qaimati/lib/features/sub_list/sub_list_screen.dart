@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:qaimati/features/members/add_member_screen.dart';
+import 'package:qaimati/features/members/add_members/add_member_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
@@ -75,12 +75,13 @@ class SubListScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    final listId = GetIt.I.get<AppDatatLayer>().listId;
+                    // final listId = GetIt.I.get<AppDatatLayer>().listId;
 
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddMemberScreen(listId: listId!),
+                        builder: (context) =>
+                            AddMemberScreen(listId: bloc.appGetit.listId!),
                       ),
                     );
                   },

@@ -47,10 +47,6 @@ class SupabaseConnect {
     return supabase!
         .from('item')
         .stream(primaryKey: ['item_id'])
-      .eq(
-          'app_user_id',
-          userId,
-        ) // Filter rows to only include records for the specified user.
         .map((data) {
           return data
               // Map each received record (as Map) to an ItemModel object.

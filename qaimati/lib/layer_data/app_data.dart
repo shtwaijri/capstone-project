@@ -142,7 +142,7 @@ class AppDatatLayer {
                 item.status == true,
           )
           .toList();
-      allListsAndCompletedItems[list.listId] = completedItemsForThisList;
+      allListsAndCompletedItems[list.name] = completedItemsForThisList;
     }
     log(
       "AppDatatLayer: Generated allCompletedItemsByListName Map. Lists: ${allListsAndCompletedItems.length}",

@@ -76,9 +76,10 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     //   emit(SubListError(message: "No list selected."));
     //   return;
     // }
+
     // Get uncompleted and completed items for the currently selected list.
     final uncompletedItems = appGetit.uncompletedItemsForCurrentList;
-
+    isItemsChecked = uncompletedItems.any((item) => item.status);
     // Emit a new state to update the UI.
     emit(
       SubListLoadedState(
@@ -140,12 +141,12 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         itemId: event.itemId!,
         status: event.isChecked,
       );
-      log("SubListBloc: Item status updated successfully via AppDatatLayer.");
+
+      _updateSubListState(); // Update the UI state with the loaded data
     } catch (e, stack) {
       // Error is logged, but not rethrown to prevent UI from breaking on a single item update error.
       log("❌ SubListBloc: Error toggling item status: $e\n$stack");
     }
-    resetValues(); // Reset UI input values and update state.
   }
 
   /// Event handler for `AddItemToListEvent`.
@@ -299,6 +300,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       );
     }
     resetValues(); // Reset UI input values and update state.
+
     close();
   }
 
