@@ -9,11 +9,12 @@ class CustomEmptyWidget extends StatelessWidget {
     super.key,
     required this.img,
     required this.bigText,
-    required this.buttonText,
+    required this.buttonText, this.onPressed,
   });
   final String img;
   final String bigText;
   final String buttonText;
+  final Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,9 +34,7 @@ class CustomEmptyWidget extends StatelessWidget {
         StyleSize.sizeH8,
         Center(
           child: TextButton(
-            onPressed: () {
-              showAddListButtomSheet(context: context, isEdit: false);
-            },
+            onPressed: onPressed,
             child: Text(
               buttonText,
               style: StyleText.regular16Green(context).copyWith(fontSize: 20),
