@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
@@ -65,7 +64,9 @@ class ListsScreen extends StatelessWidget {
                   BlocBuilder<AddListBloc, AddListState>(
                     builder: (context, state) {
                       if (state is AddListLoading) {
-                        return CustomShimmerEffect( isItem: false); // while data not loaded will show shimmer (UX)
+                        return CustomShimmerEffect(
+                          isItem: false,
+                        ); // while data not loaded will show shimmer (UX)
                       } else if (state is AddListError) {
                         return Center(child: Text('Error: ${state.message}'));
                       } else if (state is AddListLoaded) {
@@ -73,6 +74,7 @@ class ListsScreen extends StatelessWidget {
 
                         return lists.isEmpty
                             ? EmptyWidget(
+                                // while no lists will show empty widget
                                 lable: 'listNoLists'.tr(),
                                 img: '',
                                 hint: 'listAdd'.tr(),
@@ -92,8 +94,6 @@ class ListsScreen extends StatelessWidget {
                                               listId: list.listId,
                                               list: list,
                                             );
-
-                                            HapticFeedback.heavyImpact();
                                           },
                                           child: CustomListtile(
                                             title: list.name,
