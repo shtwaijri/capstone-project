@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 
@@ -9,7 +8,8 @@ class CustomEmptyWidget extends StatelessWidget {
     super.key,
     required this.img,
     required this.bigText,
-    required this.buttonText, this.onPressed,
+    required this.buttonText,
+    this.onPressed,
   });
   final String img;
   final String bigText;
@@ -23,11 +23,12 @@ class CustomEmptyWidget extends StatelessWidget {
         StyleSize.sizeH48,
         SvgPicture.asset(img),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0,),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Center(
             child: Text(
               bigText,
-              style: StyleText.bold24(context), textAlign: TextAlign.center,
+              style: StyleText.bold24(context),
+              textAlign: TextAlign.center,
             ),
           ),
         ),
