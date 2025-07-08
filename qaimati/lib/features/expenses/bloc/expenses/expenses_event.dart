@@ -19,3 +19,9 @@ class UpdateReceiptEvent extends ExpensesEvent {
   final String receiptId;
   UpdateReceiptEvent(this.receiptId, this.updatedData);
 }
+
+class SetDateEvent extends ExpensesEvent {
+  final DateTime newDate;
+
+  SetDateEvent(this.newDate);
+}

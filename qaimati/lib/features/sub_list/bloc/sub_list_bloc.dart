@@ -145,7 +145,6 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       // Error is logged, but not rethrown to prevent UI from breaking on a single item update error.
       log("❌ SubListBloc: Error toggling item status: $e\n$stack");
     }
-    resetValues(); // Reset UI input values and update state.
   }
 
   /// Event handler for `AddItemToListEvent`.

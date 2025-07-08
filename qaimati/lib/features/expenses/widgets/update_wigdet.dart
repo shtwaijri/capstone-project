@@ -5,21 +5,31 @@ import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
 import 'package:qaimati/widgets/text_field_widget.dart';
 
+/// A widget for updating a receipt, including an image, store name,
+/// total amount fields, and action buttons for update and delete.
 class UpdateWigdet extends StatelessWidget {
   UpdateWigdet({
     super.key,
-
     this.imageUrl,
     this.delete,
     this.update,
     required this.storeController,
     required this.totalController,
   });
+
+  /// Controller for the store name input field
   final TextEditingController storeController;
+
+  /// Controller for the total amount input field
   final TextEditingController totalController;
 
+  /// Optional image URL for the receipt preview
   final String? imageUrl;
+
+  /// Callback when the delete button is pressed
   final Function()? delete;
+
+  /// Callback when the update button is pressed
   final Function()? update;
 
   @override
@@ -33,17 +43,18 @@ class UpdateWigdet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Display receipt image or fallback if it fails
             Image.network(
               imageUrl!,
               width: context.getWidth(),
               height: context.getHeight() * 0.4,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                return const Text('🛑 فشل تحميل الصورة');
+                return Text('imageLoadFailed'.tr());
               },
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator());
               },
             ),
             Text('receiptStore'.tr(), style: StyleText.bold16(context)),

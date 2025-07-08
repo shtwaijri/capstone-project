@@ -53,6 +53,7 @@ class ProfileScreen extends StatelessWidget {
                 title: tr('profileTitle'),
                 showActions: false,
                 showSearchBar: false,
+                showBackButton: false,
               ),
               body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {
@@ -203,9 +204,10 @@ class ProfileScreen extends StatelessWidget {
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () {
-                                Navigator.of(context).push(
+                                Navigator.push(
+                                  context,
                                   MaterialPageRoute(
-                                    builder: (context) => PaymentScreen(),
+                                    builder: (_) => PaymentScreen(),
                                   ),
                                 );
                               },

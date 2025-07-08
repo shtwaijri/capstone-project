@@ -101,7 +101,8 @@
   "accountPremium": "Prime Plus",
   "authLogout": "Log out",
   "unknown": "Unknown",
-    "alertEdit": "Edit"
+  "alertEdit": "Edit",
+  "imageLoadFailed": "🛑 Failed to load image"
 
 
 }

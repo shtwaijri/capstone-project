@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qaimati/features/expenses/bloc/receipt/receipt_bloc.dart';
 import 'package:qaimati/features/expenses/widgets/upload_receipt_widget.dart';
+import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/Text_Field_widget.dart';
@@ -37,14 +39,31 @@ class ReceiptScreen extends StatelessWidget {
               title: 'receipt'.tr(),
               showActions: false,
               showSearchBar: false,
+              showBackButton: false,
             ),
             body: Padding(
               padding: const EdgeInsets.all(24.0),
               child: BlocBuilder<ReceiptBloc, ReceiptState>(
                 builder: (context, state) {
+                  if (state is ErrorState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: StyleColor.error,
+                        content: Text(
+                          state.message,
+                          style: StyleText.regular16(context),
+                        ),
+                      ),
+                    );
+                  }
                   if (state is LoadingState) {
                     // Show loading spinner when processing
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: LoadingAnimationWidget.fourRotatingDots(
+                        color: StyleColor.green,
+                        size: 80,
+                      ),
+                    );
                   }
                   if (state is SuccessState) {
                     // If receipt image upload succeeded, show the image and form fields

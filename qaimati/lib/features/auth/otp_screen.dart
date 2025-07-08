@@ -33,7 +33,12 @@ class OtpScreen extends StatelessWidget {
     final authLayer = GetIt.I.get<AuthLayer>();
     authLayer.loadUserSettings(context);
     return Scaffold(
-      appBar: AppBarWidget(title: '', showActions: true, showSearchBar: false),
+      appBar: AppBarWidget(
+        title: '',
+        showActions: true,
+        showSearchBar: false,
+        showBackButton: false,
+      ),
 
       body: Padding(
         padding: EdgeInsets.symmetric(

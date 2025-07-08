@@ -30,6 +30,7 @@ class ListsScreen extends StatelessWidget {
               title: 'listTitle'.tr(),
               showActions: false,
               showSearchBar: true,
+              showBackButton: false,
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),

@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/features/expenses/receipt_data.dart';
+import 'package:qaimati/features/prime/prime_service.dart';
 import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
@@ -56,6 +57,7 @@ Future<void> setUp() async {
         ),
     );
   }
+  await PrimeService.checkAndExpirePrimeStatus();
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {

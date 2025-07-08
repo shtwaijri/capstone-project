@@ -13,16 +13,12 @@ import 'package:qaimati/utilities/helper/image_picker_helper.dart';
 part 'receipt_event.dart';
 part 'receipt_state.dart';
 
-/// BLoC responsible for handling receipt image upload and extraction of receipt data.
-///
-/// Methods:
-/// - [uplaodReceiptMethod] triggers image picking, sends the image to the receipt API,
-///   and updates the text controllers with extracted supplier and total amount.
+/// BLoC responsible for handling receipt image upload, data extraction, and saving to Supabase.
 ///
 /// Emits:
-/// - [LoadingState] while waiting for image picking and API response.
-/// - [SuccessState] when image is successfully processed and data is extracted.
-/// - [ReceiptInitial] when no image is selected or after reset.
+/// - [LoadingState] when image is being picked and processed.
+/// - [SuccessState] when receipt data is successfully extracted.
+/// - [ReceiptInitial] when no image is selected or reset is triggered.
 class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
   /// Controller for store name input field.
   final TextEditingController storController = TextEditingController();
@@ -40,54 +36,79 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
 
   ReceiptBloc() : super(ReceiptInitial()) {
     on<ReceiptEvent>((event, emit) {});
-    on<UplaodReceiptEvent>(uplaodReceiptMethod);
-    on<SaveReceiptEvent>(saveMethod);
+    on<UplaodReceiptEvent>(uplaodReceiptMethod); // When uploading image
+    on<SaveReceiptEvent>(saveMethod); // When saving receipt
   }
 
-  /// Method to handle uploading a receipt image.
+  /// Picks an image from the user's gallery or camera, sends it to the OCR API,
+  /// then updates UI state with the extracted data.
   FutureOr<void> uplaodReceiptMethod(
     UplaodReceiptEvent event,
     Emitter<ReceiptState> emit,
   ) async {
     emit(LoadingState());
-    final image = await ImagePickerHelper().pickImage();
-    if (image != null) {
-      final data = await ReceiptApi().sendReceipt(image);
+    try {
+      final image = await ImagePickerHelper().pickImage();
+      if (image != null) {
+        final data = await ReceiptApi().sendReceipt(image);
+        receiptFileUrl = await ReceiptSupabase().uploadReceiptToStorage(
+          receiptData: image.readAsBytesSync(),
+        );
+        storController.text = data.supplier;
+        totalController.text = data.totalAmount.toString();
+        date = data.date;
+        time = data.time;
+        receiptNumber = data.receiptNumber;
+        currency = data.currency;
 
-      receiptFileUrl = await ReceiptSupabase().uploadReceiptToStorage(
-        receiptData: image.readAsBytesSync(),
-      );
-      storController.text = data.supplier;
-      totalController.text = data.totalAmount.toString();
-      date = data.date;
-      time = data.time;
-      receiptNumber = data.receiptNumber;
-      currency = data.currency;
-
-      emit(SuccessState(image, data));
-    } else {
-      log('No image selected.');
-      emit(ReceiptInitial());
+        emit(SuccessState(image, data));
+      } else {
+        log('No image selected.');
+        emit(ReceiptInitial());
+      }
+    } catch (error) {
+      emit(ErrorState(error.toString()));
     }
   }
 
+  /// Saves the receipt data into Supabase storage.
+  ///
+  /// Uses the previously uploaded receiptFileUrl and extracted/entered data.
   FutureOr<void> saveMethod(
     SaveReceiptEvent event,
     Emitter<ReceiptState> emit,
   ) async {
-    await ReceiptSupabase().addNewReceipt(
-      receipt: ReceiptModel(
-        receiptFileUrl: receiptFileUrl,
-        supplier: storController.text,
-        receiptNumber: receiptNumber,
-        totalAmount: convertToSAR(double.parse(totalController.text), currency),
-        currency: currency,
-        createdAt: DateTime.now(),
-      ),
-    );
+    try {
+      double total = double.tryParse(totalController.text) ?? 0.0;
+      await ReceiptSupabase().addNewReceipt(
+        receipt: ReceiptModel(
+          receiptFileUrl: receiptFileUrl,
+          supplier: storController.text,
+          receiptNumber: receiptNumber,
+          totalAmount: convertToSAR(total, currency),
+          currency: currency,
+          createdAt: DateTime.now(),
+        ),
+      );
+      storController.clear();
+      totalController.clear();
+      emit(ReceiptInitial());
+    } catch (error) {
+      emit(ErrorState(error.toString()));
+    }
   }
 }
 
+/// Converts a given amount from a specific currency to Saudi Riyal (SAR).
+///
+/// Uses fixed exchange rates defined in [exchangeRates] map.
+///
+/// Parameters:
+/// - [amount]: The amount to convert.
+/// - [fromCurrency]: The original currency code (e.g. 'USD', 'AED').
+///
+/// Returns:
+/// - Amount converted to SAR as `double`.
 double convertToSAR(double amount, String fromCurrency) {
   const exchangeRates = {
     // Gulf and Arab currencies
