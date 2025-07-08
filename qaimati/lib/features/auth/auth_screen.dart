@@ -63,14 +63,7 @@ class AuthScreen extends StatelessWidget {
                                     context.getWidth() * 0.02,
                                   ),
                                   child: Align(
-                                    alignment:
-                                        //get the current lang
-                                        (Localizations.localeOf(
-                                              context,
-                                            ).languageCode ==
-                                            'ar')
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
+                                    //get the current lang
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

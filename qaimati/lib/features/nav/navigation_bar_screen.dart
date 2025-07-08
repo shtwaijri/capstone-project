@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:qaimati/features/nav/bloc/navigation_bloc.dart';
+import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:qaimati/style/style_text.dart';
 
 // / [NavigationBarScreen] displays the main app screens with a bottom navigation bar.
@@ -18,6 +20,8 @@ class NavigationBarScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final bloc = context.read<NavigationBloc>();
+          final authLayer = GetIt.I.get<AuthLayer>();
+          authLayer.loadUserSettings(context);
           return BlocBuilder<NavigationBloc, NavigationState>(
             builder: (context, state) {
               if (state is! NavigationBarState) {

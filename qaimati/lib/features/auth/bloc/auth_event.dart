@@ -23,3 +23,5 @@ class OtpOnChangeEvent extends AuthEvent {
 
   OtpOnChangeEvent({required this.index, required this.value});
 }
+
+class ResendOtpEvent extends AuthEvent {}
