@@ -82,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: Icons.language,
                               text: tr('settingsLanguage'),
-                              style: StyleText.bold16(context),
+                              //style: StyleText.bold16(context),
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               showSwitch: true,
@@ -110,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: Icons.color_lens,
                               text: tr('settingsColor'),
-                              style: StyleText.bold16(context),
+                              //style: StyleText.bold16(context),
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.07,
                               showSwitch: true,
@@ -136,7 +136,7 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: CupertinoIcons.person_fill,
                               text: tr('accountName'),
-                              style: StyleText.bold16(context),
+                              //style: StyleText.bold16(context),
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () {
@@ -169,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: CupertinoIcons.mail_solid,
                               text: tr('accountEmail'),
-                              style: StyleText.bold16(context),
+                              //style: StyleText.bold16(context),
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () {
@@ -200,7 +200,7 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: CupertinoIcons.star_fill,
                               text: tr('accountPremium'),
-                              style: StyleText.bold16(context),
+                              //style: StyleText.bold16(context),
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () {
@@ -232,10 +232,10 @@ class ProfileScreen extends StatelessWidget {
                             //Logout
                             CustomWidgetSetting(
                               icon: Icons.exit_to_app,
-                              text: tr('authLogout'),
-                              style: StyleText.bold16(
-                                context,
-                              ).copyWith(color: StyleColor.error),
+                              text: tr('authLogout',),
+                              // style: StyleText.bold16(
+                              //   context,
+                              // ).copyWith(color: StyleColor.error),
                               color: StyleColor.error,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () async {
