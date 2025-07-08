@@ -34,8 +34,6 @@ class PaymentScreen extends StatelessWidget {
                   child: Column(
                     spacing: 24,
                     children: [
-                      // Show currently selected branch using BranchWidget.
-                      // BranchWidget(branch: bloc.branchGetIt.branchName()),
                       BlocBuilder<PaymentBloc, PaymentState>(
                         builder: (context, state) {
                           if (state is SuccessState) {
@@ -44,7 +42,7 @@ class PaymentScreen extends StatelessWidget {
                               onPaymentResult: (PaymentResponse value) async {
                                 // Callback when payment result is received.
                                 if (value.status == PaymentStatus.paid) {
-                                  await PrimeService.activatePrimeStatus();
+                                  bloc.add(ActivatePrimeEvent());
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -61,11 +59,9 @@ class PaymentScreen extends StatelessWidget {
                                     SnackBar(
                                       content: Text(
                                         'Payment failed. Please try again.',
-                                        style: StyleText.regular16Error(
-                                          context,
-                                        ),
+                                        style: StyleText.regular16(context),
                                       ),
-                                      backgroundColor: StyleColor.white,
+                                      backgroundColor: StyleColor.error,
                                     ),
                                   );
                                 }
@@ -90,7 +86,7 @@ class PaymentScreen extends StatelessWidget {
 /// Creates and returns a [PaymentConfig] object for the Moyasar payment plugin.
 PaymentConfig paymentConfig(int amount) {
   return PaymentConfig(
-    publishableApiKey: dotenv.env['apikey'].toString(),
+    publishableApiKey: dotenv.env['moyasarKey'].toString(),
     amount: amount,
     description: 'order #1324',
   );
