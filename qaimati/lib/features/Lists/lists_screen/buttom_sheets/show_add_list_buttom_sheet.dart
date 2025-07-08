@@ -24,7 +24,7 @@ showAddListButtomSheet({
   final bloc = context.read<AddListBloc>();
   showModalBottomSheet(
     showDragHandle: true,
-    backgroundColor: StyleColor.white,
+    // backgroundColor: StyleColor.white,
     context: context,
     isScrollControlled: true,
     builder: (context) {

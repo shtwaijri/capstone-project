@@ -9,8 +9,8 @@ class ColorsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        width: 50,
-        height: 50,
+        width: isSelected! ? 60 : 50,
+        height: isSelected! ? 60 : 50,
         decoration: BoxDecoration(
           color: color,
           border: Border.all(

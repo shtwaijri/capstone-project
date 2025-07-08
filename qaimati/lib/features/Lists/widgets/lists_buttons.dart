@@ -25,10 +25,10 @@ class ListsButtons extends StatelessWidget {
       },
       child: Container(
         width: 170,
-        height: 110,
+        height: 60,
         decoration: BoxDecoration(
           color: StyleColor.graylight,
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
               color: StyleColor.black.withValues(alpha: 0.3),
@@ -47,10 +47,11 @@ class ListsButtons extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   icon,
-                  Text(quantity, style: StyleText.bold24(context)),
+                  // Text(quantity, style: StyleText.bold16black(context)),
+                  Text(lable, style: StyleText.bold16black(context))
                 ],
               ),
-              Row(children: [Text(lable, style: StyleText.bold16(context))]),
+              Row(children: []),
             ],
           ),
         ),
