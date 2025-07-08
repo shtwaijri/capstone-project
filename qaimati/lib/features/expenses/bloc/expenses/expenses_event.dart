@@ -25,3 +25,5 @@ class SetDateEvent extends ExpensesEvent {
 
   SetDateEvent(this.newDate);
 }
+
+class CheckPirEvent extends ExpensesEvent {}

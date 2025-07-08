@@ -37,6 +37,7 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
     on<MonthChangedEvent>(monthChangedMethod);
     on<DeleteReceiptEvent>(deleteReceiptMethod);
     on<UpdateReceiptEvent>(updateReceiptMethod);
+    on<CheckPirEvent>(testCheckMethod);
     on<SetDateEvent>((event, emit) {
       displayedDate = event.newDate;
     });
@@ -110,6 +111,18 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
       await _reloadCurrentMonthData(emit);
     } catch (error) {
       emit(ErrorState(error.toString()));
+    }
+  }
+
+  FutureOr<void> testCheckMethod(
+    CheckPirEvent event,
+    Emitter<ExpensesState> emit,
+  ) async {
+    try {
+      await ReceiptSupabase().checkAddReceiptEligibility();
+      emit(IsPremiumiState());
+    } catch (_) {
+      emit(IsNotPremiumiState("receiptLimitReached"));
     }
   }
 }

@@ -57,7 +57,7 @@ Future<void> setUp() async {
         ),
     );
   }
-  await PrimeService.checkAndExpirePrimeStatus();
+  // await PrimeService.checkAndExpirePrimeStatus();
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {

@@ -102,7 +102,7 @@
   "authLogout": "Log out",
   "unknown": "Unknown",
   "alertEdit": "Edit",
-  "imageLoadFailed": "🛑 Failed to load image"
+  "imageLoadFailed": "🛑 Failed to load image",
 
-
+ "receiptLimitReached": "You have reached the limit (3 receipts). Subscribe to Prime to add more."
 }
