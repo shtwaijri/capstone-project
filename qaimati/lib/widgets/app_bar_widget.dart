@@ -42,7 +42,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               icon: Icon(Icons.arrow_back_ios, color: StyleColor.black),
               onPressed: () => Navigator.pop(context),
             )
-          : null,
+          : Container(),
 
       // Show the action icon if enabled
       actions: showActions ? actionsIcon : null,
@@ -73,7 +73,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   hintText: 'commonSearch'.tr(),
                   hintStyle: WidgetStateProperty.all(
-                    StyleText.regular12Grey(context),
+                    StyleText.regular16Grey(context),
                   ),
                   leading: Icon(CupertinoIcons.search, color: StyleColor.gray),
                 ),

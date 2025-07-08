@@ -13,6 +13,7 @@ import 'package:qaimati/features/expenses/widgets/update_wigdet.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
+import 'package:qaimati/widgets/custom_shimmer_effect.dart';
 import 'package:qaimati/widgets/floating_button.dart';
 import 'package:qaimati/widgets/loading_widget.dart';
 
@@ -147,7 +148,9 @@ class ExpensesScreen extends StatelessWidget {
                               log("Current state: $state");
                               if (state is LoadingState) {
                                 // Show loading spinner when processing
-                                return LoadingWidget();
+                                return SingleChildScrollView(
+                                  child: CustomShimmerEffect(isItem: false),
+                                );
                               }
                               if (state is ErrorState) {
                                 // Show loading spinner when processing
@@ -176,7 +179,6 @@ class ExpensesScreen extends StatelessWidget {
                                                 .toString();
                                             showModalBottomSheet(
                                               showDragHandle: true,
-
                                               context: context,
                                               shape:
                                                   const RoundedRectangleBorder(
@@ -189,48 +191,55 @@ class ExpensesScreen extends StatelessWidget {
                                                   ),
                                               isScrollControlled: true,
                                               builder: (context) {
-                                                return BlocProvider.value(
-                                                  value: bloc,
-                                                  child: UpdateWigdet(
-                                                    imageUrl: state
-                                                        .receipt[index]
-                                                        .receiptFileUrl,
-                                                    delete: () {
-                                                      bloc.add(
-                                                        DeleteReceiptEvent(
-                                                          state
-                                                              .receipt[index]
-                                                              .receiptId!,
-                                                        ),
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                    update: () {
-                                                      bloc.add(
-                                                        UpdateReceiptEvent(
-                                                          state
-                                                              .receipt[index]
-                                                              .receiptId!,
-                                                          {
-                                                            'supplier': bloc
-                                                                .storeController
-                                                                .text,
-                                                            'total_amount':
-                                                                double.tryParse(
-                                                                  bloc
-                                                                      .totalController
-                                                                      .text,
-                                                                ) ??
-                                                                0.0,
-                                                          },
-                                                        ),
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                    storeController:
-                                                        bloc.storeController,
-                                                    totalController:
-                                                        bloc.totalController,
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                    bottom: MediaQuery.of(context)
+                                                        .viewInsets
+                                                        .bottom, // Adds space for keyboard
+                                                  ),
+                                                  child: BlocProvider.value(
+                                                    value: bloc,
+                                                    child: UpdateWigdet(
+                                                      imageUrl: state
+                                                          .receipt[index]
+                                                          .receiptFileUrl,
+                                                      delete: () {
+                                                        bloc.add(
+                                                          DeleteReceiptEvent(
+                                                            state
+                                                                .receipt[index]
+                                                                .receiptId!,
+                                                          ),
+                                                        );
+                                                        Navigator.pop(context);
+                                                      },
+                                                      update: () {
+                                                        bloc.add(
+                                                          UpdateReceiptEvent(
+                                                            state
+                                                                .receipt[index]
+                                                                .receiptId!,
+                                                            {
+                                                              'supplier': bloc
+                                                                  .storeController
+                                                                  .text,
+                                                              'total_amount':
+                                                                  double.tryParse(
+                                                                    bloc
+                                                                        .totalController
+                                                                        .text,
+                                                                  ) ??
+                                                                  0.0,
+                                                            },
+                                                          ),
+                                                        );
+                                                        Navigator.pop(context);
+                                                      },
+                                                      storeController:
+                                                          bloc.storeController,
+                                                      totalController:
+                                                          bloc.totalController,
+                                                    ),
                                                   ),
                                                 );
                                               },

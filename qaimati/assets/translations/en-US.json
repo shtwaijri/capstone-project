@@ -109,5 +109,8 @@
   "pay":"Pay Now",
   "primeDescribe":"With Prime, you can upload unlimited receipts, track your spending, and enjoy more features to manage your shopping and expenses smoothly.",
 
- "receiptLimitReached": "You have reached the limit (3 receipts). Subscribe to Prime to add more."
+ "receiptLimitReached": "You have reached the limit (3 receipts). Subscribe to Prime to add more.",
+ "paymentFailed": "Payment failed. Please try again.",
+ "subscription_start": "You are subscribed to the premium plan. You have",
+ "subscription_end": "days left until your subscription ends."
 }

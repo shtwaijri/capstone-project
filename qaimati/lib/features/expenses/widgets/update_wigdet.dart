@@ -35,10 +35,10 @@ class UpdateWigdet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: context.getHeight() * 0.7,
-      padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        height: context.getHeight() * 0.8,
+        padding: const EdgeInsets.all(16),
         child: Column(
           spacing: 16,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -61,12 +61,13 @@ class UpdateWigdet extends StatelessWidget {
             Text('receiptStore'.tr(), style: StyleText.bold16(context)),
             TextFieldWidget(
               controller: storeController,
-              textHint: 'receiptEnterTotal'.tr(),
+              textHint: 'receiptEnterStore'.tr(),
             ),
 
             Text('receiptTotalLabel'.tr(), style: StyleText.bold16(context)),
 
             TextFieldWidget(
+              keyboardType: TextInputType.number,
               controller: totalController,
               textHint: 'receiptEnterTotal'.tr(),
             ),
