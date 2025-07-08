@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:qaimati/features/auth/auth_screen.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_bloc.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_events.dart';
 import 'package:qaimati/features/intro/bloc/onboarding_states.dart';
-import 'package:qaimati/features/loading/loading_screen.dart';
+import 'package:qaimati/features/intro/onboarding_info.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,21 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Onboarding extends StatelessWidget {
   Onboarding({super.key});
 
-  final List<Map<String, String>> onboardingData = [ // list of map to hold data of each pageView, i will put it in git it later
-    {
-      'image': 'assets/svg/no_items.svg',
-      'title': 'Quickly add and organize your shopping items in one plac',
-    },
-    {
-      'image': 'assets/svg/no_member.svg',
-      'title': 'Invite others, sync in real-time',
-    },
-    {
-      'image': 'assets/svg/no_list.svg',
-      'title': ' Manage receipts your for better tracking.',
-    },
-  ];
-
+  
+final onboardingData = GetIt.instance<OnboardingInfo>().onboardingData;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -56,7 +45,7 @@ class Onboarding extends StatelessWidget {
 
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (_) => LoadingScreen()),
+                          MaterialPageRoute(builder: (_) => AuthScreen()),
                         );
                       } else {
                         bloc.add(NextPressedEvent(bloc.state.pageIndex + 1));  //pageIndex is the index fo the current page in pag view

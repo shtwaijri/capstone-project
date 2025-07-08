@@ -29,3 +29,9 @@ final class NewUserState extends AuthState {}
 final class ExistingUserState extends AuthState {}
 
 class EmailValidState extends AuthState {}
+
+final class ResendOtpCountState extends AuthState {
+  final int secondsRemaining;
+
+  ResendOtpCountState({required this.secondsRemaining});
+}

@@ -38,6 +38,7 @@ class CompletedScreen extends StatelessWidget {
         builder: (context) {
           final bloc = context.read<CompletedScreenBloc>();
           return Scaffold(
+            
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
@@ -47,7 +48,6 @@ class CompletedScreen extends StatelessWidget {
                 icon: Icon(Icons.arrow_back),
               ),
               title: Text("Completed".tr(), style: StyleText.bold24(context)),
-              
             ),
             body: BlocBuilder<CompletedScreenBloc, CompletedScreenState>(
               builder: (context, state) {

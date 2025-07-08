@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/features/expenses/receipt_data.dart';
-import 'package:qaimati/features/prime/prime_service.dart';
+import 'package:qaimati/features/intro/onboarding_info.dart';
 import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
@@ -21,7 +21,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-
+  GetIt.instance.registerLazySingleton<OnboardingInfo>(() => OnboardingInfo());
   // Enable verbose logging for debugging (remove in production)
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   // Initialize with your OneSignal App ID

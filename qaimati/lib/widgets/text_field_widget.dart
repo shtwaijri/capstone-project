@@ -23,6 +23,7 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(color: StyleColor.black),
       controller: controller,
       decoration: InputDecoration(
         hintText: textHint,

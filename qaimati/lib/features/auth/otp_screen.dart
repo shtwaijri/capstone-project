@@ -29,9 +29,6 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //load user theme and lang
-    final authLayer = GetIt.I.get<AuthLayer>();
-    authLayer.loadUserSettings(context);
     return Scaffold(
       appBar: AppBarWidget(
         title: '',
@@ -80,6 +77,54 @@ class OtpScreen extends StatelessWidget {
                   );
                 },
               ),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  final isCounting = state is ResendOtpCountState;
+                  final secondsRemaining = isCounting
+                      ? state.secondsRemaining
+                      : 0;
+
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: (isCounting || secondsRemaining > 0)
+                            ? null
+                            : () {
+                                context.read<AuthBloc>().add(ResendOtpEvent());
+                              },
+                        child: Text(
+                          tr('resendCode'),
+                          style: TextStyle(
+                            color: (isCounting || secondsRemaining > 0)
+                                ? Colors.grey
+                                : Colors.blue,
+                          ),
+                        ),
+                      ),
+                      if (isCounting)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            padding: EdgeInsets.all(4),
+                            color: Colors.yellow,
+                            child: Text(
+                              tr(
+                                'resendAvailableIn',
+                                args: ['$secondsRemaining'],
+                              ),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
@@ -90,7 +135,7 @@ class OtpScreen extends StatelessWidget {
 
                   if (state is NewUserState || state is ExistingUserState) {
                     if (context.mounted) {
-                      await authLayer.loadUserSettings(context);
+                      // await authLayer.loadUserSettings(context);
                     }
 
                     //if the user is new, we navigate him to complete profile

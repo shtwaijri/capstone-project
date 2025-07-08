@@ -22,7 +22,7 @@ class AppDatatLayer {
   StreamSubscription<List<ListModel>>? allListsSubscription;
 
   // Currently selected list ID
-  String? listId = "c59726cd-8dc9-4285-85ef-6f6574c16b51";
+  String? listId ;
 
   // Map to store completed items, grouped by list name (used for a specific UI screen)
   Map<String, List<ItemModel>> completedItemsByListName = {};
@@ -97,6 +97,7 @@ class AppDatatLayer {
 
     /// Returns a list of items that ARE completed and have a `status` of true,
     /// belonging to the currently selected `listId`.
+     log("list id $listId");
     return items
         .where((item) => item.listId == listId && item.isCompleted == false)
         .toList();
@@ -142,7 +143,7 @@ class AppDatatLayer {
                 item.status == true,
           )
           .toList();
-      allListsAndCompletedItems[list.listId] = completedItemsForThisList;
+      allListsAndCompletedItems[list.name] = completedItemsForThisList;
     }
     log(
       "AppDatatLayer: Generated allCompletedItemsByListName Map. Lists: ${allListsAndCompletedItems.length}",
@@ -152,7 +153,7 @@ class AppDatatLayer {
 
   /// Disposes of all StreamSubscriptions to prevent memory leaks when the
   void dispose() {
-    allItemsSubscription?.cancel();
+      allItemsSubscription?.cancel();
     allListsSubscription?.cancel();
     log("AppDatatLayer: Subscriptions cancelled.");
   }

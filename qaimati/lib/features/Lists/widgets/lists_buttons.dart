@@ -15,6 +15,7 @@ class ListsButtons extends StatelessWidget {
   final String quantity;
   final String lable;
   final Widget screen;
+  final Color cocntentColor = StyleColor.black;
 
   @override
   Widget build(BuildContext context) {
