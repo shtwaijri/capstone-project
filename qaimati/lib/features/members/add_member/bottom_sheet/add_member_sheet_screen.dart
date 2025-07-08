@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qaimati/features/members/add_members/bloc/add_member_bloc.dart';
+import 'package:qaimati/features/members/add_member/bloc/add_member_sheet_bloc.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 
-class AddMemberScreen extends StatelessWidget {
+class AddMemberSheetScreen extends StatelessWidget {
   final String listId;
 
-  const AddMemberScreen({super.key, required this.listId});
+  const AddMemberSheetScreen({super.key, required this.listId});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class AddMemberScreen extends StatelessWidget {
                   TextField(
                     decoration: InputDecoration(hintText: tr("emailHint")),
                     onChanged: (value) {
-                      bloc.add(onAddEmailEvent(value));
+                      bloc.add(AddEmailEvent(value));
                     },
                   ),
                   SizedBox(height: 20),

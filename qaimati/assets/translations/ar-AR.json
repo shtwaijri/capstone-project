@@ -21,7 +21,7 @@
 
   "listNoLists": "لم تُنشئ أي قوائم بعد",
   "listAdd": "إضافة قائمة",
-  "listTitle": "قوائم",
+  "listTitle": "القوائم",
   "listNew": "إضافة قائمة جديدة",
   "listColor": "اختيار اللون",
   "listName": "إدخال اسم القائمة",
@@ -62,7 +62,7 @@
     "checkeditems":"العناصر المحددة" ,
   "memberNoMembers": "لم تُضِف أي أعضاء بعد.",
   "memberAddTitle": "إضافة عضو",
-  "memberList": "عرض الأعضاء",
+  "memberList": "أعضاء القائمة",
   "memberDeleteConfirm": "هل أنت متأكد من حذف هذا العضو؟",
   "memberCreatedBy": "أُنشئ بواسطة",
 

@@ -2,13 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:qaimati/features/members/add_members/add_member_screen.dart';
+import 'package:qaimati/features/members/add_member_sheet/add_member_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item_bottom_sheet.dart';
-import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
@@ -76,11 +74,17 @@ class SubListScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         AddMemberScreen(listId: bloc.appGetit.listId!),
+                    //   ),
+                    // );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            AddMemberScreen(listId: bloc.appGetit.listId!),
+                        builder: (context) => AddMemberScreen(),
                       ),
                     );
                   },

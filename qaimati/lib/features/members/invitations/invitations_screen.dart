@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qaimati/features/members/invite/bloc/invite_bloc.dart';
+import 'package:qaimati/features/members/invitations/bloc/invitations_bloc.dart';
 
 class InvitationsScreen extends StatelessWidget {
   const InvitationsScreen({super.key});
@@ -8,8 +8,8 @@ class InvitationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => InviteBloc()..add(FetchInvitedListsEvent()),
-      child: BlocBuilder<InviteBloc, InviteState>(
+      create: (_) => InvitationsBloc()..add(FetchInvitedListsEvent()),
+      child: BlocBuilder<InvitationsBloc, InvitationsState>(
         builder: (context, state) {
           if (state is InviteLoadingState) {
             return const Scaffold(
@@ -42,7 +42,7 @@ class InvitationsScreen extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  context.read<InviteBloc>().add(
+                                  context.read<InvitationsBloc>().add(
                                     AcceptInviteEvent(inviteId: inviteId),
                                   );
                                 },
@@ -51,7 +51,7 @@ class InvitationsScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               OutlinedButton(
                                 onPressed: () {
-                                  context.read<InviteBloc>().add(
+                                  context.read<InvitationsBloc>().add(
                                     RejectInviteEvent(inviteId: inviteId),
                                   );
                                 },
