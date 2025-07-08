@@ -16,6 +16,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     required this.showActions,
     this.actionsIcon,
     required this.showSearchBar,
+    required this.showBackButton,
   });
 
   /// Title text to display in the AppBar
@@ -30,18 +31,25 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   /// Whether to display the search bar under the title
   final bool showSearchBar;
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: false,
+      leading: showBackButton
+          ? IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: StyleColor.black),
+              onPressed: () => Navigator.pop(context),
+            )
+          : null,
 
       // Show the action icon if enabled
       actions: showActions ? actionsIcon : null,
 
       // Add custom content under the AppBar (title + optional search bar)
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(showSearchBar ? 70 : 50),
+        preferredSize: Size.fromHeight(showSearchBar ? 150 : 110),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -80,5 +88,5 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(showSearchBar ? 140 : 80);
+  Size get preferredSize => Size.fromHeight(showSearchBar ? 150 : 110);
 }

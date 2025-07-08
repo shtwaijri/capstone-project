@@ -24,62 +24,67 @@ class ReceiptApi {
   ///
   /// Throws [FormatException] if the API returns an error status.
   sendReceipt(File image) async {
-    // Combine base URL with endpoint to get full URL
-    final Uri url = Uri.parse('$_baseURL$_receiptEndpoint');
+    try {
+      // Combine base URL with endpoint to get full URL
+      final Uri url = Uri.parse('$_baseURL$_receiptEndpoint');
 
-    // Read the image file as bytes
-    final bytes = await File(image.path).readAsBytes();
-    // Convert the image bytes to base64 string
-    final base64Image = base64Encode(bytes);
-    // Send HTTP POST request with base64 image
-    final response = await http.post(
-      url,
-      headers: {
-        "Authorization": "Token $_apiKey",
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode({"document": base64Image}),
-    );
-
-    log('Status: ${response.statusCode}');
-    log('Body: ${response.body}');
-    // Check for successful response (status code 2xx)
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      final data = jsonDecode(response.body);
-      log('Parsed Data: $data');
-      // Parse and return ReceiptApiModel from response data
-      final model = ReceiptApiModel(
-        date:
-            data['document']['inference']['prediction']['date']?['value'] ??
-            'unknown'.tr(),
-        time:
-            data['document']['inference']['prediction']['time']?['value'] ??
-            'unknown'.tr(),
-        receiptNumber:
-            data['document']['inference']['prediction']['receipt_number']?['value'] ??
-            'unknown'.tr(),
-        totalAmount:
-            double.tryParse(
-              data['document']['inference']['prediction']['total_amount']?['value']
-                      ?.toString() ??
-                  'unknown'.tr(),
-            ) ??
-            0.0,
-
-        currency:
-            data['document']['inference']['prediction']['locale']?['currency'] ??
-            'unknown'.tr(),
-
-        supplier:
-            data['document']['inference']['prediction']['supplier_name']?['value'] ??
-            'unknown'.tr(),
+      // Read the image file as bytes
+      final bytes = await File(image.path).readAsBytes();
+      // Convert the image bytes to base64 string
+      final base64Image = base64Encode(bytes);
+      // Send HTTP POST request with base64 image
+      final response = await http.post(
+        url,
+        headers: {
+          "Authorization": "Token $_apiKey",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({"document": base64Image}),
       );
-      log('Model: $model');
-      return model;
-    } else {
-      throw FormatException(
-        'Error: ${response.statusCode} - ${response.reasonPhrase}',
-      );
+
+      log('Status: ${response.statusCode}');
+      log('Body: ${response.body}');
+      // Check for successful response (status code 2xx)
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final data = jsonDecode(response.body);
+        log('Parsed Data: $data');
+        // Parse and return ReceiptApiModel from response data
+        final model = ReceiptApiModel(
+          date:
+              data['document']['inference']['prediction']['date']?['value'] ??
+              'unknown'.tr(),
+          time:
+              data['document']['inference']['prediction']['time']?['value'] ??
+              'unknown'.tr(),
+          receiptNumber:
+              data['document']['inference']['prediction']['receipt_number']?['value'] ??
+              'unknown'.tr(),
+          totalAmount:
+              double.tryParse(
+                data['document']['inference']['prediction']['total_amount']?['value']
+                        ?.toString() ??
+                    'unknown'.tr(),
+              ) ??
+              0.0,
+
+          currency:
+              data['document']['inference']['prediction']['locale']?['currency'] ??
+              'unknown'.tr(),
+
+          supplier:
+              data['document']['inference']['prediction']['supplier_name']?['value'] ??
+              'unknown'.tr(),
+        );
+        log('Model: $model');
+        return model;
+      } else {
+        throw FormatException(
+          'Error: ${response.statusCode} - ${response.reasonPhrase}',
+        );
+      }
+    } catch (e) {
+      log('Error sending receipt: $e');
+      rethrow;
     }
   }
 }

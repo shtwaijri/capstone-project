@@ -54,6 +54,7 @@ class ProfileScreen extends StatelessWidget {
                 title: tr('profileTitle'),
                 showActions: false,
                 showSearchBar: false,
+                showBackButton: false,
               ),
               body: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {

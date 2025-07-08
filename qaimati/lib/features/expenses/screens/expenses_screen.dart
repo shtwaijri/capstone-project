@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qaimati/features/expenses/bloc/expenses/expenses_bloc.dart';
 import 'package:qaimati/features/expenses/repository/receipt_supabeas.dart';
 import 'package:qaimati/features/expenses/screens/receipt_screen.dart';
@@ -13,6 +14,7 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/floating_button.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 /// Screen showing expenses overview including spending summary and receipts.
 ///
@@ -33,27 +35,57 @@ class ExpensesScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final bloc = context.read<ExpensesBloc>();
-          return Scaffold(
-            appBar: AppBarWidget(
-              title: 'receiptExpenses'.tr(),
-              showActions: false,
-              showSearchBar: false,
-            ),
+          return BlocListener<ExpensesBloc, ExpensesState>(
+            listener: (context, state) async {
+              if (state is IsPremiumiState) {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReceiptScreen()),
+                );
 
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: BlocBuilder<ExpensesBloc, ExpensesState>(
-                builder: (context, state) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      bloc.add(
-                        MonthChangedEvent(
-                          year: bloc.displayedDate.year,
-                          month: bloc.displayedDate.month,
-                        ),
-                      );
-                    },
-                    child: Column(
+                if (result == true) {
+                  final bloc = context.read<ExpensesBloc>();
+                  bloc.add(
+                    MonthChangedEvent(
+                      year: bloc.displayedDate.year,
+                      month: bloc.displayedDate.month,
+                    ),
+                  );
+                }
+              }
+              if (state is IsNotPremiumiState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      state.message.tr(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: Scaffold(
+              appBar: AppBarWidget(
+                title: 'receiptExpenses'.tr(),
+                showActions: false,
+                showSearchBar: false,
+                showBackButton: false,
+              ),
+
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: BlocBuilder<ExpensesBloc, ExpensesState>(
+                  buildWhen: (previous, current) {
+                    if (previous is SuccessState &&
+                        (current is IsNotPremiumiState)) {
+                      return false;
+                    }
+
+                    return true;
+                  },
+                  builder: (context, state) {
+                    return Column(
                       spacing: 16,
                       children: [
                         CalendarWidget(
@@ -66,7 +98,7 @@ class ExpensesScreen extends StatelessWidget {
                               bloc.displayedDate.month - 1,
                             );
 
-                            bloc.displayedDate = previousMonth;
+                            bloc.add(SetDateEvent(previousMonth));
 
                             bloc.add(
                               MonthChangedEvent(
@@ -81,7 +113,7 @@ class ExpensesScreen extends StatelessWidget {
                               bloc.displayedDate.month + 1,
                             );
 
-                            bloc.displayedDate = nextMonth;
+                            bloc.add(SetDateEvent(nextMonth));
 
                             bloc.add(
                               MonthChangedEvent(
@@ -115,13 +147,16 @@ class ExpensesScreen extends StatelessWidget {
                               log("Current state: $state");
                               if (state is LoadingState) {
                                 // Show loading spinner when processing
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
+                                return LoadingWidget();
                               }
                               if (state is ErrorState) {
                                 // Show loading spinner when processing
-                                return Center(child: Text(state.message));
+                                return Center(
+                                  child: Text(
+                                    state.message,
+                                    style: StyleText.regular16Error(context),
+                                  ),
+                                );
                               }
                               if (state is SuccessState &&
                                   state.receipt.isNotEmpty) {
@@ -200,12 +235,12 @@ class ExpensesScreen extends StatelessWidget {
                                                 );
                                               },
                                             );
-                                            bloc.add(
-                                              MonthChangedEvent(
-                                                year: bloc.displayedDate.year,
-                                                month: bloc.displayedDate.month,
-                                              ),
-                                            );
+                                            // bloc.add(
+                                            //   MonthChangedEvent(
+                                            //     year: bloc.displayedDate.year,
+                                            //     month: bloc.displayedDate.month,
+                                            //   ),
+                                            // );
                                           },
 
                                           child: ReceiptWidget(
@@ -215,8 +250,6 @@ class ExpensesScreen extends StatelessWidget {
                                                 .receipt[index]
                                                 .totalAmount
                                                 .toString(),
-                                            currency:
-                                                state.receipt[index].currency,
                                           ),
                                         ),
                                       ],
@@ -233,39 +266,44 @@ class ExpensesScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
-                  );
+                    );
+                  },
+                ),
+              ),
+              // Floating button to navigate to ReceiptScreen to add a new receipt
+              floatingActionButton: FloatingButton(
+                onpressed: () async {
+                  // try {
+                  // await ReceiptSupabase().checkAddReceiptEligibility();
+                  bloc.add(CheckPirEvent());
+
+                  //     final result = await Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => ReceiptScreen()),
+                  //     );
+
+                  //     if (result == true) {
+                  //       final bloc = context.read<ExpensesBloc>();
+                  //       bloc.add(
+                  //         MonthChangedEvent(
+                  //           year: bloc.displayedDate.year,
+                  //           month: bloc.displayedDate.month,
+                  //         ),
+                  //       );
+                  //     }
+                  //   } catch (e) {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       SnackBar(
+                  //         content: Text(
+                  //           e.toString(),
+                  //           style: TextStyle(color: Colors.white),
+                  //         ),
+                  //         backgroundColor: Colors.red,
+                  //       ),
+                  //     );
+                  //   }
                 },
               ),
-            ),
-            // Floating button to navigate to ReceiptScreen to add a new receipt
-            floatingActionButton: FloatingButton(
-              onpressed: () async {
-                try {
-                  await ReceiptSupabase().checkAddReceiptEligibility();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ReceiptScreen()),
-                  );
-
-                  bloc.add(
-                    MonthChangedEvent(
-                      year: bloc.displayedDate.year,
-                      month: bloc.displayedDate.month,
-                    ),
-                  );
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString().replaceAll("Exception: ", ""),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
             ),
           );
         },
