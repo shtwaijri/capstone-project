@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
-// import 'package:test_befor_add/style/style_color.dart';
-
+/// Widget to display a color.
 class ColorsWidget extends StatelessWidget {
   const ColorsWidget({super.key, required this.color, this.isSelected});
   final Color color;
