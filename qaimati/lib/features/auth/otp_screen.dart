@@ -30,7 +30,12 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: '', showActions: true, showSearchBar: false),
+      appBar: AppBarWidget(
+        title: '',
+        showActions: true,
+        showSearchBar: false,
+        showBackButton: false,
+      ),
 
       body: Padding(
         padding: EdgeInsets.symmetric(

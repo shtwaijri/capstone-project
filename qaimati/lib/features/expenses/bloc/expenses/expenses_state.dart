@@ -18,3 +18,11 @@ final class ErrorState extends ExpensesState {
 }
 
 final class LoadingState extends ExpensesState {}
+
+final class IsPremiumiState extends ExpensesState {}
+
+final class IsNotPremiumiState extends ExpensesState {
+  final String message;
+
+  IsNotPremiumiState([this.message = "receiptLimitReached"]);
+}

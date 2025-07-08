@@ -26,6 +26,7 @@ class AuthScreen extends StatelessWidget {
               title: tr('welcome'),
               showActions: true,
               showSearchBar: false,
+              showBackButton: false,
             ),
             body: Padding(
               padding: EdgeInsets.symmetric(

@@ -42,6 +42,7 @@ class ListsScreen extends StatelessWidget {
                     showActions: false,
                     showSearchBar: true,
                     actionsIcon: const [],
+                    showBackButton: false,
                   ),
 
                   SafeArea(
