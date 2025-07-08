@@ -99,11 +99,16 @@ Qaimati is designed as a powerful **productivity and collaboration app** to simp
 - **📦 API Integration for Receipts:**  
   Receipts can be parsed using a third-party API for auto-filling purchase details (store name, total amount, etc.).
 
-- **🌟 Premium Subscription Service:**  
-  Unlock extended functionality including:
-  - Unlimited list sharing
-  - Additional storage and member roles
+- ## 🌟 Premium Subscription Service
 
+### Unlimited Invoices  
+Unlock the full potential of our platform with the **Premium Subscription**.
+
+With this plan, you can:
+- 🧾 **Create and manage unlimited invoices**
+- ✅ Perfect for both **business and personal use**
+- 🔓 No limitations, full access to all invoicing too
+ 
 ---
 
 ## 🚀 Features That Will Be Added in the Future
@@ -131,6 +136,10 @@ Qaimati is designed with scalability in mind. The following features are planned
 - **📷 Barcode Scanning:**  
   Quickly add products to a list by scanning their barcodes.
 
+- **🌟 Premium Subscription Service:**  
+  Unlock extended functionality including:
+  - Unlimited list sharing
+  - Additional storage and member roles
 
 ---
 
