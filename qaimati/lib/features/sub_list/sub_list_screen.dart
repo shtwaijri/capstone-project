@@ -75,8 +75,6 @@ class SubListScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    // final listId = GetIt.I.get<AppDatatLayer>().listId;
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -141,11 +139,16 @@ class SubListScreen extends StatelessWidget {
                             ),
                             StyleSize.sizeH8,
                             Center(
-                              child: Text(
-                                "itemAdd".tr(),
-                                style: StyleText.regular16Green(
-                                  context,
-                                ).copyWith(fontSize: 20),
+                              child: TextButton(
+                                onPressed: () {
+                                  showAddItemBottomShaeet(context: context);
+                                },
+                                child: Text(
+                                  "itemAdd".tr(),
+                                  style: StyleText.regular16Green(
+                                    context,
+                                  ).copyWith(fontSize: 20),
+                                ),
                               ),
                             ),
                           ] else ...[

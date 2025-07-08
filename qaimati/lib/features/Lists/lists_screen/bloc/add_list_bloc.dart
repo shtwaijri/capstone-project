@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:qaimati/layer_data/app_data.dart';
+import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/models/list/list_model.dart';
+import 'package:qaimati/utilities/helper/userId_helper.dart';
 
 part 'add_list_event.dart';
 part 'add_list_state.dart';
@@ -12,6 +14,7 @@ part 'add_list_state.dart';
 class AddListBloc extends Bloc<AddListEvent, AddListState> {
   int selectColor = 1;
   final appGetit = GetIt.I.get<AppDatatLayer>();
+  AppUserModel? user;
 
   var list;
   changeColor(int index) {
@@ -101,7 +104,10 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     Emitter<AddListState> emit,
   ) async {
     try {
+      user = await fetchUserById(); // Fetch the authenticated user's details.
+
       emit(AddListLoading());
+      appGetit.initStreamsf(user!.userId);
       await appGetit.loadAdminLists();
       emit(AddListLoaded(appGetit.lists));
     } catch (e) {

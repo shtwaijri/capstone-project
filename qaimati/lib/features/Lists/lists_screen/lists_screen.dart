@@ -196,7 +196,7 @@ class ListsScreen extends StatelessWidget {
                 showAddListButtomSheet(
                   context: context,
                   isEdit: false,
-                ); // same bottom sheet, if isEdit is false, will show add list
+                ); // same bottom sheet, if isEdit is false, will show add listz,);
               },
             ),
           );
