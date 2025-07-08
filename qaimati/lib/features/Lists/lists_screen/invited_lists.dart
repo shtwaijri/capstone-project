@@ -14,8 +14,8 @@ import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
 
-class MemberLists extends StatelessWidget {
-  const MemberLists({super.key});
+class InvitedLists extends StatelessWidget {
+  const InvitedLists({super.key});
 
   @override
   Widget build(BuildContext context) {

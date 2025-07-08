@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
-import 'package:qaimati/features/Lists/lists_screen/member_lists.dart';
+import 'package:qaimati/features/Lists/lists_screen/invited_lists.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
 import 'package:qaimati/features/members/invite/bloc/invite_bloc.dart';
 import 'package:qaimati/features/members/invite/invite_screen.dart';
@@ -118,7 +118,7 @@ class ListsScreen extends StatelessWidget {
                         ),
                         quantity: '0',
                         lable: 'invitedLists'.tr(),
-                        screen: MemberLists(),
+                        screen: InvitedLists(),
                       ),
                     ],
                   ),

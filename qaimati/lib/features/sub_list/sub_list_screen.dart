@@ -10,6 +10,7 @@ import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bott
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/update_delete_item_bottom_sheet.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/models/item/item_model.dart';
+import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/custom_items_widget/custom_items.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -86,6 +87,7 @@ class SubListScreen extends StatelessWidget {
                   icon: Icon(
                     CupertinoIcons.person_crop_circle_fill_badge_plus,
                     color: StyleColor.green,
+                    size: context.getWidth() * 0.08,
                   ),
                 ),
               ],
