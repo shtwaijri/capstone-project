@@ -26,6 +26,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   //instance of AuthLayer
   final authGetit = GetIt.I.get<AuthLayer>();
+
+  Timer? _resendOtpTimer;
+  int _resendOtpSeconds = 0;
+
   AuthBloc() : super(AuthStateInit()) {
     on<ValidateEmailEvent>(_validateEmail);
     on<SendOtpEvent>(_sendOtpMethod);
@@ -36,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       //use list.from to save the digits as a copy
       emit(OTPUpdatedState(digits: List.from(_otpDigits)));
     });
+    on<ResendOtpEvent>(_resendOtpMethod);
   }
 
   //method to send the OTP
@@ -118,5 +123,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(EmailValidState());
       add(SendOtpEvent());
     }
+  }
+
+  FutureOr<void> _resendOtpMethod(
+    ResendOtpEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    if (_resendOtpSeconds > 0) {
+      return;
+    }
+
+    try {
+      emit(LoadingSignUpState());
+
+      await authGetit.sendOtp(email: emailController.text.trim());
+      emit(OtpSentState());
+
+      _startResendCountdown(emit);
+    } catch (error) {
+      emit(ErrorState(msg: error.toString()));
+    }
+  }
+
+  void _startResendCountdown(Emitter<AuthState> emit) {
+    _resendOtpSeconds = 60;
+    _resendOtpTimer?.cancel();
+
+    _resendOtpTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _resendOtpSeconds--;
+      print('Resend seconds remaining: $_resendOtpSeconds');
+
+      if (_resendOtpSeconds <= 0) {
+        timer.cancel();
+        emit(OtpSentState());
+      } else {
+        emit(ResendOtpCountState(secondsRemaining: _resendOtpSeconds));
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _resendOtpTimer?.cancel();
+    return super.close();
   }
 }

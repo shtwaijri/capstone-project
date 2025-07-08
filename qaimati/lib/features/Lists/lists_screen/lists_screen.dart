@@ -34,56 +34,60 @@ class ListsScreen extends StatelessWidget {
           final bloc = context.read<AddListBloc>();
           return Scaffold(
             appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(
-                140,
-              ), // نفس ارتفاع AppBarWidget
+              preferredSize: const Size.fromHeight(140),
               child: Stack(
                 children: [
                   AppBarWidget(
                     title: 'listTitle'.tr(),
-                    showActions: true,
+                    showActions: false,
                     showSearchBar: true,
                     actionsIcon: const [],
                   ),
 
-                  Positioned(
-                    top: 30,
-                    right: 16,
-                    child: BlocBuilder<InviteBloc, InviteState>(
-                      builder: (context, state) {
-                        final hasInvites =
-                            state is InviteLoadedState &&
-                            state.invitedLists.isNotEmpty;
+                  SafeArea(
+                    child: Align(
+                      alignment: AlignmentDirectional.topEnd,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0, right: 12.0),
+                        child: BlocBuilder<InviteBloc, InviteState>(
+                          builder: (context, state) {
+                            final hasInvites =
+                                state is InviteLoadedState &&
+                                state.invitedLists.isNotEmpty;
 
-                        return Stack(
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Icons.notifications,
-                                color: Colors.green,
-                                size: 28,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const InvitationsScreen(),
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.notifications,
+                                    color: Colors.green,
+                                    size: 26,
                                   ),
-                                );
-                              },
-                            ),
-                            if (hasInvites)
-                              const Positioned(
-                                top: 4,
-                                right: 4,
-                                child: CircleAvatar(
-                                  radius: 5,
-                                  backgroundColor: Colors.red,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const InvitationsScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
-                              ),
-                          ],
-                        );
-                      },
+                                if (hasInvites)
+                                  const Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: CircleAvatar(
+                                      radius: 5,
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ],

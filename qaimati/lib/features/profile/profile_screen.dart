@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
 import 'package:qaimati/features/members/invite/invite_screen.dart';
 import 'package:qaimati/features/prime/payment_screen.dart';
+import 'package:qaimati/features/prime/prime_screen.dart';
 import 'package:qaimati/features/profile/bloc/profile_bloc.dart';
 import 'package:qaimati/features/profile/widgets/custom_alert_dialog.dart';
 import 'package:qaimati/features/profile/widgets/custom_widget_setting.dart';
@@ -45,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
                 );
 
                 // change the theme by using theme controller
-                ThemeController.toggleTheme(state.isDarkModeState);
+                // ThemeController.toggleTheme(state.isDarkModeState);
               }
             },
             child: Scaffold(
@@ -203,11 +204,28 @@ class ProfileScreen extends StatelessWidget {
                               color: StyleColor.green,
                               iconSize: context.getWidth() * 0.06,
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => PaymentScreen(),
+                                showModalBottomSheet(
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+
+                                  // shape: RoundedRectangleBorder(
+                                  //   borderRadius: BorderRadius.vertical(
+                                  //     top: Radius.circular(25),
+                                  //   ),
+                                  // ),
+                                  builder: (context) => const PrimeScreen(),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(100),
+                                    ),
                                   ),
                                 );
+
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (context) => PrimeScreen(),
+                                //   ),
+                                // );
                               },
                             ),
                             SizedBox(height: context.getHeight() * 0.03),
@@ -234,23 +252,6 @@ class ProfileScreen extends StatelessWidget {
                                       (route) => false,
                                     );
                                   },
-                                );
-                              },
-                            ),
-
-                            CustomWidgetSetting(
-                              icon: Icons.exit_to_app,
-                              text: tr('noti screen'),
-                              style: StyleText.bold16(
-                                context,
-                              ).copyWith(color: StyleColor.error),
-                              color: StyleColor.error,
-                              iconSize: context.getWidth() * 0.06,
-                              onTap: () async {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => InvitationsScreen(),
-                                  ),
                                 );
                               },
                             ),

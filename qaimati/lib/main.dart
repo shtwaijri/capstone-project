@@ -1,16 +1,12 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:get_it/get_it.dart';
-import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
 import 'package:qaimati/features/intro/onboarding.dart';
 import 'package:qaimati/features/loading/loading_screen.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/features/profile/profile_screen.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
-
 import 'package:qaimati/style/theme/theme.dart';
 import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:qaimati/utilities/setup.dart';
@@ -26,6 +22,7 @@ void main() async {
 
   final session = Supabase.instance.client.auth.currentSession;
   Locale startLocale = const Locale('en', 'US');
+  bool isDark = false;
 
   if (session != null) {
     try {
@@ -35,22 +32,24 @@ void main() async {
           .eq('auth_user_id', session.user.id)
           .single();
 
-      final isDark = response['theme_mode'] == 'dark';
+      isDark = response['theme_mode'] == 'dark';
       final isArabic = response['language_code'] == 'ar';
 
       startLocale = isArabic
           ? const Locale('ar', 'AR')
           : const Locale('en', 'US');
-
-      ThemeController.toggleTheme(isDark);
     } catch (e) {}
   }
 
+  ThemeController.themeNotifier.value = isDark
+      ? ThemeMode.dark
+      : ThemeMode.light;
+
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
+      supportedLocales: const [Locale('en', 'US'), Locale('ar', 'AR')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
       startLocale: startLocale,
       child: const MyApp(),
     ),
