@@ -141,6 +141,12 @@ class ListsScreen extends StatelessWidget {
                                 img: '',
                                 bigText: 'listNoLists'.tr(),
                                 buttonText: 'listAdd'.tr(),
+                                onPressed: () {
+                                  showAddListButtomSheet(
+                                    context: context,
+                                    isEdit: false,
+                                  );
+                                },
                               )
                             : Expanded(
                                 child: BlocBuilder<AddListBloc, AddListState>(
