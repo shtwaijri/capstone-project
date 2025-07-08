@@ -10,6 +10,7 @@ import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/Text_Field_widget.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 /// Screen to handle receipt image upload and input for store name and total amount.
 /// Uses [ReceiptBloc] for state management.
@@ -58,12 +59,7 @@ class ReceiptScreen extends StatelessWidget {
                   }
                   if (state is LoadingState) {
                     // Show loading spinner when processing
-                    return Center(
-                      child: LoadingAnimationWidget.fourRotatingDots(
-                        color: StyleColor.green,
-                        size: 80,
-                      ),
-                    );
+                    return LoadingWidget();
                   }
                   if (state is SuccessState) {
                     // If receipt image upload succeeded, show the image and form fields

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 import 'package:qaimati/widgets/text_field_widget.dart';
 
 /// A widget for updating a receipt, including an image, store name,
@@ -54,7 +55,7 @@ class UpdateWigdet extends StatelessWidget {
               },
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return Center(child: CircularProgressIndicator());
+                return LoadingWidget();
               },
             ),
             Text('receiptStore'.tr(), style: StyleText.bold16(context)),

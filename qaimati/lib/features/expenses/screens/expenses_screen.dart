@@ -14,6 +14,7 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/floating_button.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 /// Screen showing expenses overview including spending summary and receipts.
 ///
@@ -146,13 +147,7 @@ class ExpensesScreen extends StatelessWidget {
                               log("Current state: $state");
                               if (state is LoadingState) {
                                 // Show loading spinner when processing
-                                return Center(
-                                  child:
-                                      LoadingAnimationWidget.staggeredDotsWave(
-                                        color: Colors.white,
-                                        size: 200,
-                                      ),
-                                );
+                                return LoadingWidget();
                               }
                               if (state is ErrorState) {
                                 // Show loading spinner when processing
