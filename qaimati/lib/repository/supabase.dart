@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:async/async.dart'; // For StreamZip
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -31,34 +32,113 @@ class SupabaseConnect {
     }
   }
 
-  // Function to listen to all items directly linked to a user in real time
+  // // Function to listen to all items directly linked to a user in real time
+  // static Stream<List<ItemModel>> listenToAllUserItemsDirectly(String userId) {
+  //   // Check if Supabase client is initialized. If not, return an error stream.
+
+  //   if (supabase == null) {
+  //     log("Supabase is not initialized when trying to listen to user items.");
+  //     return Stream.error("Supabase is not initialized.");
+  //   }
+  //   log(
+  //     "SupabaseConnect: Setting up realtime listener for all items directly linked to user: $userId",
+  //   );
+
+  //   // Set up a realtime stream on the 'item' table using 'item_id' as the primary key.
+  //   return supabase!
+  //       .from('item')
+  //       .stream(primaryKey: ['item_id'])
+  //       .map((data) {
+  //         return data
+  //             // Map each received record (as Map) to an ItemModel object.
+  //             .map((itemMap) => ItemModelMapper.fromMap(itemMap))
+  //             .toList();
+  //       })
+  //       .handleError((error) {
+  //         // Handle any errors in the stream by  returning an empty list.
+  //         log("SupabaseConnect: Error in all user items stream: $error");
+  //         return <ItemModel>[];
+  //       });
+  // }
+
   static Stream<List<ItemModel>> listenToAllUserItemsDirectly(String userId) {
-    // Check if Supabase client is initialized. If not, return an error stream.
+  if (supabase == null) {
+    print("Supabase is not initialized when trying to listen to user items.");
+    return Stream.error("Supabase is not initialized.");
+  }
+  print("SupabaseConnect: Setting up realtime listener for all items linked to user: $userId");
 
-    if (supabase == null) {
-      log("Supabase is not initialized when trying to listen to user items.");
-      return Stream.error("Supabase is not initialized.");
+  // Stream for items directly linked to the user
+  final userItemsStream = supabase!
+      .from('item')
+      .stream(primaryKey: ['item_id'])
+      .eq('app_user_id', userId)
+      .map((data) {
+        print("SupabaseConnect: Fetched user items: ${data.length} items for userId: $userId");
+        return data.map((itemMap) => ItemModelMapper.fromMap(itemMap)).toList();
+      })
+      .handleError((error) {
+        print("SupabaseConnect: Error in user items stream: $error");
+        return <ItemModel>[];
+      });
+
+  // Future to fetch shared list IDs
+  final sharedListIdsFuture = supabase!
+      .from('list_user_role')
+      .select('list_id')
+      .eq('app_user_id', userId)
+      .then((response) {
+        final listIds = response.map<String>((row) => row['list_id'] as String).toList();
+        print("SupabaseConnect: Fetched shared list IDs: $listIds for userId: $userId");
+        return listIds;
+      }).catchError((error) {
+        print("SupabaseConnect: Error fetching shared list IDs: $error");
+        return <String>[]; // Return empty list on error
+      });
+
+  // Stream for shared list items
+  final sharedListItemsStream = Stream.fromFuture(sharedListIdsFuture).asyncExpand((listIds) {
+    if (listIds.isEmpty) {
+      print("SupabaseConnect: No shared list IDs found for userId: $userId");
+      return Stream.value(<ItemModel>[]); // Return empty stream if no shared lists
     }
-    log(
-      "SupabaseConnect: Setting up realtime listener for all items directly linked to user: $userId",
-    );
 
-    // Set up a realtime stream on the 'item' table using 'item_id' as the primary key.
+    // Fetch all items and filter manually
     return supabase!
         .from('item')
         .stream(primaryKey: ['item_id'])
         .map((data) {
-          return data
-              // Map each received record (as Map) to an ItemModel object.
-              .map((itemMap) => ItemModelMapper.fromMap(itemMap))
+          final filteredItems = data
+              .where((itemMap) => listIds.contains(itemMap['list']))
               .toList();
+          print("SupabaseConnect: Fetched shared list items: ${filteredItems.length} items for shared lists: $listIds");
+          return filteredItems.map((itemMap) => ItemModelMapper.fromMap(itemMap)).toList();
         })
         .handleError((error) {
-          // Handle any errors in the stream by  returning an empty list.
-          log("SupabaseConnect: Error in all user items stream: $error");
+          print("SupabaseConnect: Error in shared list items stream: $error");
           return <ItemModel>[];
         });
-  }
+  });
+
+  // Combine the two streams and remove duplicates
+  return StreamZip([userItemsStream, sharedListItemsStream]).map((streams) {
+    final List<ItemModel> userItems = streams[0];
+    final List<ItemModel> sharedListItems = streams[1];
+
+    print("SupabaseConnect: Combined user items (${userItems.length}) and shared list items (${sharedListItems.length})");
+
+    // Combine and remove duplicates based on item_id
+    final combinedItems = [
+      ...userItems,
+      ...sharedListItems,
+    ].toSet().toList(); // Use Set to remove duplicates
+
+    print("SupabaseConnect: Total combined items after removing duplicates: ${combinedItems.length}");
+    combinedItems.forEach((item) => print("Combined Item: $item")); // Print each combined item
+    return combinedItems;
+  });
+}
+ 
 
   // Function to listen to all lists linked to a specific user in real time
   static Stream<List<ListModel>> listenToAllUserListsDirectly(String userId) {
