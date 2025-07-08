@@ -83,7 +83,7 @@ class MemberLists extends StatelessWidget {
                       return lists.isEmpty
                           ? EmptyWidget(
                               lable: 'no list here',
-                              img: '',
+                              img: 'assets/svg/no_member.svg',
                               hint: 'add list',
                             )
                           : Expanded(

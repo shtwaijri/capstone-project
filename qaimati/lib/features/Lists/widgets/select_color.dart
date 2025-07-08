@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qaimati/features/Lists/widgets/color_widget.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
-// import 'package:test_befor_add/screens/any.dart';
-// import 'package:test_befor_add/screens/color_widget.dart';
-// import 'package:test_befor_add/style/style_color.dart';
-// import 'package:test_befor_add/style/style_text.dart';
+/// Widget to select a color for a list, on click it will change the selected color.
 
 class SelectColor extends StatelessWidget {
   const SelectColor({super.key, this.selected, this.onTapSelect});

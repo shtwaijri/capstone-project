@@ -11,9 +11,9 @@ import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
+import 'package:qaimati/widgets/custom_empty_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
 import 'package:qaimati/widgets/custom_shimmer_effect.dart';
-import 'package:qaimati/widgets/empty_widget.dart';
 import 'package:qaimati/widgets/floating_button.dart';
 
 class ListsScreen extends StatelessWidget {
@@ -137,11 +137,10 @@ class ListsScreen extends StatelessWidget {
                         final lists = state.lists;
 
                         return lists.isEmpty
-                            ? EmptyWidget(
-                                // while no lists will show empty widget
-                                lable: 'listNoLists'.tr(),
+                            ? CustomEmptyWidget(
                                 img: '',
-                                hint: 'listAdd'.tr(),
+                                bigText: 'listNoLists'.tr(),
+                                buttonText: 'listAdd'.tr(),
                               )
                             : Expanded(
                                 child: BlocBuilder<AddListBloc, AddListState>(
@@ -152,6 +151,7 @@ class ListsScreen extends StatelessWidget {
                                         final list = lists[index];
                                         return GestureDetector(
                                           onLongPress: () {
+                                            // becouse on press will go to sub list
                                             showAddListButtomSheet(
                                               context: context,
                                               isEdit: true,
@@ -181,7 +181,7 @@ class ListsScreen extends StatelessWidget {
                                 ),
                               );
                       } else {
-                        return const Center(child: Text('No state'));
+                        return CustomShimmerEffect(isItem: false);
                       }
                     },
                   ),
