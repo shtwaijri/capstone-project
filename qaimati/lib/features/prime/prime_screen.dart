@@ -16,6 +16,7 @@ class PrimeScreen extends StatelessWidget {
         title: tr('Subspriction'),
         showActions: true,
         showSearchBar: false,
+        showBackButton: false,
       ),
 
       body: Column(

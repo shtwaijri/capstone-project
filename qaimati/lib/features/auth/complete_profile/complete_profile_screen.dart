@@ -23,6 +23,7 @@ class CompleteProfileScreen extends StatelessWidget {
           title: tr('CompleteTitle'),
           showActions: true,
           showSearchBar: false,
+          showBackButton: false,
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(

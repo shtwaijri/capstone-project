@@ -33,6 +33,15 @@ class StyleText {
     );
   }
 
+  static TextStyle bold16black(BuildContext context) {
+    return TextStyle(
+      fontFamily: _getFontFamily(context),
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      color: StyleColor.black,
+    );
+  }
+
   static TextStyle bold12(BuildContext context) {
     return TextStyle(
       fontFamily: _getFontFamily(context),

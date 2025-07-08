@@ -31,6 +31,7 @@ class InvitedLists extends StatelessWidget {
               actionsIcon: [
                 Icon(Icons.notification_add_rounded, color: StyleColor.green),
               ],
+              showBackButton: false,
             ),
             body: Column(
               children: [

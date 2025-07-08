@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,12 @@ class SpendingWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               //The spending amount with a Riyal icon.
               children: [
-                Text('receiptMonthly'.tr(), style: StyleText.bold16(context)),
+                Text(
+                  'receiptMonthly'.tr(),
+                  style: StyleText.bold16black(context),
+                ),
                 Row(
+                  textDirection: ui.TextDirection.ltr,
                   children: [
                     SvgPicture.asset(
                       'assets/svg/Riyal.svg',
@@ -43,7 +48,7 @@ class SpendingWidget extends StatelessWidget {
                       height: 16,
                     ),
                     StyleSize.sizeW8,
-                    Text('$money', style: StyleText.bold16(context)),
+                    Text('$money', style: StyleText.bold16black(context)),
                   ],
                 ),
               ],

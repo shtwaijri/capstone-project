@@ -32,6 +32,7 @@ class AddMemberSheetScreen extends StatelessWidget {
               title: tr('memberAddTitle'),
               showActions: true,
               showSearchBar: false,
+              showBackButton: false,
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
