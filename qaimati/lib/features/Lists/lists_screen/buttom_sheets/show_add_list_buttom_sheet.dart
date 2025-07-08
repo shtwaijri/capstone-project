@@ -12,7 +12,7 @@ import 'package:qaimati/widgets/buttom_widget.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
 import 'package:qaimati/widgets/text_field_widget.dart';
 
-void showAddListButtomSheet({
+showAddListButtomSheet({
   required BuildContext context,
   required bool isEdit,
   String? listId,
@@ -21,18 +21,17 @@ void showAddListButtomSheet({
   TextEditingController addListController = TextEditingController(
     text: isEdit ? list?.name ?? '' : '',
   );
-
+  final bloc = context.read<AddListBloc>();
   showModalBottomSheet(
     showDragHandle: true,
     backgroundColor: StyleColor.white,
     context: context,
     isScrollControlled: true,
     builder: (context) {
-      return BlocProvider(
-        create: (context) => AddListBloc(),
+      return BlocProvider.value(
+        value: bloc,
         child: Builder(
           builder: (context) {
-            final bloc = context.read<AddListBloc>();
             return Container(
               height: context.getHeight() * 0.6,
               padding: const EdgeInsets.all(16.0),

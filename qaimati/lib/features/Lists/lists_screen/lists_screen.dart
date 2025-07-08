@@ -125,7 +125,9 @@ class ListsScreen extends StatelessWidget {
                   BlocBuilder<AddListBloc, AddListState>(
                     builder: (context, state) {
                       if (state is AddListLoading) {
-                        return CustomShimmerEffect( isItem: false); // while data not loaded will show shimmer (UX)
+                        return CustomShimmerEffect(
+                          isItem: false,
+                        ); // while data not loaded will show shimmer (UX)
                       } else if (state is AddListError) {
                         return Center(child: Text('Error: ${state.message}'));
                       } else if (state is AddListLoaded) {
@@ -190,7 +192,7 @@ class ListsScreen extends StatelessWidget {
                 showAddListButtomSheet(
                   context: context,
                   isEdit: false,
-                ); // same bottom sheet, if isEdit is false, will show add list
+                ); // same bottom sheet, if isEdit is false, will show add listz,);
               },
             ),
           );

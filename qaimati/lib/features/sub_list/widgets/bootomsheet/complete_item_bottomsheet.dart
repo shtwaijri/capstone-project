@@ -99,12 +99,7 @@ void completeItemBottomsheet({required BuildContext context}) {
                   ButtomWidget(
                     onTab: () {
                       bloc.add(MarkCheckedItemsAsCompletedEvent());
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ExpensesScreen(),
-                        ),
-                      );
+                      Navigator.canPop(context);
                     },
                     textElevatedButton: "receiptAdd".tr(),
                   ),
