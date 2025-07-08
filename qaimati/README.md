@@ -3,7 +3,6 @@
 Qaimati is a mobile application developed as a capstone project using **Flutter** and **Dart**. It offers an innovative solution for families, individuals, and groups to manage and organize their shopping lists efficiently.
 
 ---
-
 ## 📱 Project Summary
 
 The app addresses the problem of unorganized and inefficient shopping by providing a platform that keeps all members up to date with what needs to be bought and what has already been purchased. It helps users avoid forgotten items, duplicate purchases, and lack of coordination during shopping trips.
@@ -26,22 +25,21 @@ Qaimati solves the problem by:
  
  
 ---
-
 ## 📝 Project Description
 
-The capstone project is an exciting opportunity for you to design and develop a real-world mobile application using the **Flutter** framework. You have the freedom to choose any app idea that interests you, be it a:
+**Qaimati** is a collaborative mobile application designed to simplify shopping list management for families, individuals, and groups. Developed using the **Flutter** framework and **Dart** programming language, the project aims to showcase innovative problem-solving and technical creativity while addressing real-world challenges.
 
-- 
+The app allows users to create, manage, and share shopping lists seamlessly, ensuring efficient coordination and organization. With features like real-time synchronization, role-based permissions, receipt tracking, and expense management, **Qaimati** transforms the shopping experience into a streamlined and stress-free process.
 
-  demonstrates your creativity and technical abilities.
+By leveraging **Supabase** for backend services and real-time databases, **Bloc** for state management, and **GetIt** for dependency injection, this app ensures high performance, scalability, and user satisfaction. It is designed to support both **Android** and **iOS** platforms, making it accessible to a wide range of users.
 
-Your project should:
-- Address a specific problem
-- Provide value to users
-- Explore innovative ideas
-- Have a polished and user-friendly UI
+**Key Highlights:**
+- Address a specific problem of disorganized shopping and lack of coordination.
+- Provide value by enabling shared shopping lists, detailed expense tracking, and smart notifications.
+- Explore innovative ideas like AI-powered item suggestions and receipt parsing for enhanced usability.
+- Deliver a polished, user-friendly interface supporting both **Arabic** and **English**.
 
----
+Whether it's grocery shopping with family, managing shared household purchases, or tracking office supply expenses, **Qaimati** ensures users stay organized, save time, and reduce unnecessary costs.
 
 
 
@@ -143,17 +141,85 @@ Qaimati is designed with scalability in mind. The following features are planned
 
 ---
 
+
 ## 👥 Tasks or Division of Members in the Project
 
-*[Outline how the project tasks are divided among team members, including specific responsibilities for each member]*
+### **Team Members and Their Contributions**
+
+1. **Bushra Aljuwair**  
+     - **Implemented the **Completed Screen**.
+     - **Worked on the sublist Lists screen (that with deal items )**.     
+     - **Notifications**
+     - **Custom listtile widget**
+     - **Localization**.
+     - **Wrote the README file.**
+
 
 ---
+2. **Lamya Alsuhaibani**  
+     - **Text Field Widget**.
+     - **Dual Action Button Widget**.
+     - **Button widget**
+     - **App bar widget**
+     - **Theme**
+     - **Floating Button Widget**.
+     - **Expenses Screen**.
+     - **Receipt Screen**
+     -**Created the presentation .**
+     - **Localization**.
 
+
+3. **Shatha Altwaijri**  
+       - **Custom OTP Field Widget**.
+       - **Navigation Bar**.
+        - **Payment Screen**.
+       - **Profile Screen**
+       - **Authentication**
+       - **List members Screen**
+       - **Localization**.
+
+
+   
 ## 📌 Minimum Requirements
 
-*[Include the minimum requirements for the project, as mentioned in the earlier section]*
+The following are the minimum requirements that the project must fulfill to ensure a functional and user-friendly application:
 
----
+1. **Core Functionalities**:
+   - Users must be able to create, edit, and delete shopping lists.
+   - Lists must support real-time updates and synchronization across devices.
+   - Users should have the ability to invite members to shared lists via email.
+   - Role-based permissions must be implemented:
+     - **Admin**: Full control over the list (edit, delete, manage members, and view receipts).
+     - **Members**: Limited control (add, edit, and delete their own items only).
+
+2. **Authentication**:
+   - Secure user login and sign-up functionality.
+ 
+3. **Expense Tracking**:
+   - Admins must be able to upload receipts and track expenses related to each list.
+   - Provide a summary of monthly spending.
+
+5. **Multi-Language Support**:
+   - The app must support both **Arabic** and **English** to cater to a wider audience.
+
+6. **UI/UX Design**:
+   - A polished and user-friendly interface that is intuitive for users of all ages and technical backgrounds.
+   - Clear navigation and accessible features.
+
+7. **Platform Compatibility**:
+   - The app must be compatible with both **Android** and **iOS** devices.
+
+8. **Notifications**:
+   - Real-time notifications for list updates, such as when a new item is added or a member joins the list.
+
+9. **Security and Privacy**:
+   - Ensure all user data is securely stored using **Supabase**.
+   - Only the admin should have access to sensitive information like receipts.
+
+10. **Development Framework**:
+    - The app must be developed using **Flutter**, ensuring a consistent experience across platforms.
+
+ ---
 
 ## 👤 Project Members
 
