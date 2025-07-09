@@ -40,7 +40,7 @@ class ListsScreen extends StatelessWidget {
                   AppBarWidget(
                     title: 'listTitle'.tr(),
                     showActions: false,
-                    showSearchBar: true,
+                    showSearchBar: false,
                     actionsIcon: const [],
                     showBackButton: false,
                   ),
@@ -129,7 +129,8 @@ class ListsScreen extends StatelessWidget {
                   BlocBuilder<AddListBloc, AddListState>(
                     builder: (context, state) {
                       if (state is AddListLoading) {
-                        return CustomShimmerEffect(
+                        return 
+                        CustomShimmerEffect(
                           isItem: false,
                         ); // while data not loaded will show shimmer (UX)
                       } else if (state is AddListError) {
