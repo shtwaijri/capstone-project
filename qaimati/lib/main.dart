@@ -79,6 +79,7 @@ class MyApp extends StatelessWidget {
       valueListenable: ThemeController.themeNotifier,
       builder: (context, themeMode, _) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: CustomTheme.lightTheme,
           darkTheme: CustomTheme.darkTheme,
           themeMode: themeMode,

@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:qaimati/features/expenses/model/receipt_api_model.dart';
-import 'package:qaimati/features/expenses/model/receipt_model.dart';
-import 'package:qaimati/features/expenses/repository/receipt_api.dart';
-import 'package:qaimati/features/expenses/repository/receipt_supabeas.dart';
+import 'package:qaimati/models/receipt/receipt_api_model.dart';
+import 'package:qaimati/models/receipt/receipt_model.dart';
+import 'package:qaimati/repository/receipt_repository/receipt_api.dart';
+import 'package:qaimati/repository/receipt_repository/receipt_supabeas.dart';
 import 'package:qaimati/utilities/helper/image_picker_helper.dart';
 
 part 'receipt_event.dart';
