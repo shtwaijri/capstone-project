@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:meta/meta.dart';
 import 'package:moyasar/moyasar.dart';
-import 'package:qaimati/features/prime/prime_service.dart';
+import 'package:qaimati/repository/prime_service.dart';
 
 part 'payment_event.dart';
 part 'payment_state.dart';

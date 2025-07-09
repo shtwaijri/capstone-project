@@ -9,9 +9,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:qaimati/features/expenses/receipt_data.dart';
+import 'package:qaimati/layer_data/receipt_data.dart';
 import 'package:qaimati/features/intro/onboarding_info.dart';
-import 'package:qaimati/features/prime/prime_service.dart';
+import 'package:qaimati/repository/prime_service.dart';
 import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
@@ -46,22 +46,22 @@ Future<void> setUp() async {
     instanceName: 'seenOnboarding',
   );
 
-  GetIt.I.registerSingletonAsync<ReceiptData>(
-    () async => ReceiptData()..loadAllDataFromSupabase(),
-  );
-  if (!GetIt.I.isRegistered<ReceiptData>()) {
-    GetIt.I.registerSingletonAsync<ReceiptData>(
-      () async => ReceiptData()
-        ..loadMonthlyDataFromSupabase(
-          year: DateTime.now().year,
-          month: DateTime.now().month,
-        ),
-    );
-  }
+  // GetIt.I.registerSingletonAsync<ReceiptData>(
+  //   () async => ReceiptData()..loadAllDataFromSupabase(),
+  // );
+  // if (!GetIt.I.isRegistered<ReceiptData>()) {
+  //   GetIt.I.registerSingletonAsync<ReceiptData>(
+  //     () async => ReceiptData()
+  //       ..loadMonthlyDataFromSupabase(
+  //         year: DateTime.now().year,
+  //         month: DateTime.now().month,
+  //       ),
+  //   );
+  // }
 
-  await GetIt.I.allReady();
+  // await GetIt.I.allReady();
 
-  await PrimeService.checkAndExpirePrimeStatus();
+  // await PrimeService.checkAndExpirePrimeStatus();
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {

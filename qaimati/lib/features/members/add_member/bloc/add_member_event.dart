@@ -21,10 +21,3 @@ class FetchMembersEvent extends AddMemberEvent {
 
   FetchMembersEvent({required this.listId});
 }
-
-class DeleteMemberEvent extends AddMemberEvent {
-  final String userId;
-  final String listId;
-
-  DeleteMemberEvent({required this.userId, required this.listId});
-}

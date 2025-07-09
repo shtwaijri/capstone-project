@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:qaimati/features/expenses/model/receipt_api_model.dart';
+import 'package:qaimati/models/receipt/receipt_api_model.dart';
 
 /// This class handles sending receipt images to the Mindee API
 /// and parsing the returned data into a [ReceiptApiModel].

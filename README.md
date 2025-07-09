@@ -223,18 +223,18 @@ The following are the minimum requirements that the project must fulfill to ensu
 
 ## 👤 Project Members
 
-- **[Member 1 Name]** - *[Role/Responsibility]*
-- **[Member 2 Name]** - *[Role/Responsibility]*
-- **[Member 3 Name]** - *[Role/Responsibility]*
-- **[Member 4 Name]** - *[Role/Responsibility]*
+- **Bushra Aljuwair** - *[Role/Responsibility]*
+- **Shatha Altwaijri** - *[Role/Responsibility]*
+- **Amr Noorwali** - *[Role/Responsibility]*
+- **Lamya Alsuhaibani** - *[Role/Responsibility]*
 - **[Member 5 Name]** - *[Role/Responsibility]*
 
 ---
 
 ## 🔗 Project Member Accounts in GitHub
 
-- **[Member 1 GitHub Username]**: [GitHub Profile URL]  
-- **[Member 2 GitHub Username]**: [GitHub Profile URL]  
+- **shtwaijri**: [[GitHub Profile URL] ](https://github.com/shtwaijri) 
+- **BushraAljuwair**: [[GitHub Profile URL]](https://github.com/BushraAljuwair)  
 - **[Member 3 GitHub Username]**: [GitHub Profile URL]  
 - **[Member 4 GitHub Username]**: [GitHub Profile URL]  
 - **[Member 5 GitHub Username]**: [GitHub Profile URL]
