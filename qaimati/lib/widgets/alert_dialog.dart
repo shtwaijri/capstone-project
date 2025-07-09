@@ -11,7 +11,7 @@ void alertDialog({
   showDialog<void>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      backgroundColor: StyleColor.white,
+      // backgroundColor: StyleColor.white,
       content: Text(
         // this will be as alert message befor delete any thing
         lable, // label is the thing that will be deleted [list - item - member .......]
@@ -25,7 +25,7 @@ void alertDialog({
           },
           child: Text(
             'commonCancel'.tr(),
-            style: StyleText.regular16Grey(context),
+            style: StyleText.bold16black(context),
           ),
         ),
         TextButton(

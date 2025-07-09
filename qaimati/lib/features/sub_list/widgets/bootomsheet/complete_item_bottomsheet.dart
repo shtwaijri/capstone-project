@@ -31,7 +31,7 @@ void completeItemBottomsheet({required BuildContext context}) {
   final bloc = context.read<SubListBloc>();
   showModalBottomSheet(
     isScrollControlled: true,
-    backgroundColor: StyleColor.white,
+    // backgroundColor: StyleColor.white,
     showDragHandle: true,
 
     context: context,
