@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'dart:ui';
 
 import 'package:dart_mappable/dart_mappable.dart';
@@ -25,8 +27,7 @@ class ListModel with ListModelMappable {
     //required this.cohsenColor,
   });
 
-
-    Color getColor() {
+  Color getColor() {
     switch (color) {
       case 1:
         return StyleColor.green;
@@ -39,7 +40,7 @@ class ListModel with ListModelMappable {
       case 5:
         return StyleColor.blue;
       default:
-        return Colors.grey; 
+        return Colors.grey;
     }
   }
 }

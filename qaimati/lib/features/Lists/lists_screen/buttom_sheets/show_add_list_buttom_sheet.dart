@@ -61,7 +61,6 @@ showAddListButtomSheet({
                       ? DualActionButtonWidget(
                           onPrimaryTap: () {
                             if (list == null) {
-                              print("❌ list is null, can't update.");
                               return;
                             }
 

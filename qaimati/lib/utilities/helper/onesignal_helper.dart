@@ -80,6 +80,7 @@ Future<void> sendNotificationByPlayerId({
     "contents": {"en": message},
   };
 
+  // ignore: unused_local_variable
   final response = await http.post(
     url,
     headers: {
@@ -88,10 +89,4 @@ Future<void> sendNotificationByPlayerId({
     },
     body: json.encode(body),
   );
-
-  if (response.statusCode == 200) {
-    print('Notification sent successfully');
-  } else {
-    print('Failed to send notification: ${response.body}');
-  }
 }

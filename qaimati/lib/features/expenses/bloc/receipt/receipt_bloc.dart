@@ -1,5 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages, unnecessary_import
+
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,6 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
 
         emit(SuccessState(image, data));
       } else {
-        log('No image selected.');
         emit(ReceiptInitial());
       }
     } catch (error) {

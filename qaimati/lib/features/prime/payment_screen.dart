@@ -1,14 +1,9 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:moyasar/moyasar.dart';
-import 'package:qaimati/features/nav/navigation_bar_screen.dart';
-import 'package:qaimati/features/prime/bloc/payment_bloc.dart';
-import 'package:qaimati/style/style_color.dart';
-import 'package:qaimati/style/style_text.dart';
+
+import 'package:qaimati/widgets/app_bar_widget.dart';
 
 /// A stateless widget responsible for handling payment processing.
 ///
@@ -20,6 +15,12 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBarWidget(
+        title: tr("SubscriptionPay"),
+        showActions: false,
+        showSearchBar: false,
+        showBackButton: true,
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(

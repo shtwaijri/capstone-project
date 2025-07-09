@@ -1,4 +1,5 @@
-import 'dart:developer';
+// ignore_for_file: unused_local_variable
+
 import 'dart:typed_data';
 import 'package:qaimati/features/expenses/model/receipt_model.dart';
 import 'package:qaimati/repository/supabase.dart';
@@ -130,8 +131,6 @@ class ReceiptSupabase {
           .delete()
           .eq('receipt_id', receiptId)
           .eq('app_user_id', user.userId);
-
-      log("Delete response: $response");
 
       return;
     } catch (e) {

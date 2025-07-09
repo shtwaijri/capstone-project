@@ -9,7 +9,7 @@ import 'package:qaimati/widgets/text_field_widget.dart';
 /// A widget for updating a receipt, including an image, store name,
 /// total amount fields, and action buttons for update and delete.
 class UpdateWigdet extends StatelessWidget {
-  UpdateWigdet({
+  const UpdateWigdet({
     super.key,
     this.imageUrl,
     this.delete,

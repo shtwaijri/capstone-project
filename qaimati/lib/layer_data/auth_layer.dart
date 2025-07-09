@@ -1,7 +1,5 @@
 // ignore_for_file: empty_catches
 
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -11,17 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthLayer {
-  //will be used later
-  // bool isSignIn = false;
-  // String? idUser;
-  //bool isSignIn = false;
-
-  //String? idUser = "cf2eb3c1-0d12-46dd-973e-eceb15dc6695";
   AppUserModel? user;
 
-  AuthLayer() {
-    //getUser(idUser!);
-  }
   Future<void> sendOtp({required String email}) async {
     try {
       await SupabaseConnect.sendOtp(email: email);
@@ -40,11 +29,8 @@ class AuthLayer {
 
   Future<void> updateEmail({required String email}) async {
     try {
-      log("updateEmail AuthLayer starts");
       await SupabaseConnect.updateEmail(email);
-      log("updateEmail AuthLayer end ss ");
     } catch (_) {
-      log("updateEmail AuthLayer rethrow");
       rethrow;
     }
   }
@@ -93,21 +79,11 @@ class AuthLayer {
 
   Future<void> getUser(String userId) async {
     try {
-      log("📥 Fetching user from Supabase: AuthLayer");
-
       user = await SupabaseConnect.getUser(userId);
 
       if (user != null && user!.userId.isNotEmpty) {
         OneSignal.login(user!.userId);
-        print(
-          "🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.",
-        );
-      } else {
-        print(
-          "⚠️ OneSignal: User data or ID is null, cannot log in to OneSignal.",
-        );
       }
-      log("end AuthLayer ");
     } catch (_) {
       rethrow;
     }

@@ -65,12 +65,15 @@ class AuthTextFieldWidget extends StatelessWidget {
 
   static String? validatePassword(String? password) {
     if (password == null || password.isEmpty) return 'Password is required';
-    if (password.length <= 8)
+    if (password.length <= 8) {
       return 'Password must have more than 8 characters';
-    if (!RegExp(r'[A-Z]').hasMatch(password))
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(password)) {
       return 'Uppercase letter is missing.';
-    if (!RegExp(r'[a-z]').hasMatch(password))
+    }
+    if (!RegExp(r'[a-z]').hasMatch(password)) {
       return 'Lowercase letter is missing.';
+    }
     if (!RegExp(r'[0-9]').hasMatch(password)) return 'Digit is missing.';
 
     return null;

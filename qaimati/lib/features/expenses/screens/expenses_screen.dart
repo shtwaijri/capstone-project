@@ -1,4 +1,5 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +14,6 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_shimmer_effect.dart';
 import 'package:qaimati/widgets/floating_button.dart';
-import 'package:qaimati/widgets/loading_widget.dart';
 
 /// Screen showing expenses overview including spending summary and receipts.
 ///
@@ -143,7 +143,6 @@ class ExpensesScreen extends StatelessWidget {
                         Expanded(
                           child: Builder(
                             builder: (context) {
-                              log("Current state: $state");
                               if (state is LoadingState) {
                                 // Show loading spinner when processing
                                 return SingleChildScrollView(

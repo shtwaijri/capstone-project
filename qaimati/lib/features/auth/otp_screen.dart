@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,10 +141,7 @@ class OtpScreen extends StatelessWidget {
                       try {
                         final user = await fetchUserById();
                         OneSignal.login(user!.userId);
-                        log("OneSignal log in in otp corect ");
-                      } catch (e) {
-                        log("OneSignal log in in otp $e");
-                      }
+                      } catch (_) {}
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

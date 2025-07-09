@@ -98,27 +98,35 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                         buildWhen: (previous, current) =>
                             current is SubListLoadedState,
                         builder: (context, state) {
-                          return Container(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                context.read<SubListBloc>().add(
-                                  ChooseImportanceEvent(
-                                    isImportant: !bloc.isItemImportant,
-                                  ),
-                                );
-                              },
-                              icon: Icon(
-                                !bloc.isItemImportant
-                                    ? CupertinoIcons.exclamationmark_square
-                                    : CupertinoIcons
-                                          .exclamationmark_square_fill,
-                                color: StyleColor.red,
-                                size: context.getWidth() * .09,
+                          return Column(
+                            children: [
+                              Text(
+                                tr("asimportant"),
+                                style: StyleText.bold16(context),
                               ),
-                            ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    context.read<SubListBloc>().add(
+                                      ChooseImportanceEvent(
+                                        isImportant: !bloc.isItemImportant,
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    !bloc.isItemImportant
+                                        ? CupertinoIcons.exclamationmark_square
+                                        : CupertinoIcons
+                                              .exclamationmark_square_fill,
+                                    color: StyleColor.red,
+                                    size: context.getWidth() * .09,
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),

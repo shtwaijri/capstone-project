@@ -3,7 +3,7 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
 class CustomWidgetSetting extends StatelessWidget {
-  CustomWidgetSetting({
+  const CustomWidgetSetting({
     super.key,
     required this.icon,
     required this.text,
@@ -32,7 +32,10 @@ class CustomWidgetSetting extends StatelessWidget {
       children: [
         Icon(icon, color: color, size: iconSize),
         SizedBox(width: context.getWidth() * 0.02),
-        Text(text, style: TextStyle(fontWeight: FontWeight.bold), )//style: style),
+        Text(
+          text,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ), //style: style),
       ],
     );
 

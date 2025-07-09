@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, depend_on_referenced_packages
 
 import 'dart:async';
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -109,9 +108,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         } catch (e) {
           // If the list name isn't found (e.g., list not in `appGetit.lists`),
           // set a generic default name.
-          log(
-            "SubListBloc: Could not find list name for ${appGetit.listId}: $e",
-          );
+
           listName = "List".tr(); // Localized default name
         }
 
@@ -122,8 +119,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
           listId: appGetit.listId!,
         );
       }
-    } catch (e, stack) {
-      log("❌ SubListBloc: Error during initial screen data load: $e\n$stack");
+    } catch (e) {
       // Catch any general errors during initial data loading.
       emit(SubListError(message: "Failed to load initial data: $e"));
     }
@@ -143,9 +139,8 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       );
 
       _updateSubListState(); // Update the UI state with the loaded data
-    } catch (e, stack) {
+    } catch (e) {
       // Error is logged, but not rethrown to prevent UI from breaking on a single item update error.
-      log("❌ SubListBloc: Error toggling item status: $e\n$stack");
     }
   }
 
@@ -155,13 +150,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     AddItemToListEvent event,
     Emitter<SubListState> emit,
   ) async {
-    log("--- SubListBloc: Handling AddItemToListEvent ---");
-    log(
-      "Item Name: ${event.itemName}, Quantity: ${event.quantity}, Important: ${event.isImportant}, Created By: ${event.createdBy}",
-    );
-
     try {
-      log("SubListBloc: Calling addNewItem in AppDatatLayer...");
       // Create a new ItemModel instance with the provided event data and default values.
       await appGetit.addNewItem(
         item: ItemModel(
@@ -176,11 +165,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
           createdAt: DateTime.now(),
         ),
       );
-
-      log("SubListBloc: Notification process initiated successfully.");
-    } catch (e, stack) {
-      log("❌ SubListBloc: Error during notification process: $e\n$stack");
-    }
+    } catch (_) {}
     resetValues(); // Reset UI input values and update state.
   }
 
@@ -232,10 +217,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     try {
       // Delegate the update operation to the AppDatatLayer.
       await appGetit.updateItem(item: editedItem, listName: listName!);
-      log("SubListBloc: Item updated successfully via AppDatatLayer.");
-    } catch (e, stack) {
-      log("❌ Error updating item object in SubListBloc: $e\n$stack");
-    }
+    } catch (_) {}
     resetValues(); // Reset UI input values and update state.
   }
 
@@ -249,9 +231,7 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       await appGetit.deleteItem(
         item: event.item,
       ); // Reset UI input values and update state.
-      log("SubListBloc: Item deleted successfully via AppDatatLayer.");
-    } catch (e, stack) {
-      log("❌ Error deleting item in SubListBloc: $e\n$stack");
+    } catch (e) {
       // Emit error state
       emit(SubListError(message: "error in delete item $e"));
     }
@@ -273,9 +253,6 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
           .toList();
 
       if (checkedItemsToCompleteIds.isNotEmpty) {
-        log(
-          "SubListBloc: Marking ${checkedItemsToCompleteIds.length} items as completed.",
-        );
         // Delegate the bulk update operation to AppDatatLayer.
         await appGetit.updateItemsIsCompletedToTurue(
           itemIds: checkedItemsToCompleteIds,
@@ -284,14 +261,8 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
         emit(
           MarkCheckedItemsAsCompletedState(),
         ); // Emit a state to acknowledge completion
-        log("SubListBloc: Successfully marked items as completed.");
-      } else {
-        log("SubListBloc: No checked items to mark as completed.");
       }
-    } catch (e, stack) {
-      log(
-        "❌ SubListBloc: Error marking checked items as completed: $e\n$stack",
-      );
+    } catch (e) {
       emit(
         SubListError(
           // Emit error state
@@ -330,20 +301,9 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
           ) // `item.status` refers to the checkbox state here
           .toList();
 
-      if (checkedItemsToComplete.isNotEmpty) {
-        log(
-          "SubListBloc: Marking ${checkedItemsToComplete.length} items as completed.",
-        );
-      }
+      if (checkedItemsToComplete.isNotEmpty) {}
       //emit(CheckoutState()); //emit state to update UI
-    } catch (e, stack) {
-      log(
-        "❌ SubListBloc: Error marking checked items as completed: $e\n$stack",
-      );
-      // emit(
-      //   SubListError(message: " Error marking checked items as completed: $e"),
-      // ); //emite state for error
-    }
+    } catch (_) {}
   }
 
   /// Event handler for `LoadCompletedItemsScreenData`.
@@ -357,15 +317,11 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       final Map<String, List<ItemModel>> completedItemsMap =
           appGetit.allCompletedItemsByListName;
 
-      log(
-        "SubListBloc: Loaded completed items map for CompletedScreen. Map size: ${completedItemsMap.length}",
-      );
       // Emit a specific state to display the loaded completed items.
       emit(
         CompletedItemsLoadedState(completedItemsByListName: completedItemsMap),
       );
-    } catch (e, stack) {
-      log("❌ SubListBloc: Error in onLoadCompletedItemsScreenData: $e\n$stack");
+    } catch (e) {
       emit(
         SubListError(
           message: "Failed to load completed items for screen: $e",
@@ -382,14 +338,12 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
     _itemsSubscription?.cancel();
     _listsSubscription?.cancel();
 
-    log("SubListBloc: Streams cancelled and disposed.");
     return super.close();
   }
 
   /// Initializes the user object and sets up real-time stream listeners from `AppDatatLayer`.
   /// This is critical for fetching user data and enabling real-time updates.
   Future<void> initializeUserAndStreams() async {
-    log("initializeUserAndStreams start");
     user = await fetchUserById(); // Fetch the authenticated user's details.
     // Log in the user to OneSignal with their external ID (user ID).
     // This connects the device's push notification token to the user's ID in OneSignal.
@@ -398,20 +352,14 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
       appGetit.initStreamsf(
         user!.userId,
       ); // Initialize the data streams in the AppDatatLayer for the fetched user.
-    } catch (e) {
-      log("error $e");
-    }
+    } catch (_) {}
     // Subscribe to the AppDatatLayer's items stream.
     // This BLoC acts as a listener for item updates from the AppDatatLayer.
     _itemsSubscription = appGetit.allItemsStream.listen(
       (items) {
-        log(
-          "SubListBloc: Received updated items from AppDatatLayer stream. Updating state.",
-        );
         _updateSubListState(); // When items update, trigger a state update in the BLoC.
       },
       onError: (error) {
-        log("SubListBloc: Error in items stream: $error");
         emit(
           SubListError(message: "Failed to load items: $error"),
         ); // Emit error state.
@@ -420,28 +368,16 @@ class SubListBloc extends Bloc<SubListEvent, SubListState> {
 
     // Subscribe to the AppDatatLayer's lists stream.
     // This BLoC acts as a listener for list updates from the AppDatatLayer.
-    _listsSubscription = appGetit.allListsStream.listen(
-      (lists) {
-        log(
-          "SubListBloc: Received updated lists from AppDatatLayer stream. Updating listName.",
-        );
-        // If a list is currently selected, try to find its name from the updated lists.
-        if (appGetit.listId != null) {
-          try {
-            listName = lists
-                .firstWhere((list) => list.listId == appGetit.listId)
-                .name;
-            _updateSubListState(); // Update state if list name is found/updated.
-          } catch (e) {
-            log(
-              "SubListBloc: List with ID ${appGetit.listId} not found in updated lists: $e",
-            );
-          }
-        }
-      },
-      onError: (error) {
-        log("SubListBloc: Error in lists stream: $error");
-      },
-    );
+    _listsSubscription = appGetit.allListsStream.listen((lists) {
+      // If a list is currently selected, try to find its name from the updated lists.
+      if (appGetit.listId != null) {
+        try {
+          listName = lists
+              .firstWhere((list) => list.listId == appGetit.listId)
+              .name;
+          _updateSubListState(); // Update state if list name is found/updated.
+        } catch (_) {}
+      }
+    }, onError: (error) {});
   }
 }

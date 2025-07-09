@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
@@ -42,12 +41,9 @@ class ReceiptApi {
         body: jsonEncode({"document": base64Image}),
       );
 
-      log('Status: ${response.statusCode}');
-      log('Body: ${response.body}');
       // Check for successful response (status code 2xx)
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(response.body);
-        log('Parsed Data: $data');
         // Parse and return ReceiptApiModel from response data
         final model = ReceiptApiModel(
           date:
@@ -75,7 +71,6 @@ class ReceiptApi {
               data['document']['inference']['prediction']['supplier_name']?['value'] ??
               'unknown'.tr(),
         );
-        log('Model: $model');
         return model;
       } else {
         throw FormatException(
@@ -83,7 +78,6 @@ class ReceiptApi {
         );
       }
     } catch (e) {
-      log('Error sending receipt: $e');
       rethrow;
     }
   }

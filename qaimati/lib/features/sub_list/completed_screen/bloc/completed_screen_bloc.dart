@@ -1,7 +1,6 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: invalid_use_of_visible_for_testing_member, depend_on_referenced_packages
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +55,6 @@ class CompletedScreenBloc
   /// Initializes the user object and sets up real-time stream listeners from `AppDatatLayer`.
   /// This is critical for fetching user data and enabling real-time updates.
   Future<void> initializeUserAndStreams() async {
-    log("CompletedScreenBloc: initializeUserAndStreams start");
     try {
       user = await fetchUserById(); // Fetch the authenticated user's details.
       if (user == null) {
@@ -71,14 +69,10 @@ class CompletedScreenBloc
       // This BLoC acts as a listener for item updates from the AppDatatLayer.
       _itemsSubscription = appGetit.allItemsStream.listen(
         (items) {
-          log(
-            "CompletedScreenBloc: Received updated items from AppDatatLayer stream. Triggering DataUpdatedEvent.",
-          );
           // When items update, trigger a DataUpdatedEvent to reload all necessary data.
           add(DataUpdatedEvent());
         },
         onError: (error) {
-          log("CompletedScreenBloc: Error in all items stream: $error");
           emit(
             ErrorState(message: "Failed to load items: $error"),
           ); // Emit error state.
@@ -89,23 +83,16 @@ class CompletedScreenBloc
       // This BLoC acts as a listener for list updates from the AppDatatLayer.
       _listsSubscription = appGetit.allListsStream.listen(
         (lists) {
-          log(
-            "CompletedScreenBloc: Received updated lists from AppDatatLayer stream. Triggering DataUpdatedEvent.",
-          );
           // When lists update, trigger a DataUpdatedEvent to reload all necessary data.
           add(DataUpdatedEvent());
         },
         onError: (error) {
-          log("CompletedScreenBloc: Error in all lists stream: $error");
           emit(
             ErrorState(message: "Failed to load lists: $error"),
           ); // Emit error state.
         },
       );
-    } catch (e, stack) {
-      log(
-        "❌ CompletedScreenBloc: Error during stream initialization: $e\n$stack",
-      );
+    } catch (e) {
       emit(ErrorState(message: "Failed to initialize data streams: $e"));
     }
   }
@@ -114,32 +101,14 @@ class CompletedScreenBloc
   /// This method is called when `DataUpdatedEvent` is received, ensuring it uses
   /// the latest data available in `AppDatatLayer`.
   Future<void> _loadCompletedItemsForLists() async {
-    log("CompletedScreenBloc: _loadCompletedItemsForLists start");
     try {
       // Access the completed items map directly from AppDatatLayer,
       // which should now be populated by the stream updates.
       completedItemsMap = appGetit.allCompletedItemsByListName;
 
-      if (completedItemsMap.isEmpty) {
-        log("CompletedScreenBloc: Completed items map is empty.");
-      } else {
-        log(
-          "CompletedScreenBloc: Loaded completed items map. Size: ${completedItemsMap.length}",
-        );
-        // Log each list and its completed items for debugging.
-        for (var entry in completedItemsMap.entries) {
-          log(
-            "CompletedScreenBloc: List '${entry.key}' has ${entry.value.length} completed items.",
-          );
-        }
-      }
-
       // Emit a specific state for the completed items screen with the loaded data.
       emit(GetDataScreenState(completedItemsMap: completedItemsMap));
-    } catch (e, stack) {
-      log(
-        "❌ CompletedScreenBloc: Error in _loadCompletedItemsForLists: $e\n$stack",
-      );
+    } catch (e) {
       // Handle errors during loading completed items.
       emit(
         ErrorState(message: "Failed to load completed items for screen: $e"),
@@ -154,7 +123,6 @@ class CompletedScreenBloc
     _itemsSubscription?.cancel();
     _listsSubscription?.cancel();
     appGetit.dispose(); // Close StreamControllers in AppDatatLayer
-    log("CompletedScreenBloc: Streams cancelled and disposed.");
     return super.close();
   }
 }

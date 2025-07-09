@@ -37,7 +37,7 @@ void main() async {
       startLocale = isArabic
           ? const Locale('ar', 'AR')
           : const Locale('en', 'US');
-    } catch (e) {}
+    } catch (_) {}
   }
 
   ThemeController.themeNotifier.value = isDark

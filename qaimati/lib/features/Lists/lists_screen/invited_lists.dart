@@ -27,7 +27,7 @@ class InvitedLists extends StatelessWidget {
               showActions: true,
               showSearchBar: false,
 
-              showBackButton: false,
+              showBackButton: true,
             ),
             body: Column(
               children: [
