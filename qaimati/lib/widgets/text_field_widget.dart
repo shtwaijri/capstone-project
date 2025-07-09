@@ -27,7 +27,7 @@ class TextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: keyboardType ?? TextInputType.text,
-      style: TextStyle(color: StyleColor.black),
+      // style: TextStyle(color: StyleColor.black),
       controller: controller,
       decoration: InputDecoration(
         hintText: textHint,
