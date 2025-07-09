@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
 
 void alertDialog({
   required BuildContext context,
@@ -14,7 +15,7 @@ void alertDialog({
       content: Text(
         // this will be as alert message befor delete any thing
         lable, // label is the thing that will be deleted [list - item - member .......]
-        style: const TextStyle(color: StyleColor.error),
+        style: StyleText.regular16Error(context),
       ),
       actions: <Widget>[
         TextButton(
@@ -22,12 +23,18 @@ void alertDialog({
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('commonCancel'.tr(), style: TextStyle(color: StyleColor.black)),
+          child: Text(
+            'commonCancel'.tr(),
+            style: StyleText.regular16Grey(context),
+          ),
         ),
         TextButton(
           // text button for delete
           onPressed: onTab,
-          child: Text('commonDelete'.tr(), style: TextStyle(color: StyleColor.error)),
+          child: Text(
+            'commonDelete'.tr(),
+            style: StyleText.regular16Error(context),
+          ),
         ),
       ],
     ),

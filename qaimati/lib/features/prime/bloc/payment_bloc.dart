@@ -9,19 +9,14 @@ import 'package:qaimati/features/prime/prime_service.dart';
 part 'payment_event.dart';
 part 'payment_state.dart';
 
+/// PaymentBloc is responsible for handling Prime subscription logic:
+/// - Activating the Prime subscription
+/// - Checking the remaining subscription days
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
-  late int num = 10;
+  /// Number of days left in the Prime subscription
   late int remainingDay = 0;
   PaymentBloc() : super(PaymentInitial()) {
-    on<AmountEvent>((event, emit) {
-      try {
-        num = num * 100;
-        log('NUM IS: $num');
-        emit(SuccessState());
-      } catch (e) {
-        emit(ErrorState('Invalid amount format'));
-      }
-    });
+    /// Handles the activation of Prime subscription
     on<ActivatePrimeEvent>((event, emit) async {
       try {
         await PrimeService.activatePrimeStatus();
@@ -30,10 +25,17 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         emit(ErrorState(e.toString()));
       }
     });
+
+    /// Checks how many days remain in the Prime subscription
     on<RemainingPrimeDays>((event, emit) async {
       try {
-        remainingDay = (await PrimeService.getRemainingPrimeDays())!;
-        emit(SuccessState());
+        final result = await PrimeService.getRemainingPrimeDays();
+        if (result != null && result > 0) {
+          remainingDay = result;
+          emit(SubscribedState());
+        } else {
+          emit(NotSubscribedState());
+        }
       } catch (e) {
         emit(ErrorState(e.toString()));
       }

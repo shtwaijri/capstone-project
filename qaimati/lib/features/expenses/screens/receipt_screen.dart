@@ -6,10 +6,10 @@ import 'package:qaimati/features/expenses/widgets/upload_receipt_widget.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
-import 'package:qaimati/widgets/Text_Field_widget.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
 import 'package:qaimati/widgets/loading_widget.dart';
+import 'package:qaimati/widgets/text_field_widget.dart';
 
 /// Screen to handle receipt image upload and input for store name and total amount.
 /// Uses [ReceiptBloc] for state management.
@@ -95,7 +95,7 @@ class ReceiptScreen extends StatelessWidget {
                           // Buttons for cancel and submit actions
                           DualActionButtonWidget(
                             onPrimaryTap: () {
-                              Navigator.pop(context);
+                              Navigator.pop(context, true);
                             },
                             primaryLabel: 'commonCancel'.tr(),
                             onSecondaryTap: () {
@@ -138,14 +138,16 @@ class ReceiptScreen extends StatelessWidget {
                           'receiptTotalLabel'.tr(),
                           style: StyleText.bold16(context),
                         ),
+
                         TextFieldWidget(
+                          keyboardType: TextInputType.number,
                           controller: bloc.totalController,
                           textHint: 'receiptEnterTotal'.tr(),
                         ),
                         // Buttons for cancel and submit actions
                         DualActionButtonWidget(
                           onPrimaryTap: () {
-                            Navigator.pop(context);
+                            Navigator.pop(context, true);
                           },
                           primaryLabel: 'commonCancel'.tr(),
                           onSecondaryTap: () {},
