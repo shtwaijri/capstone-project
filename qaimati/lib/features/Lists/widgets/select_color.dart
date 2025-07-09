@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qaimati/features/Lists/widgets/color_widget.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
+
 /// Widget to select a color for a list, on click it will change the selected color.
 
 class SelectColor extends StatelessWidget {
@@ -15,7 +16,7 @@ class SelectColor extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        Text('listAddAction'.tr(), style: StyleText.bold12(context)),
+        Text('listColor'.tr(), style: StyleText.bold12(context)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

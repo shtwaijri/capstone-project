@@ -20,7 +20,8 @@
 
 
 
-
+"InviteTitle":"Invitations",
+"NoInvite":"You have no invitaions",
   "listNoLists": "You haven't created any lists yet.",
   "listAdd": "Add List",
   "listTitle": "Lists",
@@ -65,7 +66,7 @@
   "memberAddTitle": "Add member",
   "memberList": "List members",
   "memberDeleteConfirm": "Are you sure you want to delete this member?",
-  "memberCreatedBy": "Created by",
+  "memberCreatedBy": "Written by ",
      "deleteItemConfirmation":"Are you sure you want to delete this item?",
    
   "receiptCheckout": "Check Out",
@@ -89,12 +90,12 @@
 "checkoutwithoutreceipt":"checkout without receipt",
 "expensesTitle": "Expenses",
     "listsTitle": "Lists",
-
+"resendCode":"Resend Code",
   "profileTitle": "Profile",
   "settingsTitle": "Setting",
   "settingsLanguage": "Change app language",
       "settingsColor": "Change app color",
-
+"confirmLogout":"Are you sure you want to log out?",
   "accountTitle": "Account",
   "accountName": "Change account name",
   "accountEmail": "Change account email",
@@ -103,11 +104,23 @@
   "unknown": "Unknown",
   "alertEdit": "Edit",
   "imageLoadFailed": "🛑 Failed to load image",
-   
+  "InviteSnackBar":"Invite has been sent successfully",
+
+     "invitedTo":"Yo have been invited to list : ",
+         "invitedBy":"By",
+"accept":"accept",
+"reject":"reject",
+
+
+
+
   "Qaiamtiprime":"Qaimati +",
   "Subspriction":"Subspriction",
   "pay":"Pay Now",
   "primeDescribe":"With Prime, you can upload unlimited receipts, track your spending, and enjoy more features to manage your shopping and expenses smoothly.",
 
- "receiptLimitReached": "You have reached the limit (3 receipts). Subscribe to Prime to add more."
+ "receiptLimitReached": "You have reached the limit (3 receipts). Subscribe to Prime to add more.",
+ "paymentFailed": "Payment failed. Please try again.",
+ "subscription_start": "You are subscribed to the premium plan. You have",
+ "subscription_end": "days left until your subscription ends."
 }

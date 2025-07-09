@@ -11,3 +11,7 @@ class ErrorState extends PaymentState {
   final String message;
   ErrorState(this.message);
 }
+
+class NotSubscribedState extends PaymentState {}
+
+class SubscribedState extends PaymentState {}

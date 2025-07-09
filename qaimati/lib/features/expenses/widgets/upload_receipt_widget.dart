@@ -33,7 +33,7 @@ class UploadReceiptWidget extends StatelessWidget {
               Text('receiptPhoto'.tr(), style: StyleText.bold16(context)),
               Text(
                 'receiptSizeNote'.tr(),
-                style: StyleText.regular12Grey(context),
+                style: StyleText.regular16Grey(context),
               ),
             ],
           ),

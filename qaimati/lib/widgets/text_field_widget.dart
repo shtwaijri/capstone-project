@@ -9,6 +9,7 @@ class TextFieldWidget extends StatelessWidget {
     this.validate,
     required this.controller,
     required this.textHint,
+    this.keyboardType,
   });
 
   /// Controller to manage the text input
@@ -20,14 +21,17 @@ class TextFieldWidget extends StatelessWidget {
   /// validator function for input validation
   final String? Function(String?)? validate;
 
+  final TextInputType? keyboardType;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: keyboardType ?? TextInputType.text,
       style: TextStyle(color: StyleColor.black),
       controller: controller,
       decoration: InputDecoration(
         hintText: textHint,
-        hintStyle: StyleText.regular12Grey(context),
+        hintStyle: StyleText.regular16Grey(context),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: StyleColor.gray),
           borderRadius: BorderRadius.circular(10),

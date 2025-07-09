@@ -8,7 +8,8 @@ class CustomEmptyWidget extends StatelessWidget {
     super.key,
     required this.img,
     required this.bigText,
-    required this.buttonText, this.onPressed,
+    required this.buttonText,
+    this.onPressed,
   });
   final String img;
   final String bigText;
@@ -22,11 +23,12 @@ class CustomEmptyWidget extends StatelessWidget {
         StyleSize.sizeH48,
         SvgPicture.asset(img),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0,),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Center(
             child: Text(
               bigText,
-              style: StyleText.bold24(context), textAlign: TextAlign.center,
+              style: StyleText.bold24(context),
+              textAlign: TextAlign.center,
             ),
           ),
         ),

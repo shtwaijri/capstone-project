@@ -69,7 +69,7 @@ class StyleText {
     );
   }
 
-  static TextStyle regular12Grey(BuildContext context) {
+  static TextStyle regular16Grey(BuildContext context) {
     return TextStyle(
       fontFamily: _getFontFamily(context),
       fontSize: 16,

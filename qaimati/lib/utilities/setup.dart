@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -9,12 +11,11 @@ import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/features/expenses/receipt_data.dart';
 import 'package:qaimati/features/intro/onboarding_info.dart';
+import 'package:qaimati/features/prime/prime_service.dart';
 import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:qaimati/repository/supabase.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:qaimati/utilities/helper/onesignal_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -57,7 +58,10 @@ Future<void> setUp() async {
         ),
     );
   }
-  // await PrimeService.checkAndExpirePrimeStatus();
+
+  await GetIt.I.allReady();
+
+  await PrimeService.checkAndExpirePrimeStatus();
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {

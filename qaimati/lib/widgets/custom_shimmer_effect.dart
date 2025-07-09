@@ -12,8 +12,8 @@ class CustomShimmerEffect extends StatelessWidget {
   static const double itemHieght = 0.08;
   static const double otherHieght = 0.065;
 
-  static const int itemNum=7;
-  static const int otherNum=5;
+  static const int itemNum = 7;
+  static const int otherNum = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CustomShimmerEffect extends StatelessWidget {
             child: FadeShimmer(
               millisecondsDelay: 50,
               height: context.getHeight() * (isItem ? itemHieght : otherHieght),
-              width: context.getWidth() * 0.8,
+              width: context.getWidth() * 0.9,
               radius: isItem ? itemRadius : otherRadius, //10,
               baseColor: StyleColor.gray,
               highlightColor: StyleColor.graylight,
