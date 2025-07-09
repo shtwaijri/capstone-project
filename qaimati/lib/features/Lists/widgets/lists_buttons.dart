@@ -25,7 +25,7 @@ class ListsButtons extends StatelessWidget {
       },
       child: Container(
         width: 170,
-        height: 60,
+        height: 80,
         decoration: BoxDecoration(
           color: StyleColor.graylight,
           borderRadius: BorderRadius.circular(10.0),
@@ -42,8 +42,10 @@ class ListsButtons extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   icon,
