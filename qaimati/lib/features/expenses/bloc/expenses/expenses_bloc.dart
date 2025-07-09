@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-import 'package:qaimati/features/expenses/model/receipt_model.dart';
-import 'package:qaimati/features/expenses/receipt_data.dart';
-import 'package:qaimati/features/expenses/repository/receipt_supabeas.dart';
+import 'package:qaimati/models/receipt/receipt_model.dart';
+import 'package:qaimati/layer_data/receipt_data.dart';
+import 'package:qaimati/repository/receipt_repository/receipt_supabeas.dart';
 part 'expenses_event.dart';
 part 'expenses_state.dart';
 

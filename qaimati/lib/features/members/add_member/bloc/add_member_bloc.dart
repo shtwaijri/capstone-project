@@ -40,7 +40,7 @@ class AddMemberBloc extends Bloc<AddMemberEvent, AddMemberState> {
 
     try {
       //call send invite method
-      await sendInvite(event.email, event.listId);
+      await sendInvite(email, event.listId);
       emit(AddMemberSuccess());
     } catch (e) {
       emit(AddMemberFailure(e.toString()));

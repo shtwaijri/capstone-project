@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/members/add_member/bloc/add_member_bloc.dart';
-import 'package:qaimati/features/members/add_member/bottom_sheet/add_member_sheet_screen.dart';
+import 'package:qaimati/features/members/add_member/bottom_sheet/member_sheet.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_empty_widget.dart';
@@ -61,16 +61,9 @@ class AddMemberScreen extends StatelessWidget {
                               bigText: tr('memberNoMembers'),
                               buttonText: tr('memberAddTitle'),
                               onPressed: () {
-                                showModalBottomSheet(
+                                showAddMemberBottomSheet(
                                   context: context,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (context) =>
-                                      AddMemberSheetScreen(listId: listId!),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(100),
-                                    ),
-                                  ),
+                                  listId: listId!,
                                 );
                               },
                             ),
@@ -111,17 +104,7 @@ class AddMemberScreen extends StatelessWidget {
               onpressed: () {
                 final listId = GetIt.I.get<AppDatatLayer>().listId;
 
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-
-                  builder: (context) => AddMemberSheetScreen(listId: listId!),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(100),
-                    ),
-                  ),
-                );
+                showAddMemberBottomSheet(context: context, listId: listId!);
               },
             ),
           );

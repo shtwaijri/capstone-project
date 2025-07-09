@@ -16,6 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //controllers for textfeild
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  //timer for catching errors
+  DateTime? _lastOtpSentTime;
 
   //list to hold the OTP digits
   final List<String> _otpDigits = List.filled(6, '');
@@ -25,8 +27,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   //instance of AuthLayer
   final authGetit = GetIt.I.get<AuthLayer>();
-
-  final int _resendOtpSeconds = 0;
 
   AuthBloc() : super(AuthStateInit()) {
     on<ValidateEmailEvent>(_validateEmail);
@@ -127,7 +127,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ResendOtpEvent event,
     Emitter<AuthState> emit,
   ) async {
-    if (_resendOtpSeconds > 0) {
+    //check if the user has sent the otp in less than 30s
+    final now = DateTime.now();
+    if (_lastOtpSentTime != null &&
+        now.difference(_lastOtpSentTime!).inSeconds < 30) {
+      final secondsLeft = 30 - now.difference(_lastOtpSentTime!).inSeconds;
+      emit(ErrorState(msg: tr('waitToResend', args: ['$secondsLeft'])));
       return;
     }
 
@@ -135,6 +140,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(LoadingSignUpState());
 
       await authGetit.sendOtp(email: emailController.text.trim());
+      //store the new sending time
+      _lastOtpSentTime = now;
+
       emit(OtpSentState());
     } catch (error) {
       emit(ErrorState(msg: error.toString()));

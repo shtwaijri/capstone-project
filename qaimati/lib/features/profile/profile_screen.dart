@@ -10,12 +10,12 @@ import 'package:qaimati/features/prime/prime_screen.dart';
 import 'package:qaimati/features/profile/bloc/profile_bloc.dart';
 import 'package:qaimati/features/profile/widgets/custom_alert_dialog.dart';
 import 'package:qaimati/features/profile/widgets/custom_widget_setting.dart';
+import 'package:qaimati/features/profile/widgets/profile_shimmer.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
-import 'package:qaimati/widgets/loading_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -25,6 +25,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController nameController = TextEditingController();
+    final iconSize = context.getWidth() * 0.06;
 
     return BlocProvider(
       create: (_) => ProfileBloc(),
@@ -80,9 +81,10 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: Icons.language,
                               text: tr('settingsLanguage'),
-                              //style: StyleText.bold16(context),
+                              textStyle: StyleText.bold16(context),
                               color: StyleColor.green,
-                              iconSize: context.getWidth() * 0.06,
+                              iconSize: iconSize,
+
                               showSwitch: true,
                               //the initial lang of the switch is depends on whether the app is arabic or not
                               switchValue: state.isArabicState,
@@ -108,9 +110,9 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: Icons.color_lens,
                               text: tr('settingsColor'),
-                              //style: StyleText.bold16(context),
+                              textStyle: StyleText.bold16(context),
                               color: StyleColor.green,
-                              iconSize: context.getWidth() * 0.07,
+                              iconSize: iconSize,
                               showSwitch: true,
                               switchValue: state.isDarkModeState,
                               onChanged: (value) {
@@ -134,9 +136,9 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: CupertinoIcons.person_fill,
                               text: tr('accountName'),
-                              //style: StyleText.bold16(context),
+                              textStyle: StyleText.bold16(context),
                               color: StyleColor.green,
-                              iconSize: context.getWidth() * 0.06,
+                              iconSize: iconSize,
                               onTap: () {
                                 showDialog(
                                   context: context,
@@ -146,7 +148,7 @@ class ProfileScreen extends StatelessWidget {
                                       value: context.read<ProfileBloc>(),
                                       child: CustomAlertDialog(
                                         controller: nameController,
-                                        title: "Change your name",
+                                        title: tr("changeName"),
                                         onConfirm: () {
                                           context.read<ProfileBloc>().add(
                                             UpdateNameEvent(
@@ -167,9 +169,9 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: CupertinoIcons.mail_solid,
                               text: tr('accountEmail'),
-                              //style: StyleText.bold16(context),
+                              textStyle: StyleText.bold16(context),
                               color: StyleColor.green,
-                              iconSize: context.getWidth() * 0.06,
+                              iconSize: iconSize,
                               onTap: () {
                                 showDialog(
                                   context: context,
@@ -178,13 +180,15 @@ class ProfileScreen extends StatelessWidget {
                                       value: context.read<ProfileBloc>(),
                                       child: CustomAlertDialog(
                                         controller: emailController,
-                                        title: "Change your email",
+                                        title: tr("ChangeEmail"),
+
                                         onConfirm: () {
                                           context.read<ProfileBloc>().add(
                                             UpdateEmailEvent(
                                               emailController.text,
                                             ),
                                           );
+
                                           Navigator.pop(context);
                                         },
                                       ),
@@ -198,9 +202,10 @@ class ProfileScreen extends StatelessWidget {
                             CustomWidgetSetting(
                               icon: CupertinoIcons.star_fill,
                               text: tr('accountPremium'),
-                              //style: StyleText.bold16(context),
+                              textStyle: StyleText.bold16(context),
+
                               color: StyleColor.green,
-                              iconSize: context.getWidth() * 0.06,
+                              iconSize: iconSize,
                               onTap: () {
                                 showModalBottomSheet(
                                   context: context,
@@ -218,12 +223,11 @@ class ProfileScreen extends StatelessWidget {
                             //Logout
                             CustomWidgetSetting(
                               icon: Icons.exit_to_app,
-                              text: tr('authLogout',),
-                              // style: StyleText.bold16(
-                              //   context,
-                              // ).copyWith(color: StyleColor.error),
+                              text: tr('authLogout'),
+                              textStyle: StyleText.bold16(context),
+
                               color: StyleColor.error,
-                              iconSize: context.getWidth() * 0.06,
+                              iconSize: iconSize,
                               onTap: () async {
                                 // Show the confirmation dialog before logout
                                 logoutAlertDialog(
@@ -231,6 +235,12 @@ class ProfileScreen extends StatelessWidget {
                                   onTab: () async {
                                     await Supabase.instance.client.auth
                                         .signOut();
+                                    //reset the lang to english
+                                    context.setLocale(const Locale('en', 'US'));
+                                    //reset the theme mode to the default light
+                                    ThemeController.themeNotifier.value =
+                                        ThemeMode.light;
+
                                     Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                         builder: (context) => AuthScreen(),
@@ -246,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Center(child: LoadingWidget());
+                    return const Center(child: ProfileShimmerEffect());
                   }
                 },
               ),
@@ -262,39 +272,41 @@ void logoutAlertDialog({
   required BuildContext context,
   required Function() onTab,
 }) {
+  final colorScheme = Theme.of(context).colorScheme;
+
   showDialog<void>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
 
       content: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: context.getWidth() * 0.05,
-          vertical: context.getHeight() * 0.03,
+          horizontal: context.getWidth() * 0.01,
+          vertical: context.getHeight() * 0.01,
         ),
         child: Text(
-          tr('confirmLogout'), // Text for confirmation
-          style: const TextStyle(color: StyleColor.error),
+          tr('confirmLogout'),
+          style: StyleText.bold16(context).copyWith(color: StyleColor.error),
         ),
       ),
 
       actions: <Widget>[
-        // "Cancel" button to close the dialog
         TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
           child: Text(
             tr('commonCancel'),
-            style: TextStyle(color: StyleColor.black),
+            style: StyleText.bold16(
+              context,
+            ).copyWith(color: colorScheme.onSurface),
           ),
         ),
-        // "Logout" button to confirm the logout action
         TextButton(
-          onPressed: onTab, // Executes the logout functionality
+          onPressed: onTab,
           child: Text(
             tr('authLogout'),
-            style: TextStyle(color: StyleColor.error),
+            style: StyleText.bold16(context).copyWith(color: StyleColor.error),
           ),
         ),
       ],

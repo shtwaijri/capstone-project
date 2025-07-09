@@ -14,7 +14,7 @@ class FloatingButton extends StatelessWidget {
       focusColor: Colors.transparent,
       splashColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Icon(CupertinoIcons.add, color: StyleColor.white),
+      child: Icon(CupertinoIcons.add, color: StyleColor.black),
     );
   }
 }

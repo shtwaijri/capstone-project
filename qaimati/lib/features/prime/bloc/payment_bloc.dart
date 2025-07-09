@@ -1,8 +1,9 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, unused_import
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:qaimati/features/prime/prime_service.dart';
+import 'package:moyasar/moyasar.dart';
+import 'package:qaimati/repository/prime_service.dart';
 
 part 'payment_event.dart';
 part 'payment_state.dart';

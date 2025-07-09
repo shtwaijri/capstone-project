@@ -52,7 +52,14 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StyleSize.sizeH32,
-                      Text("Item".tr(), style: StyleText.bold24(context)),
+                      Text(
+                        "Item".tr(),
+                        style: StyleText.bold24(context).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
                       StyleSize.sizeH16,
                       Row(
                         children: [
@@ -99,11 +106,19 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                             current is SubListLoadedState,
                         builder: (context, state) {
                           return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 tr("asimportant"),
-                                style: StyleText.bold16(context),
+                                style: StyleText.bold16(context).copyWith(
+                                  color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
+
                               Container(
                                 alignment: Alignment.centerLeft,
                                 child: IconButton(

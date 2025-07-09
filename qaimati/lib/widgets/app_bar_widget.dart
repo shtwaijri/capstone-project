@@ -43,7 +43,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 Icons.arrow_back_ios,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
-                    : Colors.black,
+                    : StyleColor.black,
               ),
               onPressed: () => Navigator.pop(context),
             )

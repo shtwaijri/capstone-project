@@ -1,26 +1,28 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 
 class CustomWidgetSetting extends StatelessWidget {
-  const CustomWidgetSetting({
+  CustomWidgetSetting({
     super.key,
     required this.icon,
     required this.text,
-    // required this.style,
     required this.color,
     required this.iconSize,
     this.showSwitch = false,
     this.switchValue = false,
     this.onChanged,
     this.onTap,
+    this.textStyle,
   });
 
   final IconData icon;
   final String text;
-  // final TextStyle style;
+  final TextStyle? textStyle;
   final Color? color;
-  final double? iconSize;
+  double iconSize = 24;
   final bool? showSwitch;
   final bool? switchValue;
   final ValueChanged<bool>? onChanged;
@@ -34,7 +36,7 @@ class CustomWidgetSetting extends StatelessWidget {
         SizedBox(width: context.getWidth() * 0.02),
         Text(
           text,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: textStyle ?? TextStyle(fontWeight: FontWeight.bold),
         ), //style: style),
       ],
     );

@@ -19,20 +19,35 @@ class CustomAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      contentPadding: EdgeInsets.all(context.getWidth() * 0.02),
-
+      contentPadding: EdgeInsets.all(context.getWidth() * 0.04),
       title: Text(title, style: StyleText.bold16(context)),
-      content: TextFormField(
-        controller: controller,
-        textAlign: TextAlign.start,
 
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderSide: BorderSide(style: BorderStyle.solid),
+      content: SizedBox(
+        height: 55,
+        child: TextFormField(
+          controller: controller,
+          textAlign: TextAlign.start,
+          style: StyleText.regular16(context),
+          decoration: InputDecoration(
+            hintText: tr("emailHint"),
+            hintStyle: StyleText.regular16(
+              context,
+            ).copyWith(color: Colors.grey[500]),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: StyleColor.green),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: StyleColor.green, width: 2),
+            ),
           ),
         ),
       ),
-      // backgroundColor: StyleColor.graylight,
 
       actions: [
         TextButton(
