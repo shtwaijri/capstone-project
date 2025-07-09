@@ -11,7 +11,6 @@ import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
-import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_empty_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
 import 'package:qaimati/widgets/custom_shimmer_effect.dart';
