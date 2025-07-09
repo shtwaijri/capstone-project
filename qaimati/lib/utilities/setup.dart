@@ -46,22 +46,22 @@ Future<void> setUp() async {
     instanceName: 'seenOnboarding',
   );
 
-  // GetIt.I.registerSingletonAsync<ReceiptData>(
-  //   () async => ReceiptData()..loadAllDataFromSupabase(),
-  // );
-  // if (!GetIt.I.isRegistered<ReceiptData>()) {
-  //   GetIt.I.registerSingletonAsync<ReceiptData>(
-  //     () async => ReceiptData()
-  //       ..loadMonthlyDataFromSupabase(
-  //         year: DateTime.now().year,
-  //         month: DateTime.now().month,
-  //       ),
-  //   );
-  // }
+  GetIt.I.registerSingletonAsync<ReceiptData>(
+    () async => ReceiptData()..loadAllDataFromSupabase(),
+  );
+  if (!GetIt.I.isRegistered<ReceiptData>()) {
+    GetIt.I.registerSingletonAsync<ReceiptData>(
+      () async => ReceiptData()
+        ..loadMonthlyDataFromSupabase(
+          year: DateTime.now().year,
+          month: DateTime.now().month,
+        ),
+    );
+  }
 
-  // await GetIt.I.allReady();
+  await GetIt.I.allReady();
 
-  // await PrimeService.checkAndExpirePrimeStatus();
+  await PrimeService.checkAndExpirePrimeStatus();
 
   //  final User? currentUser = Supabase.instance.client.auth.currentUser;
   //   if (currentUser != null && currentUser.id != null) {
