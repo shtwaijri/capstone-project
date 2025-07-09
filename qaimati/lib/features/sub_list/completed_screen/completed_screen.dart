@@ -7,6 +7,7 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/custom_items_widget/custom_items.dart';
 import 'package:qaimati/models/item/item_model.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 /// A screen that displays a list of completed items, grouped by their original list names.
 ///
@@ -38,7 +39,6 @@ class CompletedScreen extends StatelessWidget {
         builder: (context) {
           final bloc = context.read<CompletedScreenBloc>();
           return Scaffold(
-            
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
@@ -52,7 +52,7 @@ class CompletedScreen extends StatelessWidget {
             body: BlocBuilder<CompletedScreenBloc, CompletedScreenState>(
               builder: (context, state) {
                 if (state is LoadingScreenState) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: LoadingWidget());
                 } else if (state is GetDataScreenState) {
                   return ListView.builder(
                     itemCount: state.completedItemsMap.keys.length,

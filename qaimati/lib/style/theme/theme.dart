@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
-import 'package:qaimati/style/style_text.dart';
 
 class CustomTheme {
   static final lightTheme = ThemeData(

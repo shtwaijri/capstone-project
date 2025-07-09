@@ -14,6 +14,8 @@
 // - An [http.ClientException] or other network-related exceptions if the
 //   HTTP request fails for network reasons.
 
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -35,7 +37,6 @@ import 'package:http/http.dart' as http;
 //   }if ( authKey == null) {
 //     throw Exception('OneSignal credentials are missing in .env');
 //   }
-
 
 //   final body = {
 //     "app_id": appId,
@@ -64,8 +65,6 @@ import 'package:http/http.dart' as http;
 //     log(response.body);
 //   }
 // }
-
-
 
 Future<void> sendNotificationByPlayerId({
   required List<String> playerId,

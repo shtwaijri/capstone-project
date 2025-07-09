@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,6 @@ import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
-
 
 /// Displays a modal bottom sheet for adding a new item to a list.
 ///
@@ -108,15 +105,16 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 context.read<SubListBloc>().add(
-                                      ChooseImportanceEvent(
-                                        isImportant: !bloc.isItemImportant,
-                                      ),
-                                    );
+                                  ChooseImportanceEvent(
+                                    isImportant: !bloc.isItemImportant,
+                                  ),
+                                );
                               },
                               icon: Icon(
                                 !bloc.isItemImportant
                                     ? CupertinoIcons.exclamationmark_square
-                                    : CupertinoIcons.exclamationmark_square_fill,
+                                    : CupertinoIcons
+                                          .exclamationmark_square_fill,
                                 color: StyleColor.red,
                                 size: context.getWidth() * .09,
                               ),

@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qaimati/features/expenses/bloc/receipt/receipt_bloc.dart';
 import 'package:qaimati/features/expenses/widgets/upload_receipt_widget.dart';
 import 'package:qaimati/style/style_color.dart';

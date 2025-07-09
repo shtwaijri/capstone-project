@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
-import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
-import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/layer_data/app_data.dart';
-import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 class InvitedLists extends StatelessWidget {
   const InvitedLists({super.key});
@@ -28,9 +26,7 @@ class InvitedLists extends StatelessWidget {
               title: 'invitedLists'.tr(),
               showActions: true,
               showSearchBar: false,
-              actionsIcon: [
-                Icon(Icons.notification_add_rounded, color: StyleColor.green),
-              ],
+
               showBackButton: false,
             ),
             body: Column(
@@ -63,7 +59,11 @@ class InvitedLists extends StatelessWidget {
                 BlocBuilder<AddListBloc, AddListState>(
                   builder: (context, state) {
                     if (state is AddListLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+
+                        children: [LoadingWidget()],
+                      );
                     } else if (state is AddListError) {
                       return Center(child: Text('Error: ${state.message}'));
                     } else if (state is AddListLoaded) {

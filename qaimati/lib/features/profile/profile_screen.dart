@@ -5,8 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/auth/auth_screen.dart';
-import 'package:qaimati/features/members/invite/invite_screen.dart';
-import 'package:qaimati/features/prime/payment_screen.dart';
+
 import 'package:qaimati/features/prime/prime_screen.dart';
 import 'package:qaimati/features/profile/bloc/profile_bloc.dart';
 import 'package:qaimati/features/profile/widgets/custom_alert_dialog.dart';
@@ -16,6 +15,7 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -44,9 +44,6 @@ class ProfileScreen extends StatelessWidget {
                       ? const Locale('ar', 'AR')
                       : const Locale('en', 'US'),
                 );
-
-                // change the theme by using theme controller
-                // ThemeController.toggleTheme(state.isDarkModeState);
               }
             },
             child: Scaffold(
@@ -208,12 +205,6 @@ class ProfileScreen extends StatelessWidget {
                                 showModalBottomSheet(
                                   context: context,
                                   backgroundColor: Colors.transparent,
-
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.vertical(
-                                  //     top: Radius.circular(25),
-                                  //   ),
-                                  // ),
                                   builder: (context) => const PrimeScreen(),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
@@ -221,12 +212,6 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   ),
                                 );
-
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) => PrimeScreen(),
-                                //   ),
-                                // );
                               },
                             ),
                             SizedBox(height: context.getHeight() * 0.03),
@@ -261,7 +246,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: LoadingWidget());
                   }
                 },
               ),
@@ -288,7 +273,7 @@ void logoutAlertDialog({
           vertical: context.getHeight() * 0.03,
         ),
         child: Text(
-          '?Are you sure you want to log out', // Text for confirmation
+          tr('confirmLogout'), // Text for confirmation
           style: const TextStyle(color: StyleColor.error),
         ),
       ),
@@ -299,12 +284,18 @@ void logoutAlertDialog({
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel', style: TextStyle(color: StyleColor.black)),
+          child: Text(
+            tr('commonCancel'),
+            style: TextStyle(color: StyleColor.black),
+          ),
         ),
         // "Logout" button to confirm the logout action
         TextButton(
           onPressed: onTab, // Executes the logout functionality
-          child: Text('Logout', style: TextStyle(color: StyleColor.error)),
+          child: Text(
+            tr('authLogout'),
+            style: TextStyle(color: StyleColor.error),
+          ),
         ),
       ],
     ),

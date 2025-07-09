@@ -1,4 +1,4 @@
-part of 'add_member_sheet_bloc.dart';
+part of 'add_member_bloc.dart';
 
 @immutable
 sealed class AddMemberState {}
@@ -17,6 +17,7 @@ final class AddMemberFailure extends AddMemberState {
 
 class AddMemberLoadedState extends AddMemberState {
   final List<String> members;
+
   AddMemberLoadedState({required this.members});
 }
 

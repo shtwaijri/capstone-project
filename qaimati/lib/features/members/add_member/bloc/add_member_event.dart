@@ -1,4 +1,4 @@
-part of 'add_member_sheet_bloc.dart';
+part of 'add_member_bloc.dart';
 
 @immutable
 sealed class AddMemberEvent {}
@@ -18,5 +18,13 @@ class SendInviteEvent extends AddMemberEvent {
 
 class FetchMembersEvent extends AddMemberEvent {
   final String listId;
+
   FetchMembersEvent({required this.listId});
+}
+
+class DeleteMemberEvent extends AddMemberEvent {
+  final String userId;
+  final String listId;
+
+  DeleteMemberEvent({required this.userId, required this.listId});
 }

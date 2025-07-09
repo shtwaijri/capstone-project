@@ -1,6 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/members/invitations/bloc/invitations_bloc.dart';
+import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
+import 'package:qaimati/widgets/app_bar_widget.dart';
+import 'package:qaimati/widgets/custom_empty_widget.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 class InvitationsScreen extends StatelessWidget {
   const InvitationsScreen({super.key});
@@ -12,16 +18,29 @@ class InvitationsScreen extends StatelessWidget {
       child: BlocBuilder<InvitationsBloc, InvitationsState>(
         builder: (context, state) {
           if (state is InviteLoadingState) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
+            return const Scaffold(body: Center(child: LoadingWidget()));
           } else if (state is InviteLoadedState) {
             final invited = state.invitedLists;
 
             return Scaffold(
-              appBar: AppBar(title: const Text('Invitations')),
+              appBar: AppBarWidget(
+                title: tr('InviteTitle'),
+                showActions: false,
+                showSearchBar: false,
+                showBackButton: true,
+              ),
               body: invited.isEmpty
-                  ? const Center(child: Text("No invitations"))
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomEmptyWidget(
+                          img: 'assets/svg/no_invites.svg',
+                          bigText: tr('NoInvite'),
+                          buttonText: tr(""),
+                          onPressed: () {},
+                        ),
+                      ],
+                    )
                   : ListView.builder(
                       itemCount: invited.length,
                       itemBuilder: (context, index) {
@@ -32,32 +51,95 @@ class InvitationsScreen extends StatelessWidget {
                             notification['sender_email'] ?? 'Unknown Sender';
                         final inviteId = notification['invite_id'];
 
-                        return ListTile(
-                          title: Text("Invitation to List: $listName"),
-                          subtitle: Text(
-                            "You have been invited by: $senderEmail",
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
                           ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  context.read<InvitationsBloc>().add(
-                                    AcceptInviteEvent(inviteId: inviteId),
-                                  );
-                                },
-                                child: const Text('Accept'),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? StyleColor.graylight
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
                               ),
-                              const SizedBox(width: 8),
-                              OutlinedButton(
-                                onPressed: () {
-                                  context.read<InvitationsBloc>().add(
-                                    RejectInviteEvent(inviteId: inviteId),
-                                  );
-                                },
-                                child: const Text('Reject'),
+                              title: Text(
+                                '${tr("invitedTo")} $listName',
+                                style: StyleText.bold16(
+                                  context,
+                                ).copyWith(color: StyleColor.black),
                               ),
-                            ],
+
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    tr("invitedBy"),
+                                    style: StyleText.bold16(
+                                      context,
+                                    ).copyWith(color: StyleColor.black),
+                                  ),
+                                  Text(
+                                    senderEmail,
+                                    style: StyleText.regular16(
+                                      context,
+                                    ).copyWith(color: StyleColor.black),
+                                  ),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      backgroundColor: StyleColor.green,
+                                    ),
+                                    onPressed: () {
+                                      context.read<InvitationsBloc>().add(
+                                        AcceptInviteEvent(inviteId: inviteId),
+                                      );
+                                    },
+                                    child: Text(
+                                      tr('accept'),
+                                      style: StyleText.bold16(
+                                        context,
+                                      ).copyWith(color: Colors.black),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      context.read<InvitationsBloc>().add(
+                                        RejectInviteEvent(inviteId: inviteId),
+                                      );
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide.none,
+                                      backgroundColor: StyleColor.error,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      tr('reject'),
+                                      style: StyleText.bold16(
+                                        context,
+                                      ).copyWith(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       },

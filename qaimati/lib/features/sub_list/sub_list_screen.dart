@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qaimati/features/members/add_member_sheet/add_member_screen.dart';
+import 'package:qaimati/features/members/add_member/add_member_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/add_item_bootomsheet.dart';
 import 'package:qaimati/features/sub_list/widgets/bootomsheet/complete_item_bottomsheet.dart';
@@ -15,6 +15,7 @@ import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/floating_button.dart';
+import 'package:qaimati/widgets/loading_widget.dart';
 
 /// A screen that displays a list of items, allowing users to view, add,
 /// (update, delete,)if item creted by them or it is admin , and admin can  mark items as completed.
@@ -110,7 +111,7 @@ class SubListScreen extends StatelessWidget {
                   },
                   builder: (context, state) {
                     if (state is SubListLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(child: LoadingWidget());
                     } else if (state is SubListLoadedState) {
                       final uncompletedItems = state.uncompletedItems;
 
