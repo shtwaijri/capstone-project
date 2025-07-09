@@ -12,8 +12,8 @@ class AddMemberSheetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddMemberBloc(),
+    return BlocProvider.value(
+      value: context.read<AddMemberBloc>(),
       child: BlocConsumer<AddMemberBloc, AddMemberState>(
         listener: (context, state) {
           if (state is AddMemberSuccess) {
