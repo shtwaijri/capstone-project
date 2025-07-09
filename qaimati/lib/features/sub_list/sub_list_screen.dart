@@ -75,13 +75,6 @@ class SubListScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) =>
-                    //         AddMemberScreen(listId: bloc.appGetit.listId!),
-                    //   ),
-                    // );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
