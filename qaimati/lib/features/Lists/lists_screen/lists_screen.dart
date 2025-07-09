@@ -10,6 +10,7 @@ import 'package:qaimati/features/members/invitations/invitations_screen.dart';
 import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_empty_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
@@ -33,53 +34,64 @@ class ListsScreen extends StatelessWidget {
         builder: (context) {
           final bloc = context.read<AddListBloc>();
           return Scaffold(
-            appBar: AppBarWidget(
-              title: 'listTitle'.tr(),
-              showActions: true,
-              showSearchBar: false,
+            appBar: AppBar(
 
-              showBackButton: false,
-              actionsIcon: [
-                BlocBuilder<InvitationsBloc, InvitationsState>(
-                  builder: (context, state) {
-                    final hasInvites =
-                        state is InviteLoadedState &&
-                        state.invitedLists.isNotEmpty;
-
-                    return Stack(
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.notifications,
-                            color: StyleColor.green,
-                            size: 26,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(60), 
+                child: Padding(
+                  padding:  EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('listTitle'.tr(), style: StyleText.bold24(context)),
+                          BlocBuilder<InvitationsBloc, InvitationsState>(
+                            builder: (context, state) {
+                              final hasInvites =
+                                  state is InviteLoadedState &&
+                                  state.invitedLists.isNotEmpty;
+                      
+                              return Stack(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.notifications,
+                                      color: StyleColor.green,
+                                      size: 26,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => BlocProvider.value(
+                                            value: context.read<InvitationsBloc>(),
+                                            child: const InvitationsScreen(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  if (hasInvites)
+                                    const Positioned(
+                                      top: 8,
+                                      right: 8,
+                                      child: CircleAvatar(
+                                        radius: 5,
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => BlocProvider.value(
-                                  value: context.read<InvitationsBloc>(),
-                                  child: const InvitationsScreen(),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        if (hasInvites)
-                          const Positioned(
-                            top: 8,
-                            right: 8,
-                            child: CircleAvatar(
-                              radius: 5,
-                              backgroundColor: Colors.red,
-                            ),
-                          ),
-                      ],
-                    );
-                  },
+                        ],
+                      ),
+                      Container(color: StyleColor.graylight, height: 1),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
 
             body: Column(

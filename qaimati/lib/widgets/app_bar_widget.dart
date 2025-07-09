@@ -39,12 +39,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       leading: showBackButton
           ? IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : StyleColor.black,
-              ),
+              icon: Icon(Icons.arrow_back_ios, color: StyleColor.black),
               onPressed: () => Navigator.pop(context),
             )
           : Container(),
