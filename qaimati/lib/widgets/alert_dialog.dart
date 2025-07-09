@@ -24,7 +24,7 @@ void alertDialog({
           },
           child: Text(
             'commonCancel'.tr(),
-            style: StyleText.bold16black(context),
+            style: StyleText.regular16(context),
           ),
         ),
         TextButton(
