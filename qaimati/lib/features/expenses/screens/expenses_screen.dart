@@ -10,6 +10,7 @@ import 'package:qaimati/features/expenses/widgets/spending_widget.dart';
 import 'package:qaimati/features/expenses/widgets/update_wigdet.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
+import 'package:qaimati/widgets/alert_dialog.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_shimmer_effect.dart';
 import 'package:qaimati/widgets/floating_button.dart';
@@ -202,14 +203,27 @@ class ExpensesScreen extends StatelessWidget {
                                                           .receipt[index]
                                                           .receiptFileUrl,
                                                       delete: () {
-                                                        bloc.add(
-                                                          DeleteReceiptEvent(
-                                                            state
-                                                                .receipt[index]
-                                                                .receiptId!,
-                                                          ),
+                                                        alertDialog(
+                                                          context: context,
+                                                          lable:
+                                                              "receiptDeleteConfirm"
+                                                                  .tr(),
+                                                          onTab: () {
+                                                            bloc.add(
+                                                              DeleteReceiptEvent(
+                                                                state
+                                                                    .receipt[index]
+                                                                    .receiptId!,
+                                                              ),
+                                                            );
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
+                                                          },
                                                         );
-                                                        Navigator.pop(context);
                                                       },
                                                       update: () {
                                                         bloc.add(
