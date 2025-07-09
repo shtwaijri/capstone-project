@@ -256,12 +256,6 @@ class ExpensesScreen extends StatelessWidget {
                                                 );
                                               },
                                             );
-                                            // bloc.add(
-                                            //   MonthChangedEvent(
-                                            //     year: bloc.displayedDate.year,
-                                            //     month: bloc.displayedDate.month,
-                                            //   ),
-                                            // );
                                           },
 
                                           child: ReceiptWidget(
@@ -294,35 +288,7 @@ class ExpensesScreen extends StatelessWidget {
               // Floating button to navigate to ReceiptScreen to add a new receipt
               floatingActionButton: FloatingButton(
                 onpressed: () async {
-                  // try {
-                  // await ReceiptSupabase().checkAddReceiptEligibility();
                   bloc.add(CheckPirEvent());
-
-                  //     final result = await Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => ReceiptScreen()),
-                  //     );
-
-                  //     if (result == true) {
-                  //       final bloc = context.read<ExpensesBloc>();
-                  //       bloc.add(
-                  //         MonthChangedEvent(
-                  //           year: bloc.displayedDate.year,
-                  //           month: bloc.displayedDate.month,
-                  //         ),
-                  //       );
-                  //     }
-                  //   } catch (e) {
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //       SnackBar(
-                  //         content: Text(
-                  //           e.toString(),
-                  //           style: TextStyle(color: Colors.white),
-                  //         ),
-                  //         backgroundColor: Colors.red,
-                  //       ),
-                  //     );
-                  //   }
                 },
               ),
             ),

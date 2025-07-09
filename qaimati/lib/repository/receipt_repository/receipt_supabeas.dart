@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:typed_data';
-import 'package:qaimati/features/expenses/model/receipt_model.dart';
+import 'package:qaimati/models/receipt/receipt_model.dart';
 import 'package:qaimati/repository/supabase.dart';
 import 'package:qaimati/utilities/helper/userId_helper.dart';
 

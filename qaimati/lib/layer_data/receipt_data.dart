@@ -1,5 +1,5 @@
-import 'package:qaimati/features/expenses/model/receipt_model.dart';
-import 'package:qaimati/features/expenses/repository/receipt_supabeas.dart';
+import 'package:qaimati/models/receipt/receipt_model.dart';
+import 'package:qaimati/repository/receipt_repository/receipt_supabeas.dart';
 
 /// A helper class to manage loading and storing receipt data from Supabase.
 class ReceiptData {
