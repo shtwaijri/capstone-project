@@ -129,8 +129,10 @@ class ListsScreen extends StatelessWidget {
                   BlocBuilder<AddListBloc, AddListState>(
                     builder: (context, state) {
                       if (state is AddListLoading) {
-                        return CustomShimmerEffect(
-                          isItem: false,
+                        return SingleChildScrollView(
+                          child: CustomShimmerEffect(
+                            isItem: false,
+                          ),
                         ); // while data not loaded will show shimmer (UX)
                       } else if (state is AddListError) {
                         return Center(child: Text('Error: ${state.message}'));

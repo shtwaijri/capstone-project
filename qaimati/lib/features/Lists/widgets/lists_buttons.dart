@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 // import 'package:test_befor_add/style/style_color.dart';
-// import 'package:test_befor_add/style/style_text.dart';
+// import 'package:test_befor_add/style/style_text.dart';//
 
 class ListsButtons extends StatelessWidget {
   const ListsButtons({
@@ -25,7 +25,7 @@ class ListsButtons extends StatelessWidget {
       },
       child: Container(
         width: 170,
-        height: 60,
+        height: 80,
         decoration: BoxDecoration(
           color: StyleColor.graylight,
           borderRadius: BorderRadius.circular(10.0),
@@ -42,8 +42,10 @@ class ListsButtons extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   icon,

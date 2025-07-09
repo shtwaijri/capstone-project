@@ -44,7 +44,7 @@ void showUpdateDeleteItemBottomSheet({
   bloc.isItemsChecked = item.status;
   showModalBottomSheet(
     isScrollControlled: true,
-    backgroundColor: StyleColor.white,
+    // backgroundColor: StyleColor.white,
     showDragHandle: true,
     context: context,
     builder: (context) {

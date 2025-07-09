@@ -110,7 +110,7 @@ class StyleText {
       fontFamily: _getFontFamily(context),
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: StyleColor.red,
+      color: StyleColor.error,
     );
   }
 }

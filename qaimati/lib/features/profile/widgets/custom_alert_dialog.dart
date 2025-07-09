@@ -32,7 +32,7 @@ class CustomAlertDialog extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: StyleColor.graylight,
+      // backgroundColor: StyleColor.graylight,
 
       actions: [
         TextButton(

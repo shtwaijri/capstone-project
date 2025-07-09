@@ -507,11 +507,19 @@ class SupabaseConnect {
         final newItem = ItemModelMapper.fromMap(response.first);
         log("newItem ${newItem.toString()}");
         log("response addNewItem ItemModelMapper correct ");
+        
+     final listName = (await supabase!
+    .from('list_user_role')
+    .select('list(name)')
+    .eq('list_id', item.listId)
+    .single())['list']['name'];
+
+
 
         // Build the notification content
         String notificationTitle = "newitemadded!".tr();
         String notificationMessage =
-            "${"itemaddedby".tr()}  ${newItem.title}  ${"inlist:".tr()} ${newItem.listId}.";
+            "${"itemaddedby".tr()}  ${newItem.title}  ${"inlist:".tr()} ${listName}.";
         String? excludeUserId = newItem.appUserId;
 
         // Send a notification to other users in the same list

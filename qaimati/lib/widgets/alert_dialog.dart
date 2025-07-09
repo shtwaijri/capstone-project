@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 
 void alertDialog({
@@ -11,7 +10,7 @@ void alertDialog({
   showDialog<void>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      backgroundColor: StyleColor.white,
+      // backgroundColor: StyleColor.white,
       content: Text(
         // this will be as alert message befor delete any thing
         lable, // label is the thing that will be deleted [list - item - member .......]
@@ -25,7 +24,7 @@ void alertDialog({
           },
           child: Text(
             'commonCancel'.tr(),
-            style: StyleText.regular16Grey(context),
+            style: StyleText.bold16black(context),
           ),
         ),
         TextButton(

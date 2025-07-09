@@ -30,7 +30,7 @@ void showAddItemBottomShaeet({required BuildContext context}) {
 
   showModalBottomSheet(
     isScrollControlled: true,
-    backgroundColor: StyleColor.white,
+    // backgroundColor: StyleColor.white,
     showDragHandle: true,
     context: context,
     builder: (context) {
