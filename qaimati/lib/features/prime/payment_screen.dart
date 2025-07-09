@@ -4,11 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get_it/get_it.dart';
 import 'package:moyasar/moyasar.dart';
 import 'package:qaimati/features/nav/navigation_bar_screen.dart';
 import 'package:qaimati/features/prime/bloc/payment_bloc.dart';
-import 'package:qaimati/features/prime/prime_service.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 

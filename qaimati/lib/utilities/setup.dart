@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -14,8 +16,6 @@ import 'package:qaimati/firebase_options.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:qaimati/repository/supabase.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:qaimati/utilities/helper/onesignal_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

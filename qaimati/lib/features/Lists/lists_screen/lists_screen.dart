@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/bloc/add_list_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/buttom_sheets/show_add_list_buttom_sheet.dart';
-import 'package:qaimati/features/Lists/lists_screen/member_lists.dart';
+import 'package:qaimati/features/Lists/lists_screen/invited_lists.dart';
 import 'package:qaimati/features/Lists/widgets/lists_buttons.dart';
-import 'package:qaimati/features/members/invite/bloc/invite_bloc.dart';
-import 'package:qaimati/features/members/invite/invite_screen.dart';
+import 'package:qaimati/features/members/invitations/bloc/invitations_bloc.dart';
+import 'package:qaimati/features/members/invitations/invitations_screen.dart';
 import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/style/style_color.dart';
@@ -26,7 +26,7 @@ class ListsScreen extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AddListBloc()..add(LoadListsEvent())),
         BlocProvider(
-          create: (_) => InviteBloc()..add(FetchInvitedListsEvent()),
+          create: (_) => InvitationsBloc()..add(FetchInvitedListsEvent()),
         ),
       ],
       child: Builder(
@@ -40,7 +40,7 @@ class ListsScreen extends StatelessWidget {
                   AppBarWidget(
                     title: 'listTitle'.tr(),
                     showActions: false,
-                    showSearchBar: true,
+                    showSearchBar: false,
                     actionsIcon: const [],
                     showBackButton: false,
                   ),
@@ -50,7 +50,7 @@ class ListsScreen extends StatelessWidget {
                       alignment: AlignmentDirectional.topEnd,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 10.0, right: 12.0),
-                        child: BlocBuilder<InviteBloc, InviteState>(
+                        child: BlocBuilder<InvitationsBloc, InvitationsState>(
                           builder: (context, state) {
                             final hasInvites =
                                 state is InviteLoadedState &&
@@ -118,7 +118,7 @@ class ListsScreen extends StatelessWidget {
                         ),
                         quantity: '0',
                         lable: 'invitedLists'.tr(),
-                        screen: MemberLists(),
+                        screen: InvitedLists(),
                       ),
                     ],
                   ),

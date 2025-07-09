@@ -7,7 +7,7 @@ class CustomWidgetSetting extends StatelessWidget {
     super.key,
     required this.icon,
     required this.text,
-    required this.style,
+    // required this.style,
     required this.color,
     required this.iconSize,
     this.showSwitch = false,
@@ -18,7 +18,7 @@ class CustomWidgetSetting extends StatelessWidget {
 
   final IconData icon;
   final String text;
-  final TextStyle style;
+  // final TextStyle style;
   final Color? color;
   final double? iconSize;
   final bool? showSwitch;
@@ -32,7 +32,7 @@ class CustomWidgetSetting extends StatelessWidget {
       children: [
         Icon(icon, color: color, size: iconSize),
         SizedBox(width: context.getWidth() * 0.02),
-        Text(text, style: style),
+        Text(text, style: TextStyle(fontWeight: FontWeight.bold), )//style: style),
       ],
     );
 
