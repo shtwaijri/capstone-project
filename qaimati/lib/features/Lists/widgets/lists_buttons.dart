@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_text.dart';
 // import 'package:test_befor_add/style/style_color.dart';
-// import 'package:test_befor_add/style/style_text.dart';
+// import 'package:test_befor_add/style/style_text.dart';//
 
 class ListsButtons extends StatelessWidget {
   const ListsButtons({
