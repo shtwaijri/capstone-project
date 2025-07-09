@@ -1,5 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -44,7 +45,6 @@ class InvitationsBloc extends Bloc<InvitationsEvent, InvitationsState> {
 
       add(FetchInvitedListsEvent());
     } catch (e) {
-      log('error accepting invite: $e');
       emit(InviteErrorState('Error accepting invitation'));
     }
   }
@@ -61,7 +61,6 @@ class InvitationsBloc extends Bloc<InvitationsEvent, InvitationsState> {
 
       add(FetchInvitedListsEvent());
     } catch (e) {
-      log('error rejecting invite: $e');
       emit(InviteErrorState('Error rejecting invitation'));
     }
   }
@@ -94,7 +93,6 @@ class InvitationsBloc extends Bloc<InvitationsEvent, InvitationsState> {
 
       emit(InviteLoadedState(invitedLists: updatedInvites, notifications: []));
     } catch (e) {
-      log('Error fetching invited lists: $e');
       emit(InviteErrorState('Failed to load invitations'));
     }
   }

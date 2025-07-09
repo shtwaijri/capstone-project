@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -181,7 +183,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ClickChangeColorEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    final userId = await GetIt.I.get<AuthLayer>().getCurrentSessionId();
+    final userId = GetIt.I.get<AuthLayer>().getCurrentSessionId();
     final newThemeMode = event.isDarkMode
         ? 'dark'
         : 'light'; //determine the new theme

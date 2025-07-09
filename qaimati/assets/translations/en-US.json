@@ -5,7 +5,7 @@
   "onboardingInvite": "Invite others, sync in  real-time",
   "onboardingReceipts": "Manage receipts your for better tracking",
 "enterEmail": "Enter your email to create your account or login",
- "emailHint": "Email",
+ "emailHint": "Enter your email",
  "email_invalid": "Invalid email",
  "enterOTP" : "Please enter the verification code sent to your email",
 "confirmCode":"confirm",
@@ -110,8 +110,13 @@
          "invitedBy":"By:",
 "accept":"accept",
 "reject":"reject",
+"ChangeEmail":"Change your email",
+"changeName":"Change your name",
+"memberHint":"Enter email",
 
-
+"SubscriptionPay":"Subscription Payment",
+"asimportant":"Mark as important",
+"waitToResend": "Please wait {0} seconds before resending",
 
 
   "Qaiamtiprime":"Qaimati +",

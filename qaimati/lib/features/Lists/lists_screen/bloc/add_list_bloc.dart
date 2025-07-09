@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_typing_uninitialized_variables
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -62,10 +64,6 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     emit(AddListLoading());
 
     try {
-      print(
-        "🛠 Updating list with: ${event.list.name}, color=${event.list.color}",
-      );
-
       final updatedList = ListModel(
         listId: event.list.listId,
         name: event.list.name,
@@ -89,7 +87,9 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     emit(AddListLoading());
 
     try {
-      await appGetit.confirmDeleteList(event.listId); // mwthod in app datat layer
+      await appGetit.confirmDeleteList(
+        event.listId,
+      ); // mwthod in app datat layer
 
       await appGetit.loadAdminLists();
 

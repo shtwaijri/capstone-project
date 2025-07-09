@@ -1,13 +1,10 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:qaimati/features/members/add_member/add_member_service.dart';
-import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'add_member_event.dart';
@@ -43,7 +40,7 @@ class AddMemberBloc extends Bloc<AddMemberEvent, AddMemberState> {
 
     try {
       //call send invite method
-      await sendInvite(event.email, event.listId);
+      await sendInvite(email, event.listId);
       emit(AddMemberSuccess());
     } catch (e) {
       emit(AddMemberFailure(e.toString()));

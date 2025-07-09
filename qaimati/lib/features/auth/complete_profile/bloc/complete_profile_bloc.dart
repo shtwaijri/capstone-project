@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';

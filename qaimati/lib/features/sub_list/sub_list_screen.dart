@@ -72,6 +72,13 @@ class SubListScreen extends StatelessWidget {
             // ),
             //edited by shatha
             appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back_ios_new),
+              ),
+
               actions: [
                 IconButton(
                   onPressed: () {

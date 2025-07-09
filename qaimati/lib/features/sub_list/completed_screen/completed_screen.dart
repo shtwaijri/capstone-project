@@ -45,7 +45,7 @@ class CompletedScreen extends StatelessWidget {
                   bloc.close();
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios_new),
               ),
               title: Text("Completed".tr(), style: StyleText.bold24(context)),
             ),

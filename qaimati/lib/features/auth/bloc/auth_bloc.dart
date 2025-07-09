@@ -1,11 +1,10 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, unnecessary_import
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-// ignore: unnecessary_import
 import 'package:meta/meta.dart';
 import 'package:qaimati/layer_data/auth_layer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,6 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //controllers for textfeild
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  //timer for catching errors
+  DateTime? _lastOtpSentTime;
 
   //list to hold the OTP digits
   final List<String> _otpDigits = List.filled(6, '');
@@ -26,9 +27,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   //instance of AuthLayer
   final authGetit = GetIt.I.get<AuthLayer>();
-
-  Timer? _resendOtpTimer;
-  int _resendOtpSeconds = 0;
 
   AuthBloc() : super(AuthStateInit()) {
     on<ValidateEmailEvent>(_validateEmail);
@@ -129,7 +127,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ResendOtpEvent event,
     Emitter<AuthState> emit,
   ) async {
-    if (_resendOtpSeconds > 0) {
+    //check if the user has sent the otp in less than 30s
+    final now = DateTime.now();
+    if (_lastOtpSentTime != null &&
+        now.difference(_lastOtpSentTime!).inSeconds < 30) {
+      final secondsLeft = 30 - now.difference(_lastOtpSentTime!).inSeconds;
+      emit(ErrorState(msg: tr('waitToResend', args: ['$secondsLeft'])));
       return;
     }
 
@@ -137,33 +140,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(LoadingSignUpState());
 
       await authGetit.sendOtp(email: emailController.text.trim());
-      emit(OtpSentState());
+      //store the new sending time
+      _lastOtpSentTime = now;
 
-      _startResendCountdown(emit);
+      emit(OtpSentState());
     } catch (error) {
       emit(ErrorState(msg: error.toString()));
     }
-  }
-
-  void _startResendCountdown(Emitter<AuthState> emit) {
-    _resendOtpSeconds = 60;
-    _resendOtpTimer?.cancel();
-
-    _resendOtpTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _resendOtpSeconds--;
-
-      if (_resendOtpSeconds <= 0) {
-        timer.cancel();
-        emit(OtpSentState());
-      } else {
-        emit(ResendOtpCountState(secondsRemaining: _resendOtpSeconds));
-      }
-    });
-  }
-
-  @override
-  Future<void> close() {
-    _resendOtpTimer?.cancel();
-    return super.close();
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
 
@@ -83,7 +85,7 @@ class StyleText {
       fontFamily: _getFontFamily(context),
       fontSize: 16,
       fontWeight: FontWeight.w700,
-      color: StyleColor.white,
+      color: StyleColor.black,
     );
   }
 
@@ -93,6 +95,15 @@ class StyleText {
       fontSize: 12,
       fontWeight: FontWeight.w700,
       color: StyleColor.white,
+    );
+  }
+
+  static TextStyle greenButtonText12(BuildContext context) {
+    return TextStyle(
+      fontFamily: _getFontFamily(context),
+      fontSize: 12,
+      fontWeight: FontWeight.w700,
+      color: StyleColor.black,
     );
   }
 

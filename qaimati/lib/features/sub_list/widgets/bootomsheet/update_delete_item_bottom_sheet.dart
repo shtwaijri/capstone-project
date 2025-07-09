@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +11,6 @@ import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/dual_action_button_widget.dart';
-
 
 /// Displays a modal bottom sheet for updating or deleting an existing item.
 ///
@@ -144,10 +141,6 @@ void showUpdateDeleteItemBottomSheet({
                             }
 
                             Navigator.pop(context);
-                          } else {
-                            log(
-                              "Please enter item name and quantity for update",
-                            );
                           }
                         },
                         secondaryLabel: "itemDelete".tr(),
