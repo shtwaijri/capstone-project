@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
 
 class CustomListtile extends StatelessWidget {
   // Constructor for CustomListtile widget.
@@ -43,7 +44,7 @@ class CustomListtile extends StatelessWidget {
           title: Text(
             // The main text content of the list tile.
             title,
-            style: TextStyle(color: contentColor),
+            style: StyleText.bold16black(context),//TextStyle(color: contentColor),
             // Sets the color of the title text to white.
           ),
           trailing:

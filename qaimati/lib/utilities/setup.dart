@@ -46,18 +46,18 @@ Future<void> setUp() async {
     instanceName: 'seenOnboarding',
   );
 
-  // GetIt.I.registerSingletonAsync<ReceiptData>(
-  //   () async => ReceiptData()..loadAllDataFromSupabase(),
-  // );
-  // if (!GetIt.I.isRegistered<ReceiptData>()) {
-  //   GetIt.I.registerSingletonAsync<ReceiptData>(
-  //     () async => ReceiptData()
-  //       ..loadMonthlyDataFromSupabase(
-  //         year: DateTime.now().year,
-  //         month: DateTime.now().month,
-  //       ),
-  //   );
-  // }
+  GetIt.I.registerSingletonAsync<ReceiptData>(
+    () async => ReceiptData()..loadAllDataFromSupabase(),
+  );
+  if (!GetIt.I.isRegistered<ReceiptData>()) {
+    GetIt.I.registerSingletonAsync<ReceiptData>(
+      () async => ReceiptData()
+        ..loadMonthlyDataFromSupabase(
+          year: DateTime.now().year,
+          month: DateTime.now().month,
+        ),
+    );
+  }
 
   // await GetIt.I.allReady();
 
