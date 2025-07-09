@@ -14,14 +14,13 @@ class PrimeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBarWidget(
         title: tr('Subspriction'),
-        showActions: true,
+        showActions: false,
         showSearchBar: false,
         showBackButton: false,
       ),
 
       body: Column(
         children: [
-          // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

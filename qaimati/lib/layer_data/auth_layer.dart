@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/repository/supabase.dart';
-import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -125,7 +124,7 @@ class AuthLayer {
           .eq('auth_user_id', user.id)
           .single();
 
-      final isDark = response['theme_mode'] == 'dark';
+      // final isDark = response['theme_mode'] == 'dark';
       final isArabic = response['language_code'] == 'ar';
 
       //ensure that the screen still exist
@@ -136,7 +135,7 @@ class AuthLayer {
         isArabic ? const Locale('ar', 'AR') : const Locale('en', 'US'),
       );
 
-      ThemeController.toggleTheme(isDark);
+      // ThemeController.toggleTheme(isDark);
     } catch (e) {}
   }
 }

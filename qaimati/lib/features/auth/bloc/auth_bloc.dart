@@ -151,7 +151,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     _resendOtpTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _resendOtpSeconds--;
-      print('Resend seconds remaining: $_resendOtpSeconds');
 
       if (_resendOtpSeconds <= 0) {
         timer.cancel();

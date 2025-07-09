@@ -8,7 +8,6 @@ import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 
-
 /// A custom widget designed to display a single item within a list,
 /// such as an item in a shopping list
 ///
@@ -23,7 +22,148 @@ import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
 /// are controlled by properties passed into the widget. When enabled and toggled by the user,
 /// it dispatches a `ToggleItemCheckedEvent` to the `SubListBloc` to update the item's status.
 
+// class CustomItems extends StatelessWidget {
+//   const CustomItems({
+//     super.key,
+//     required this.itemName,
+//     required this.numOfItems,
+//     required this.createdBy,
+//     required this.isImportant,
+//     required this.itemIndex,
+//     required this.isItemChecked,
+//     required this.itemId,
+//     this.isCheckboxEnabled = true,
+//     this.checkboxColor,
+//   });
+//   final String numOfItems;
+//   final String itemName;
+//   final String createdBy;
+//   final bool isImportant;
+//   final int itemIndex;
+//   final bool isItemChecked;
+//   final String itemId;
+//   final bool isCheckboxEnabled;
+//   final Color? checkboxColor;
 
+//   @override
+//   Widget build(BuildContext context) {
+//     final Color actualCheckboxColor = checkboxColor ?? StyleColor.green;
+
+//     return Column(
+//       children: [
+//         Padding(
+//           padding: EdgeInsets.only(
+//             left: context.getWidth() * 0.05,
+//             right: context.getWidth() * 0.04,
+//           ),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Transform.translate(
+//                 offset: Offset(
+//                   context.getWidth() * 0.015,
+//                   context.getHeight() * -0.008,
+//                 ),
+//                 child: Checkbox(
+//                   side: BorderSide(color: actualCheckboxColor),
+//                   value: isItemChecked,
+//                   onChanged: isCheckboxEnabled
+//                       ? (value) {
+//                           context.read<SubListBloc>().add(
+//                             ToggleItemCheckedEvent(
+//                               isChecked: value!,
+//                               itemId: itemId,
+//                             ),
+//                           );
+//                         }
+//                       : null,
+//                   fillColor: WidgetStateProperty.resolveWith<Color>((
+//                     Set<WidgetState> states,
+//                   ) {
+//                     if (states.contains(WidgetState.selected)) {
+//                       return actualCheckboxColor;
+//                     }
+
+//                     return actualCheckboxColor.withOpacity(0.5);
+//                   }),
+//                   checkColor: Colors.white,
+//                   overlayColor: WidgetStateProperty.resolveWith<Color>((
+//                     Set<WidgetState> states,
+//                   ) {
+//                     if (states.contains(WidgetState.hovered)) {
+//                       return actualCheckboxColor.withOpacity(0.1);
+//                     }
+//                     if (states.contains(WidgetState.pressed)) {
+//                       return actualCheckboxColor.withOpacity(0.2);
+//                     }
+//                     return Colors.transparent;
+//                   }),
+//                 ),
+//               ),
+//               SizedBox(width: context.getWidth() * 0.01),
+//               Expanded(
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Row(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Text(
+//                           '$numOfItems - ',
+//                           style: StyleText.bold16(context),
+//                         ),
+//                         Flexible(
+//                           child: Text(
+//                             itemName,
+//                             style: StyleText.bold16(context),
+//                           ),
+//                         ),
+//                         if (isImportant)
+//                           Padding(
+//                             padding: const EdgeInsets.only(left: 8.0),
+//                             child: Icon(
+//                               Icons.priority_high,
+//                               color: StyleColor.red,
+//                             ),
+//                           ),
+//                       ],
+//                     ),
+//                     SizedBox(height: 4),
+//                     Text.rich(
+//                       TextSpan(
+//                         text: 'memberCreatedBy'.tr(),
+//                         style: StyleText.regular12(
+//                           context,
+//                         ).copyWith(fontSize: 10, color: StyleColor.gray),
+//                         children: [
+//                           TextSpan(
+//                             text: createdBy,
+//                             style: StyleText.bold12(
+//                               context,
+//                             ).copyWith(fontSize: 10),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//         SizedBox(height: 4),
+//         Divider(
+//           height: 0,
+//           color: StyleColor.gray,
+//           thickness: 1.01,
+//           indent: context.getWidth() * 0.04,
+//           endIndent: context.getWidth() * 0.17,
+//         ),
+//       ],
+//     );
+//   }
+// }
 class CustomItems extends StatelessWidget {
   const CustomItems({
     super.key,
@@ -37,6 +177,7 @@ class CustomItems extends StatelessWidget {
     this.isCheckboxEnabled = true,
     this.checkboxColor,
   });
+
   final String numOfItems;
   final String itemName;
   final String createdBy;
@@ -54,18 +195,11 @@ class CustomItems extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(
-            left: context.getWidth() * 0.05,
-            right: context.getWidth() * 0.04,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: context.getWidth() * 0.05),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Transform.translate(
-                offset: Offset(
-                  context.getWidth() * 0.015,
-                  context.getHeight() * -0.008,
-                ),
+                offset: Offset(context.getWidth() * 0.005, 0),
                 child: Checkbox(
                   side: BorderSide(color: actualCheckboxColor),
                   value: isItemChecked,
@@ -79,18 +213,15 @@ class CustomItems extends StatelessWidget {
                           );
                         }
                       : null,
-                  fillColor: WidgetStateProperty.resolveWith<Color>((
-                    Set<WidgetState> states,
-                  ) {
+                  fillColor: WidgetStateProperty.resolveWith<Color>((states) {
                     if (states.contains(WidgetState.selected)) {
                       return actualCheckboxColor;
                     }
-
                     return actualCheckboxColor.withOpacity(0.5);
                   }),
                   checkColor: Colors.white,
                   overlayColor: WidgetStateProperty.resolveWith<Color>((
-                    Set<WidgetState> states,
+                    states,
                   ) {
                     if (states.contains(WidgetState.hovered)) {
                       return actualCheckboxColor.withOpacity(0.1);
@@ -102,48 +233,43 @@ class CustomItems extends StatelessWidget {
                   }),
                 ),
               ),
-              SizedBox(width: context.getWidth() * 0.01),
+              SizedBox(width: context.getWidth() * 0.02),
               Expanded(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '$numOfItems - ',
-                          style: StyleText.bold16(context),
+                          style: StyleText.bold16(
+                            context,
+                          ).copyWith(fontSize: 18),
                         ),
                         Flexible(
                           child: Text(
                             itemName,
-                            style: StyleText.bold16(context),
+                            style: StyleText.bold16(
+                              context,
+                            ).copyWith(fontSize: 18),
                           ),
                         ),
-                        if (isImportant)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(
-                              Icons.priority_high,
-                              color: StyleColor.red,
-                            ),
-                          ),
                       ],
                     ),
                     SizedBox(height: 4),
+                    // Created By Text
                     Text.rich(
                       TextSpan(
                         text: 'memberCreatedBy'.tr(),
-                        style: StyleText.regular12(
+                        style: StyleText.bold16(
                           context,
-                        ).copyWith(fontSize: 10, color: StyleColor.gray),
+                        ).copyWith(fontSize: 12, color: StyleColor.gray),
                         children: [
                           TextSpan(
                             text: createdBy,
-                            style: StyleText.bold12(
+                            style: StyleText.bold24(
                               context,
-                            ).copyWith(fontSize: 10),
+                            ).copyWith(fontSize: 12),
                           ),
                         ],
                       ),
@@ -151,16 +277,27 @@ class CustomItems extends StatelessWidget {
                   ],
                 ),
               ),
+              // Icon for "important" positioned fixed on the right side
+              if (isImportant)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Icon(
+                    Icons.priority_high,
+                    color: StyleColor.red,
+                    size: 18, // Icon size adjusted
+                  ),
+                ),
             ],
           ),
         ),
-        SizedBox(height: 4),
+        SizedBox(height: 8),
+        // Divider with padding
         Divider(
-          height: 0,
+          height: 1,
           color: StyleColor.gray,
-          thickness: 1.01,
-          indent: context.getWidth() * 0.04,
-          endIndent: context.getWidth() * 0.17,
+          thickness: 1,
+          indent: context.getWidth() * 0.05,
+          endIndent: context.getWidth() * 0.05,
         ),
       ],
     );

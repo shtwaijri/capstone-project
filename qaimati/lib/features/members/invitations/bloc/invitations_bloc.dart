@@ -3,19 +3,19 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:qaimati/features/members/invite/model/invite_model.dart';
+import 'package:qaimati/features/members/invitations/model/invite_model.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/repository/supabase.dart';
 import 'package:qaimati/utilities/helper/userId_helper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'invite_event.dart';
-part 'invite_state.dart';
+part 'invitations_event.dart';
+part 'invaitations_state.dart';
 
-class InviteBloc extends Bloc<InviteEvent, InviteState> {
+class InvitationsBloc extends Bloc<InvitationsEvent, InvitationsState> {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
 
-  InviteBloc() : super(InviteInitialState()) {
+  InvitationsBloc() : super(InviteInitialState()) {
     on<FetchInvitedListsEvent>(_onFetchInvitations);
     on<AcceptInviteEvent>(_onAcceptInvitation);
     on<RejectInviteEvent>(_onRejectInvitation);
@@ -23,7 +23,7 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
 
   FutureOr<void> _onAcceptInvitation(
     AcceptInviteEvent event,
-    Emitter<InviteState> emit,
+    Emitter<InvitationsState> emit,
   ) async {
     try {
       final updatedInvite = await _supabaseClient
@@ -51,7 +51,7 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
 
   FutureOr<void> _onRejectInvitation(
     RejectInviteEvent event,
-    Emitter<InviteState> emit,
+    Emitter<InvitationsState> emit,
   ) async {
     try {
       await _supabaseClient
@@ -68,7 +68,7 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
 
   FutureOr<void> _onFetchInvitations(
     FetchInvitedListsEvent event,
-    Emitter<InviteState> emit,
+    Emitter<InvitationsState> emit,
   ) async {
     emit(InviteLoadingState());
     try {
@@ -92,12 +92,7 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
         return invite;
       }).toList();
 
-      emit(
-        InviteLoadedState(
-          invitedLists: updatedInvites,
-          notifications: [], // تقدر تحط إشعارات إذا تحتاجها لاحقًا
-        ),
-      );
+      emit(InviteLoadedState(invitedLists: updatedInvites, notifications: []));
     } catch (e) {
       log('Error fetching invited lists: $e');
       emit(InviteErrorState('Failed to load invitations'));

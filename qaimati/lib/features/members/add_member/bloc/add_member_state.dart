@@ -14,3 +14,14 @@ final class AddMemberFailure extends AddMemberState {
 
   AddMemberFailure(this.error);
 }
+
+class AddMemberLoadedState extends AddMemberState {
+  final List<String> members;
+
+  AddMemberLoadedState({required this.members});
+}
+
+class AddMemberErrorState extends AddMemberState {
+  final String message;
+  AddMemberErrorState(this.message);
+}

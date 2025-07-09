@@ -3,16 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
-import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
-import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
-import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
 import 'package:qaimati/utilities/extensions/screens/get_size_screen.dart';
 import 'package:qaimati/widgets/buttom_widget.dart';
-
 
 /// Displays a modal bottom sheet to show and process checked items for completion.
 ///
@@ -31,10 +27,9 @@ import 'package:qaimati/widgets/buttom_widget.dart';
 ///
 /// [context] The BuildContext from which the bottom sheet is launched.
 
-
 void completeItemBottomsheet({required BuildContext context}) {
   final bloc = context.read<SubListBloc>();
-   showModalBottomSheet(
+  showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: StyleColor.white,
     showDragHandle: true,
@@ -53,8 +48,7 @@ void completeItemBottomsheet({required BuildContext context}) {
               height: context.getHeight() * 0.7,
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, 
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
                     child: Text(
@@ -109,9 +103,7 @@ void completeItemBottomsheet({required BuildContext context}) {
                       bloc.add(MarkCheckedItemsAsCompletedEvent());
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => ListsScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => ListsScreen()),
                       );
                     },
                     textElevatedButton: "movecompleted".tr(),
