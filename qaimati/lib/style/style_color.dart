@@ -13,5 +13,7 @@ class StyleColor {
   static const graylight = Color(0xFFEFEFF0);
   static const error = Color(0xFFEB5757); //Error
   static const success = Color(0xFF7FD996); //Success
-  static const warning = Color(0xFFE4C25D); //Warning
+  static const warning = Color(0xFFE4C25D);
+
+  static var primary; //Warning
 }

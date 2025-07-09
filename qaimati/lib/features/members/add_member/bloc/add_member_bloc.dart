@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -21,7 +22,6 @@ class AddMemberBloc extends Bloc<AddMemberEvent, AddMemberState> {
 
     on<SendInviteEvent>(_onSendInvite);
     on<FetchMembersEvent>(_onFetchMembers);
-    on<DeleteMemberEvent>(_onDeleteMember);
   }
 
   FutureOr<void> _onAddEmail(
@@ -72,87 +72,4 @@ class AddMemberBloc extends Bloc<AddMemberEvent, AddMemberState> {
       emit(AddMemberErrorState('Failed to load members'));
     }
   }
-
-  Future<void> _onDeleteMember(
-    DeleteMemberEvent event,
-    Emitter<AddMemberState> emit,
-  ) async {
-    emit(AddMemberLoading());
-
-    final currentUserId = await GetIt.I.get<AuthLayer>().getCurrentSessionId();
-
-    if (currentUserId == null) {
-      emit(AddMemberErrorState("User not logged in"));
-      return;
-    }
-
-    final isAdmin = await _checkIfAdmin(event.listId, currentUserId);
-
-    if (!isAdmin) {
-      emit(AddMemberErrorState("Only admin can delete members"));
-      return;
-    }
-
-    try {
-      final response = await _supabaseClient
-          .from('list_user_role')
-          .delete()
-          .eq('app_user_id', event.userId)
-          .eq('list_id', event.listId);
-      if (response.error != null) {
-        emit(
-          AddMemberFailure(
-            "Error while deleting member: ${response.error!.message}",
-          ),
-        );
-        return;
-      }
-
-      // Emit success state after deletion
-      emit(AddMemberSuccess());
-
-      // Trigger a fetch of updated member list
-      add(FetchMembersEvent(listId: event.listId));
-    } catch (e) {
-      emit(AddMemberFailure('Failed to delete member: $e'));
-    }
-  }
-
-  // Updated checkIfAdmin with null checks
-  Future<bool> _checkIfAdmin(String listId, String userId) async {
-    try {
-      final response = await _supabaseClient
-          .from('list_user_role')
-          .select('role_id')
-          .eq('list_id', listId)
-          .eq('app_user_id', userId)
-          .single();
-
-      if (response == null) {
-        return false;
-      }
-
-      return response['role_id'] ==
-          'admin'; // Ensure 'admin' is the correct value
-    } catch (e) {
-      return false; // Return false in case of any error
-    }
-  }
-
-  //method to check if the user is the admin
-  //to use it in delete members
-  //only admin can delete a member
-  // Future<bool> _checkIfAdmin(String listId, String userId) async {
-  //   final response = await _supabaseClient
-  //       .from('list_user_role')
-  //       .select('role_id')
-  //       .eq('list_id', listId)
-  //       .eq('app_user_id', userId)
-  //       .single();
-
-  //   if (response != null && response['role_id'] == 'admin') {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 }
