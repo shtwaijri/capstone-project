@@ -58,6 +58,24 @@ Whether it's grocery shopping with family, managing shared household purchases, 
 ---
 
 ## 🖼️ Pictures to Apply
+<img width="365" height="726" alt="image" src="https://github.com/user-attachments/assets/b292c45a-39c6-49e0-8ab3-c48587553ecb" />
+<img width="308" height="653" alt="image" src="https://github.com/user-attachments/assets/693b87d4-dfd0-462f-b61d-7de2e758028d" />
+<img width="321" height="680" alt="image" src="https://github.com/user-attachments/assets/8c43a637-1c65-4f44-992d-d8d51cdedf9d" />
+<img width="326" height="716" alt="image" src="https://github.com/user-attachments/assets/3f349f77-87be-4559-93cc-0340b28b1c4e" />
+<img width="317" height="707" alt="image" src="https://github.com/user-attachments/assets/d9562635-690c-4520-9c56-e0b3f0216adc" />
+<img width="322" height="702" alt="image" src="https://github.com/user-attachments/assets/02a63223-c35f-46e1-a4a6-20edb27c8f24" />
+<img width="323" height="701" alt="image" src="https://github.com/user-attachments/assets/2ccf3876-6915-4ada-a265-2e5f2415e9f9" />
+<img width="315" height="707" alt="image" src="https://github.com/user-attachments/assets/dd6d7ff5-47c4-4986-ae60-664039a23deb" />
+<img width="320" height="715" alt="image" src="https://github.com/user-attachments/assets/2e1f493d-b92e-4445-ac69-4976e0e87e4e" />
+<img width="323" height="700" alt="image" src="https://github.com/user-attachments/assets/78102e84-2504-4038-add8-4183a3090706" />
+<img width="326" height="721" alt="image" src="https://github.com/user-attachments/assets/92e0310f-3d9e-473f-9e04-cf91ab48f09d" />
+<img width="335" height="750" alt="image" src="https://github.com/user-attachments/assets/37e99c48-09ef-4d5d-89d0-c2c9e75ec947" />
+<img width="338" height="691" alt="image" src="https://github.com/user-attachments/assets/d0087b05-39f4-4b95-9f25-0749d2d7c8e0" />
+<img width="332" height="710" alt="image" src="https://github.com/user-attachments/assets/08b9e621-83a6-446d-a70a-24ad0364fd31" />
+<img width="315" height="707" alt="image" src="https://github.com/user-attachments/assets/303959e0-dc77-4bad-8c7b-9321fa3877b8" />
+
+<img width="315" height="692" alt="image" src="https://github.com/user-attachments/assets/90ce08a0-906e-409c-96fc-f08ceb6df62d" />
+
 
  
 ---
