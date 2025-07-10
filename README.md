@@ -73,6 +73,10 @@ Whether it's grocery shopping with family, managing shared household purchases, 
 <img width="338" height="691" alt="image" src="https://github.com/user-attachments/assets/d0087b05-39f4-4b95-9f25-0749d2d7c8e0" />
 <img width="332" height="710" alt="image" src="https://github.com/user-attachments/assets/08b9e621-83a6-446d-a70a-24ad0364fd31" />
 <img width="315" height="707" alt="image" src="https://github.com/user-attachments/assets/303959e0-dc77-4bad-8c7b-9321fa3877b8" />
+<img width="416" height="927" alt="image" src="https://github.com/user-attachments/assets/b5a6a7f0-fcac-4495-92e7-d271595934d8" />
+<img width="425" height="913" alt="image" src="https://github.com/user-attachments/assets/5b06a5d1-925e-4561-811d-38ac4dc50a86" />
+<img width="453" height="921" alt="image" src="https://github.com/user-attachments/assets/ef96fb18-6303-4b8a-9b53-562123e10418" />
+<img width="437" height="531" alt="image" src="https://github.com/user-attachments/assets/287d91d9-d0fb-405d-a2ad-0d89c96fc871" />
 
 <img width="315" height="692" alt="image" src="https://github.com/user-attachments/assets/90ce08a0-906e-409c-96fc-f08ceb6df62d" />
 
