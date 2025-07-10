@@ -5,7 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qaimati/features/Lists/lists_screen/lists_screen.dart';
+import 'package:qaimati/features/expenses/screens/expenses_screen.dart';
+import 'package:qaimati/features/expenses/screens/receipt_screen.dart';
 import 'package:qaimati/features/sub_list/bloc/sub_list_bloc.dart';
+import 'package:qaimati/features/sub_list/completed_screen/completed_screen.dart';
 import 'package:qaimati/style/style_color.dart';
 import 'package:qaimati/style/style_size.dart';
 import 'package:qaimati/style/style_text.dart';
@@ -95,7 +98,13 @@ void completeItemBottomsheet({required BuildContext context}) {
                   ButtomWidget(
                     onTab: () {
                       bloc.add(MarkCheckedItemsAsCompletedEvent());
-                      Navigator.canPop(context);
+                      // Navigator.canPop(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReceiptScreen(),
+                        ),
+                      );
                     },
                     textElevatedButton: "receiptAdd".tr(),
                   ),
@@ -103,9 +112,18 @@ void completeItemBottomsheet({required BuildContext context}) {
                   ButtomWidget(
                     onTab: () {
                       bloc.add(MarkCheckedItemsAsCompletedEvent());
+                      // Navigator.pop(context);
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ExpensesScreen(),
+                      //   ),
+                      // );
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => ListsScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => CompletedScreen(),
+                        ),
                       );
                     },
                     textElevatedButton: "movecompleted".tr(),
