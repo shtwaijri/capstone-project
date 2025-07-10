@@ -225,9 +225,8 @@ The following are the minimum requirements that the project must fulfill to ensu
 
 - **Bushra Aljuwair** - *devloper*
 - **Shatha Altwaijri** - *leader,devloper*
-- **Amr Noorwali** - *[Role/Responsibility]*
+- **Amr Noorwali** - *devloper*
 - **Lamya Alsuhaibani** - *UI,devloper*
-- **[Member 5 Name]** - *devloper*
 
 ---
 
@@ -235,7 +234,7 @@ The following are the minimum requirements that the project must fulfill to ensu
 
 - **shtwaijri**: [[GitHub Profile URL] ](https://github.com/shtwaijri) 
 - **BushraAljuwair**: [[GitHub Profile URL]](https://github.com/BushraAljuwair)  
-- **lamyaalsuhaibani**: https://github.com/lamyaalsuhaibani
+- **lamyaalsuhaibani**:[ [GitHub Profile URL]  ](https://github.com/lamyaalsuhaibani)
 - **amr-noorwali**:[ [GitHub Profile URL]  ](https://github.com/amr-noorwali)
 
 ---
