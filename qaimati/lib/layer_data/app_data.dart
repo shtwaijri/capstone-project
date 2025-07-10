@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:qaimati/models/item/item_model.dart';
 import 'package:qaimati/models/list/list_model.dart';
 import 'package:qaimati/repository/supabase.dart';
@@ -32,8 +31,6 @@ class AppDatatLayer {
   /// Initializes the real-time streams for items and lists for the given user.
   /// This method sets up listeners to Supabase data changes.
   void initStreamsf(String userId) {
-    log("AppDatatLayer: Initializing streams for userId: $userId");
-
     // Cancel any existing subscriptions to prevent memory leaks and duplicate listeners
     allItemsSubscription?.cancel();
     allListsSubscription?.cancel();
@@ -43,16 +40,12 @@ class AppDatatLayer {
     allItemsSubscription = SupabaseConnect.listenToAllUserItemsDirectly(userId)
         .listen(
           (updatedItems) {
-            log(
-              "AppDatatLayer: Received ${updatedItems.length} items from stream.",
-            );
             items = updatedItems; // Update the local 'items' list
             itemsStreamController.add(
               items,
             ); // Broadcast the updated items to listeners
           },
           onError: (e) {
-            log("AppDatatLayer: Error in all items stream: $e");
             itemsStreamController.addError(
               e,
             ); // Propagate the error to listeners
@@ -64,16 +57,12 @@ class AppDatatLayer {
     allListsSubscription = SupabaseConnect.listenToAllUserListsDirectly(userId)
         .listen(
           (updatedLists) {
-            log(
-              "AppDatatLayer: Received ${updatedLists.length} lists from stream.",
-            );
             lists = updatedLists; // Update the local 'lists' list
             listsStreamController.add(
               lists,
             ); // Broadcast the updated lists to listeners
           },
           onError: (e) {
-            log("AppDatatLayer: Error in all lists stream: $e");
             listsStreamController.addError(
               e,
             ); // Propagate the error to listeners
@@ -91,13 +80,11 @@ class AppDatatLayer {
   /// Returns a list of items that are NOT completed and belong to the currently selected `listId`.
   List<ItemModel> get uncompletedItemsForCurrentList {
     if (listId == null) {
-      log("AppDatatLayer: No currentSelectedListId set for uncompleted items.");
       return []; // Return empty if no list is selected
     }
 
     /// Returns a list of items that ARE completed and have a `status` of true,
     /// belonging to the currently selected `listId`.
-    log("list id $listId");
     return items
         .where((item) => item.listId == listId && item.isCompleted == false)
         .toList();
@@ -105,7 +92,6 @@ class AppDatatLayer {
 
   List<ItemModel> get completedAndTrueStatusItemsForCurrentList {
     if (listId == null) {
-      log("AppDatatLayer: No currentSelectedListId set for completed items.");
       return [];
     }
     // Filters for completed items with true status
@@ -126,9 +112,6 @@ class AppDatatLayer {
     final Map<String, List<ItemModel>> allListsAndCompletedItems = {};
 
     if (lists.isEmpty) {
-      log(
-        "AppDatatLayer: No user lists available to categorize completed items.",
-      );
       return {}; // Return empty if no lists are loaded
     }
 
@@ -145,9 +128,7 @@ class AppDatatLayer {
           .toList();
       allListsAndCompletedItems[list.name] = completedItemsForThisList;
     }
-    log(
-      "AppDatatLayer: Generated allCompletedItemsByListName Map. Lists: ${allListsAndCompletedItems.length}",
-    );
+
     return allListsAndCompletedItems;
   }
 
@@ -155,7 +136,6 @@ class AppDatatLayer {
   void dispose() {
     allItemsSubscription?.cancel();
     allListsSubscription?.cancel();
-    log("AppDatatLayer: Subscriptions cancelled.");
   }
 
   // --- Passthrough Methods (Proxying calls to SupabaseConnect) ---
@@ -175,17 +155,13 @@ class AppDatatLayer {
     String? excludeUserId,
   ) async {
     try {
-      log("notifyUsersInList app layer start");
       await SupabaseConnect.notifyUsersInList(
         listId,
         notificationTitle,
         notificationMessage,
         excludeUserId,
       );
-      log("notifyUsersInList app layer sent");
-    } catch (e) {
-      log("notifyUsersInList app layer error $e");
-    }
+    } catch (_) {}
   }
 
   /// Updates the `status` (checked/unchecked) of a specific item in Supabase.
@@ -198,13 +174,7 @@ class AppDatatLayer {
   }) async {
     try {
       await SupabaseConnect.updateItemStatus(itemId: itemId, status: status);
-      log(
-        "updateItemStatusAppDataLayer✅ Updated item $itemId status to $status",
-      );
     } catch (e) {
-      log(
-        "❌updateItemStatusAppDataLayer Failed to update status for item $itemId: $e",
-      );
       rethrow;
     }
   }
@@ -223,12 +193,8 @@ class AppDatatLayer {
         userId: userId,
         listId: listId,
       ))!;
-      log("getUserRoleForCurrentList Updated userId $userId listId to $listId");
       return userRole;
     } catch (e) {
-      log(
-        "getUserRoleForCurrentList Failed to update status for item $userId: $e",
-      );
       return null;
     }
   }
@@ -238,11 +204,8 @@ class AppDatatLayer {
   /// [item]: The ItemModel object to be added.
   Future<void> addNewItem({required ItemModel item}) async {
     try {
-      log("item ${item.toString()} start inserting");
       await SupabaseConnect.addNewItem(item: item);
-      log("item ${item.toString()} end inserting");
     } catch (e) {
-      log("addNewItem Failed $e");
       rethrow;
     }
   }
@@ -256,11 +219,8 @@ class AppDatatLayer {
     required String listName,
   }) async {
     try {
-      log("updateItem SupabaseConnect: Item ${item.itemId}start.");
       await SupabaseConnect.updateItem(item: item, listName: listName);
-      log("updateItem SupabaseConnect: Item ${item.itemId} end successfully ");
     } catch (_) {
-      log("updateItem rethrow: ");
       rethrow;
     }
   }
@@ -270,11 +230,8 @@ class AppDatatLayer {
   /// [item]: The ItemModel object to be deleted.
   Future<void> deleteItem({required ItemModel item}) async {
     try {
-      log("deleteItem AppDatatLayer ${item.itemId}start.");
       await SupabaseConnect.deleteItem(item: item);
-      log("deleteItem AppDatatLayer: Item ${item.itemId} end successfully ");
     } catch (_) {
-      log("AppDatatLayer rethrow: deleteItem");
       rethrow;
     }
   }
@@ -288,13 +245,7 @@ class AppDatatLayer {
   }) async {
     try {
       await SupabaseConnect.updateItemsIsCompletedToTurue(itemIds: itemIds);
-      log(
-        "✅ updateItemsIsCompletedToTurue: Successfully updated isCompleted/closed_at for ${itemIds.length} items. in app layer",
-      );
-    } catch (e, stack) {
-      log(
-        "❌ updateItemsIsCompletedToTurue: Failed to update isCompleted/closed_at for items: $e\n$stack . in app layer",
-      );
+    } catch (e) {
       rethrow;
     }
   }
@@ -302,8 +253,6 @@ class AppDatatLayer {
   // =================================================== Start Admin Lists =====================================================
   Future<void> loadAdminLists() async {
     try {
-      log("🔄 loadAdminLists: start");
-
       final adminLists = await SupabaseConnect.getAdminLists();
 
       // update vriabe
@@ -311,16 +260,7 @@ class AppDatatLayer {
 
       // share data to stream
       listsStreamController.add(adminLists);
-
-      log("✅ loadAdminLists: success — loaded ${adminLists.length} lists");
-
-      for (final list in adminLists) {
-        log(
-          "📋 List: id=${list.listId}, name=${list.name}, color=${list.color}",
-        );
-      }
-    } catch (e, stack) {
-      log("❌ loadAdminLists: failed\n$e\n$stack");
+    } catch (e) {
       rethrow;
     }
   }
@@ -329,8 +269,6 @@ class AppDatatLayer {
   // ================================================== Start member Items ==================================================
   Future<void> loadMemberLists() async {
     try {
-      log("🔄 loadMemberLists: start");
-
       final memberLists = await SupabaseConnect.getMemberLists();
 
       // update vriabe
@@ -338,16 +276,7 @@ class AppDatatLayer {
 
       // share data to stream
       listsStreamController.add(lists);
-
-      log("✅ loadMemberLists: success — loaded ${lists.length} lists");
-
-      for (final list in lists) {
-        log(
-          "📋 List: id=${list.listId}, name=${list.name}, color=${list.color}",
-        );
-      }
-    } catch (e, stack) {
-      log("❌ loadMemberLists: failed\n$e\n$stack");
+    } catch (e) {
       rethrow;
     }
   }
@@ -356,23 +285,14 @@ class AppDatatLayer {
   // ================================================== Start add New Lists ==================================================
   Future<void> createNewList(ListModel list) async {
     try {
-      log("🟢 createNewList: started");
-
       final newList = await SupabaseConnect.addNewList(list: list);
 
       if (newList != null) {
         lists.add(newList);
 
         listsStreamController.add(List.from(lists));
-
-        log(
-          "✅ createNewList: success — listId=${newList.listId}, name=${newList.name}, color=${newList.color}",
-        );
-      } else {
-        log("⚠ createNewList: no list returned");
       }
-    } catch (e, stack) {
-      log("❌ createNewList: failed\n$e\n$stack");
+    } catch (e) {
       rethrow;
     }
   }
@@ -381,8 +301,6 @@ class AppDatatLayer {
   // ================================================== Start Update Lists =====================================================
   Future<void> submitListUpdate(ListModel updatedList) async {
     try {
-      log("🔄 submitListUpdate: started for listId=${updatedList.listId}");
-
       await SupabaseConnect.updateList(list: updatedList);
 
       // update data
@@ -391,14 +309,7 @@ class AppDatatLayer {
         lists[index] = updatedList;
         listsStreamController.add(List.from(lists));
       }
-
-      log(
-        "✅ submitListUpdate: updated list ${updatedList.listId} (name=${updatedList.name}, color=${updatedList.color})",
-      );
-    } catch (e, stack) {
-      log(
-        "❌ submitListUpdate: failed to update list ${updatedList.listId}\n$e\n$stack",
-      );
+    } catch (e) {
       rethrow;
     }
   }
@@ -407,8 +318,6 @@ class AppDatatLayer {
   // ================================================== Start Delete Lists =====================================================
   Future<void> confirmDeleteList(String listId) async {
     try {
-      log("🧨 confirmDeleteList: attempting to delete list $listId");
-
       await SupabaseConnect.deleteList(listId: listId);
 
       // delete list
@@ -416,10 +325,7 @@ class AppDatatLayer {
         (l) => l.listId == listId,
       ); // 1.listid search about list and delete it
       listsStreamController.add(List.from(lists));
-
-      log("✅ confirmDeleteList: list $listId deleted successfully");
-    } catch (e, stack) {
-      log("❌ confirmDeleteList: failed to delete list $listId\n$e\n$stack");
+    } catch (e) {
       rethrow;
     }
   }

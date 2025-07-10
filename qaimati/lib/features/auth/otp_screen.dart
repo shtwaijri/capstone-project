@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,53 +75,21 @@ class OtpScreen extends StatelessWidget {
                   );
                 },
               ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  final isCounting = state is ResendOtpCountState;
-                  final secondsRemaining = isCounting
-                      ? state.secondsRemaining
-                      : 0;
 
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton(
-                        onPressed: (isCounting || secondsRemaining > 0)
-                            ? null
-                            : () {
-                                context.read<AuthBloc>().add(ResendOtpEvent());
-                              },
-                        child: Text(
-                          tr('resendCode'),
-                          style: TextStyle(
-                            color: (isCounting || secondsRemaining > 0)
-                                ? Colors.grey
-                                : Colors.blue,
-                          ),
-                        ),
-                      ),
-                      if (isCounting)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            padding: EdgeInsets.all(4),
-                            color: Colors.yellow,
-                            child: Text(
-                              tr(
-                                'resendAvailableIn',
-                                args: ['$secondsRemaining'],
-                              ),
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  );
-                },
+              Align(
+                alignment: context.locale.languageCode == 'ar'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+
+                child: TextButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(ResendOtpEvent());
+                  },
+                  child: Text(
+                    tr('resendCode'),
+                    style: const TextStyle(color: Colors.blue),
+                  ),
+                ),
               ),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
@@ -133,20 +99,19 @@ class OtpScreen extends StatelessWidget {
                 listener: (context, state) async {
                   GetIt.I.get<AuthLayer>().getCurrentSessionId();
 
-                  if (state is NewUserState || state is ExistingUserState) {
-                    if (context.mounted) {
-                      // await authLayer.loadUserSettings(context);
-                    }
+                  if (state is ErrorState) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.msg)));
+                  }
 
+                  if (state is NewUserState || state is ExistingUserState) {
                     //if the user is new, we navigate him to complete profile
                     if (state is NewUserState) {
                       try {
                         final user = await fetchUserById();
                         OneSignal.login(user!.userId);
-                        log("OneSignal log in in otp corect ");
-                      } catch (e) {
-                        log("OneSignal log in in otp $e");
-                      }
+                      } catch (_) {}
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

@@ -33,7 +33,6 @@ Future<void> setUp() async {
 
   //to ensure that the current user is saved
   await SupabaseConnect.init();
-  log("session: ${Supabase.instance.client.auth.currentSession}");
 
   await EasyLocalization.ensureInitialized();
   GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
@@ -59,15 +58,10 @@ Future<void> setUp() async {
     );
   }
 
+
   await GetIt.I.allReady();
 
   await PrimeService.checkAndExpirePrimeStatus();
 
-  //  final User? currentUser = Supabase.instance.client.auth.currentUser;
-  //   if (currentUser != null && currentUser.id != null) {
-  //     OneSignal.login(currentUser.id);
-  //     print("🎉 OneSignal: Logged in user ${currentUser.id!} on app start (already authenticated).");
-  //   } else {
-  //     print("⚠️ OneSignal: No active Supabase user session found at startup. Login to OneSignal will happen after user authenticates.");
-  //   }
+
 }

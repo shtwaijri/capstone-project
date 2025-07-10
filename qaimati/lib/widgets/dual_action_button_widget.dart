@@ -45,7 +45,10 @@ class DualActionButtonWidget extends StatelessWidget {
             ),
           ),
           onPressed: onPrimaryTap,
-          child: Text(primaryLabel, style: StyleText.buttonText12(context)),
+          child: Text(
+            primaryLabel,
+            style: StyleText.greenButtonText12(context),
+          ),
         ),
 
         // Space between buttons

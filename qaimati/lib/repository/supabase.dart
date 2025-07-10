@@ -1,5 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_collection_literals, unused_local_variable
+
 import 'dart:convert';
-import 'dart:developer';
 import 'package:async/async.dart'; // For StreamZip
 
 import 'package:easy_localization/easy_localization.dart';
@@ -14,7 +15,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabaseConnect {
   static SupabaseClient? supabase;
   static Future<void> init() async {
-    log('start Supabase init');
     try {
       await Supabase.initialize(
         anonKey: dotenv.env['anonKey'].toString(),
@@ -23,130 +23,15 @@ class SupabaseConnect {
       );
 
       supabase = Supabase.instance.client;
-
-      log('end Supabase init');
-      log('supabase client: $supabase');
     } catch (e) {
-      log('Error in Supabase init: $e');
       throw FormatException('error in db initialization: $e');
     }
   }
 
-  // // Function to listen to all items directly linked to a user in real time
-  // static Stream<List<ItemModel>> listenToAllUserItemsDirectly(String userId) {
-  //   // Check if Supabase client is initialized. If not, return an error stream.
-
-  //   if (supabase == null) {
-  //     log("Supabase is not initialized when trying to listen to user items.");
-  //     return Stream.error("Supabase is not initialized.");
-  //   }
-  //   log(
-  //     "SupabaseConnect: Setting up realtime listener for all items directly linked to user: $userId",
-  //   );
-
-  //   // Set up a realtime stream on the 'item' table using 'item_id' as the primary key.
-  //   return supabase!
-  //       .from('item')
-  //       .stream(primaryKey: ['item_id'])
-  //       .map((data) {
-  //         return data
-  //             // Map each received record (as Map) to an ItemModel object.
-  //             .map((itemMap) => ItemModelMapper.fromMap(itemMap))
-  //             .toList();
-  //       })
-  //       .handleError((error) {
-  //         // Handle any errors in the stream by  returning an empty list.
-  //         log("SupabaseConnect: Error in all user items stream: $error");
-  //         return <ItemModel>[];
-  //       });
-  // }
-
-  // static Stream<List<ItemModel>> listenToAllUserItemsDirectly(String userId) {
-  // if (supabase == null) {
-  //   print("Supabase is not initialized when trying to listen to user items.");
-  //   return Stream.error("Supabase is not initialized.");
-  // }
-  // print("SupabaseConnect: Setting up realtime listener for all items linked to user: $userId");
-
-  //   // Stream for items directly linked to the user
-  //   final userItemsStream = supabase!
-  //       .from('item')
-  //       .stream(primaryKey: ['item_id'])
-  //       .eq('app_user_id', userId)
-  //       .map((data) {
-  //         print("SupabaseConnect: Fetched user items: ${data.length} items for userId: $userId");
-  //         return data.map((itemMap) => ItemModelMapper.fromMap(itemMap)).toList();
-  //       })
-  //       .handleError((error) {
-  //         print("SupabaseConnect: Error in user items stream: $error");
-  //         return <ItemModel>[];
-  //       });
-
-  //   // Future to fetch shared list IDs
-  //   final sharedListIdsFuture = supabase!
-  //       .from('list_user_role')
-  //       .select('list_id')
-  //       .eq('app_user_id', userId)
-  //       .then((response) {
-  //         final listIds = response.map<String>((row) => row['list_id'] as String).toList();
-  //         print("SupabaseConnect: Fetched shared list IDs: $listIds for userId: $userId");
-  //         return listIds;
-  //       }).catchError((error) {
-  //         print("SupabaseConnect: Error fetching shared list IDs: $error");
-  //         return <String>[]; // Return empty list on error
-  //       });
-
-  //   // Stream for shared list items
-  //   final sharedListItemsStream = Stream.fromFuture(sharedListIdsFuture).asyncExpand((listIds) {
-  //     if (listIds.isEmpty) {
-  //       print("SupabaseConnect: No shared list IDs found for userId: $userId");
-  //       return Stream.value(<ItemModel>[]); // Return empty stream if no shared lists
-  //     }
-
-  //     // Fetch all items and filter manually
-  //     return supabase!
-  //         .from('item')
-  //         .stream(primaryKey: ['item_id'])
-  //         .map((data) {
-  //           final filteredItems = data
-  //               .where((itemMap) => listIds.contains(itemMap['list']))
-  //               .toList();
-  //           print("SupabaseConnect: Fetched shared list items: ${filteredItems.length} items for shared lists: $listIds");
-  //           return filteredItems.map((itemMap) => ItemModelMapper.fromMap(itemMap)).toList();
-  //         })
-  //         .handleError((error) {
-  //           print("SupabaseConnect: Error in shared list items stream: $error");
-  //           return <ItemModel>[];
-  //         });
-  //   });
-
-  //   // Combine the two streams and remove duplicates
-  //   return StreamZip([userItemsStream, sharedListItemsStream]).map((streams) {
-  //     final List<ItemModel> userItems = streams[0];
-  //     final List<ItemModel> sharedListItems = streams[1];
-
-  //     print("SupabaseConnect: Combined user items (${userItems.length}) and shared list items (${sharedListItems.length})");
-
-  //     // Combine and remove duplicates based on item_id
-  //     final combinedItems = [
-  //       ...userItems,
-  //       ...sharedListItems,
-  //     ].toSet().toList(); // Use Set to remove duplicates
-
-  //     print("SupabaseConnect: Total combined items after removing duplicates: ${combinedItems.length}");
-  //     combinedItems.forEach((item) => print("Combined Item: $item")); // Print each combined item
-  //     return combinedItems;
-  //   });
-  // }
-
   static Stream<List<ItemModel>> listenToAllUserItemsDirectly(String userId) {
     if (supabase == null) {
-      print("Supabase is not initialized when trying to listen to user items.");
       return Stream.error("Supabase is not initialized.");
     }
-    print(
-      "SupabaseConnect: Setting up realtime listener for all items linked to user: $userId",
-    );
 
     // Stream for items directly linked to the user
     final userItemsStream = supabase!
@@ -154,15 +39,11 @@ class SupabaseConnect {
         .stream(primaryKey: ['item_id'])
         .eq('app_user_id', userId)
         .map((data) {
-          print(
-            "SupabaseConnect: Fetched user items: ${data.length} items for userId: $userId",
-          );
           return data
               .map((itemMap) => ItemModelMapper.fromMap(itemMap))
               .toList();
         })
         .handleError((error) {
-          print("SupabaseConnect: Error in user items stream: $error");
           return <ItemModel>[];
         });
 
@@ -175,13 +56,10 @@ class SupabaseConnect {
           final listIds = response
               .map<String>((row) => row['list_id'] as String)
               .toList();
-          print(
-            "SupabaseConnect: Fetched shared list IDs: $listIds for userId: $userId",
-          );
+
           return listIds;
         })
         .catchError((error) {
-          print("SupabaseConnect: Error fetching shared list IDs: $error");
           return <String>[]; // Return empty list on error
         });
 
@@ -189,9 +67,6 @@ class SupabaseConnect {
     final sharedListItemsStream = Stream.fromFuture(sharedListIdsFuture)
         .asyncExpand((listIds) {
           if (listIds.isEmpty) {
-            print(
-              "SupabaseConnect: No shared list IDs found for userId: $userId",
-            );
             return Stream.value(
               <ItemModel>[],
             ); // Return empty stream if no shared lists
@@ -205,17 +80,12 @@ class SupabaseConnect {
                 final filteredItems = data
                     .where((itemMap) => listIds.contains(itemMap['list']))
                     .toList();
-                print(
-                  "SupabaseConnect: Fetched shared list items: ${filteredItems.length} items for shared lists: $listIds",
-                );
+
                 return filteredItems
                     .map((itemMap) => ItemModelMapper.fromMap(itemMap))
                     .toList();
               })
               .handleError((error) {
-                print(
-                  "SupabaseConnect: Error in shared list items stream: $error",
-                );
                 return <ItemModel>[];
               });
         });
@@ -225,22 +95,12 @@ class SupabaseConnect {
       final List<ItemModel> userItems = streams[0];
       final List<ItemModel> sharedListItems = streams[1];
 
-      print(
-        "SupabaseConnect: Combined user items (${userItems.length}) and shared list items (${sharedListItems.length})",
-      );
-
       // Combine and remove duplicates based on item_id
       final combinedItems = [
         ...userItems,
         ...sharedListItems,
       ].toSet().toList(); // Use Set to remove duplicates
 
-      print(
-        "SupabaseConnect: Total combined items after removing duplicates: ${combinedItems.length}",
-      );
-      combinedItems.forEach(
-        (item) => print("Combined Item: $item"),
-      ); // Print each combined item
       return combinedItems;
     });
   }
@@ -250,12 +110,8 @@ class SupabaseConnect {
     // Check if the Supabase client is initialized.  If not, return an error stream.
 
     if (supabase == null) {
-      log("Supabase is not initialized when trying to listen to user lists.");
       return Stream.error("Supabase is not initialized.");
     }
-    log(
-      "SupabaseConnect: Setting up realtime listener for all lists directly linked to user: $userId",
-    );
 
     return supabase! // Listen to changes in the 'list_user_role' table (user-list relationships).
         .from('list_user_role')
@@ -288,7 +144,6 @@ class SupabaseConnect {
               .toList();
         }) // Handle any errors by  returning an empty list.
         .handleError((error) {
-          log("SupabaseConnect: Error in all user lists stream: $error");
           return <ListModel>[];
         });
   }
@@ -333,26 +188,19 @@ class SupabaseConnect {
       await supabase!.auth.signOut();
       // Optional: You can add any additional logic here after successful sign out,
       // such as navigating the user to the login screen or clearing local data.
-      log('User signed out successfully.');
     } on AuthException catch (e) {
       // Handle specific authentication errors during sign out (e.g., network issues).
-      log('Error during sign out: ${e.message}');
       throw AuthException('Failed to sign out: ${e.message}');
     } catch (e) {
       // Handle any other unexpected errors during sign out.
-      log('An unexpected error occurred during sign out: $e');
       throw AuthException('An unexpected error occurred during sign out.');
     }
   }
 
   static Future<void> updateEmail(String newEmail) async {
     try {
-      log("updateEmail subabase start ");
       await supabase!.auth.updateUser(UserAttributes(email: newEmail));
-      log("updateEmail subabase end  ");
     } catch (e) {
-      log("updateEmail  error $e");
-
       throw Exception("Failed to update password: $e");
     }
   }
@@ -389,10 +237,8 @@ class SupabaseConnect {
           .from('item')
           .update({'status': status})
           .eq('item_id', itemId);
-      log("✅ Updated item $itemId status to $status");
     } catch (e) {
       // throw an exception if the update fails
-      log("❌ Failed to update status for item $itemId: $e");
       throw Exception("Failed to update status for item $itemId: $e");
     }
   }
@@ -419,24 +265,19 @@ class SupabaseConnect {
           response['roles'] != null &&
           response.isNotEmpty) {
         final roleName = response['roles']['name'];
-        log("🎯 Role for user in list: $roleName");
         return roleName;
       } else {
         // No role found for this user in the specified list
-        log("❌ No role found for this user in the list");
         return null;
       }
     } catch (e) {
       // rethrow any errors that occurred during the query
-      log("🚨 Error getting role for user: $e");
       throw Exception("Error getting role for user:$e");
     }
   }
 
   static Future<AppUserModel?> getUser(String userId) async {
     try {
-      log("📥 Fetching user from Supabase: $userId");
-
       final response = await supabase!
           .from('app_user')
           .select()
@@ -444,15 +285,12 @@ class SupabaseConnect {
           .single();
 
       if (response.isEmpty) {
-        log("🚫 No user found with ID: $userId");
         return null;
       }
 
       final user = AppUserModelMapper.fromMap(response);
-      log("✅ User fetched: ${user.name}");
       return user;
-    } catch (e, stack) {
-      log("❌ Error fetching user: $e\n$stack");
+    } catch (e) {
       throw Exception(" Error fetching user:$e");
     }
   }
@@ -460,7 +298,6 @@ class SupabaseConnect {
   // Function to fetch a user record from the 'app_user' table using the auth user ID
   static Future<AppUserModel?> getUserFromAuth(String userId) async {
     try {
-      log("getUserFromAuth📥 Fetching user from Supabase: $userId");
       // Query the 'app_user' table to get the user where 'auth_user_id' matches
       final response = await supabase!
           .from('app_user')
@@ -470,16 +307,13 @@ class SupabaseConnect {
 
       // If no record is found, return null
       if (response.isEmpty) {
-        log("getUserFromAuth 🚫 No user found with ID: $userId");
         return null;
       }
       // Map the result to an AppUserModel object
       final user = AppUserModelMapper.fromMap(response);
-      log("✅ User fetched: ${user.name}   ${user.userId}");
       return user;
-    } catch (e, stack) {
+    } catch (e) {
       //rethrow any errors that occurred during the query
-      log("❌ Error fetching user: $e\n$stack");
       throw Exception(" Error fetching user:$e");
     }
   }
@@ -488,7 +322,6 @@ class SupabaseConnect {
 
   static Future<void> addNewItem({required ItemModel item}) async {
     try {
-      log("start addNewItem");
       // Convert the ItemModel to a map for insertion
 
       final itemMap = item.toMap();
@@ -502,24 +335,19 @@ class SupabaseConnect {
 
       // Check if any data was returned
       if (response.isNotEmpty) {
-        log("response addNewItem isNotEmpty");
         // Convert the inserted row to an ItemModel
         final newItem = ItemModelMapper.fromMap(response.first);
-        log("newItem ${newItem.toString()}");
-        log("response addNewItem ItemModelMapper correct ");
-        
-     final listName = (await supabase!
-    .from('list_user_role')
-    .select('list(name)')
-    .eq('list_id', item.listId)
-    .single())['list']['name'];
 
-
+        final listName = (await supabase!
+            .from('list_user_role')
+            .select('list(name)')
+            .eq('list_id', item.listId)
+            .single())['list']['name'];
 
         // Build the notification content
         String notificationTitle = "newitemadded!".tr();
         String notificationMessage =
-            "${"itemaddedby".tr()}  ${newItem.title}  ${"inlist:".tr()} ${listName}.";
+            "${"itemaddedby".tr()}  ${newItem.title}  ${"inlist:".tr()} $listName.";
         String? excludeUserId = newItem.appUserId;
 
         // Send a notification to other users in the same list
@@ -530,8 +358,7 @@ class SupabaseConnect {
           excludeUserId,
         );
       }
-    } catch (e, stack) {
-      log('❌ Error inserting item: $e\n$stack');
+    } catch (e) {
       // rethrow any errors
       throw Exception('Failed to add new item & send notifcation to users');
     }
@@ -550,7 +377,6 @@ class SupabaseConnect {
           .update(item.toMap())
           .eq('item_id', item.itemId!);
 
-      log("✅ SupabaseConnect: Item ${item.itemId} updated successfully in DB.");
       final String notificationTitle = "${"itemupdated!".tr()}  ${item.title}";
       final String notificationMessage =
           "${"itemupdatedby".tr()} ${item.createdBy}${"inlist:".tr()}+ '$listName'.";
@@ -561,10 +387,7 @@ class SupabaseConnect {
         notificationMessage,
         item.appUserId,
       );
-    } catch (e, stack) {
-      log(
-        "❌ SupabaseConnect: Failed to update item ${item.itemId} in DB: $e\n$stack",
-      );
+    } catch (e) {
       // throw any errors
       throw Exception("Failed to update item in Supabase: $e");
     }
@@ -576,14 +399,7 @@ class SupabaseConnect {
     try {
       // Perform the delete operation where the item_id matches
       await supabase!.from('item').delete().eq('item_id', item.itemId!);
-
-      log(
-        "✅ SupabaseConnect: Item ${item.itemId} deleted successfully from DB.",
-      );
-    } catch (e, stack) {
-      log(
-        "❌ SupabaseConnect: Failed to update item ${item.itemId} in DB: $e\n$stack",
-      );
+    } catch (e) {
       // throw any errors
 
       throw Exception("Failed to update item in Supabase: $e");
@@ -613,14 +429,8 @@ class SupabaseConnect {
           .update(updates)
           .filter('item_id', 'in', itemIds);
 
-      log(
-        "✅ SupabaseConnect: Successfully updated isCompleted/closed_at for ${itemIds.length} items.",
-      );
       await Future.delayed(Duration(milliseconds: 400));
-    } catch (e, stack) {
-      log(
-        "❌ SupabaseConnect: Failed to update isCompleted/closed_at for items: $e\n$stack",
-      );
+    } catch (e) {
       //throw exceptions if update fails
 
       throw Exception(
@@ -658,15 +468,7 @@ class SupabaseConnect {
         body: json.encode(body),
       );
       // Handle the response
-      if (response.statusCode == 200) {
-        print('Notification sent successfully: ${response.body}');
-      } else {
-        print(
-          'Failed to send notification: ${response.statusCode} - ${response.body}',
-        );
-      }
     } catch (e) {
-      log('Error sending notification: $e');
       //throw exceptions if notification fails
       throw Exception('Error sending notification: $e');
     }
@@ -680,13 +482,10 @@ class SupabaseConnect {
     String? excludeUserId, // Optional: user ID to exclude from notification
   ) async {
     try {
-      log("🔔 Attempting to notify all users in list: $listId");
-
       // 1. Fetch all users in the list
       final List<AppUserModel> usersToNotify = await getUsersInList(listId);
       //if no user to notify return back
       if (usersToNotify.isEmpty) {
-        log("🚫 No users found to notify in list: $listId");
         return;
       }
 
@@ -714,46 +513,32 @@ class SupabaseConnect {
       }
       // if No  users found, no notifications to send or save.
       if (externalUserIds.isEmpty && notificationsToInsert.isEmpty) {
-        log("🚫 No eligible users found, no notifications to send or save.");
         return;
       }
 
       // 2. Save notification records in Supabase
       if (notificationsToInsert.isNotEmpty) {
-        log(
-          "💾 Saving ${notificationsToInsert.length} notification records to Supabase for list $listId.",
-        );
         await supabase!
             .from('notification')
             .insert(notificationsToInsert)
             .select();
-        log("✅ Notification records saved to Supabase for list $listId.");
       }
 
       if (externalUserIds.isNotEmpty) {
-        log(
-          "📧 Sending push notification to ${externalUserIds.length} users in list $listId.",
-        );
         // 3. Send push notification via OneSignal
         await sendNotificationByExternalId(
           externalUserIds: externalUserIds,
           title: notificationTitle,
           message: notificationMessage,
         );
-        log("✅ Push notifications sent successfully for list $listId.");
-      } else {
-        log("⚠️ No external user IDs to send push notifications to.");
       }
-    } catch (e, stack) {
-      log("❌ Error notifying users in list $listId: $e\n$stack");
-    }
+    } catch (_) {}
   }
 
   // Function to get all users in a given list
 
   static Future<List<AppUserModel>> getUsersInList(String listId) async {
     try {
-      log("🔄 Fetching users for list: $listId");
       // 1. Get user IDs and their roles from the list_user_role table
       final response = await supabase!
           .from('list_user_role')
@@ -761,7 +546,6 @@ class SupabaseConnect {
           .eq('list_id', listId);
       // if No users found return
       if (response.isEmpty) {
-        log("🚫 No users found for list: $listId");
         return [];
       }
 
@@ -788,15 +572,12 @@ class SupabaseConnect {
       if (usersResponse.isNotEmpty) {
         users = usersResponse.map((e) {
           final user = AppUserModelMapper.fromMap(e);
-          log(
-            "👤 User: ${user.name} (ID: ${user.userId}, Role: ${userRoles[user.userId]})",
-          );
+
           return user;
         }).toList();
       }
       return users; //return uses
-    } catch (e, stack) {
-      log("❌ Error fetching users for list $listId: $e\n$stack");
+    } catch (e) {
       throw Exception(
         "Failed to fetch users for list: $e",
       ); //throw exceptions if update fails
@@ -823,8 +604,6 @@ class SupabaseConnect {
   // ================================================== Start getAdminLists ================================================
   static Future<List<ListModel>> getAdminLists() async {
     try {
-      log("📥 Fetching admin lists");
-
       // to get current user
       final appUser = await fetchUserById();
       if (appUser == null) {
@@ -843,7 +622,6 @@ class SupabaseConnect {
           .eq('role_id', adminRoleId);
 
       if (roleRows.isEmpty) {
-        log("🔍 No admin lists found for user $appUserId");
         return [];
       }
 
@@ -856,16 +634,12 @@ class SupabaseConnect {
           .from('list')
           .select()
           .inFilter('list_id', listIds);
-      log("📦 Raw JSON from list table: $listRows");
       final lists = listRows
           .map<ListModel>((row) => ListModelMapper.fromMap(row))
           .toList();
 
-      log("✅ Fetched ${lists.length} admin lists for user $appUserId");
-
       return lists;
-    } catch (e, stack) {
-      log("❌ Error in getAdminLists: $e\n$stack");
+    } catch (e) {
       throw Exception("Failed to fetch admin lists: $e");
     }
   }
@@ -927,8 +701,6 @@ class SupabaseConnect {
   //SAME METHOD WITH SIMPLE ADDITION BY SHATHA
   static Future<List<ListModel>> getMemberLists() async {
     try {
-      log("📥 Fetching member lists");
-
       // Get current user
       final appUser = await fetchUserById();
       if (appUser == null) {
@@ -949,7 +721,6 @@ class SupabaseConnect {
           .eq('role_id', memberRoleId);
 
       if (roleRows.isEmpty) {
-        log("🔍 No member lists found for user $appUserId");
         return [];
       }
 
@@ -968,11 +739,8 @@ class SupabaseConnect {
           .map<ListModel>((row) => ListModelMapper.fromMap(row))
           .toList();
 
-      log("✅ Fetched ${lists.length} member lists for user $appUserId");
-
       return lists;
-    } catch (e, stack) {
-      log("❌ Error in getMemberLists: $e\n$stack");
+    } catch (e) {
       throw Exception("Failed to fetch member lists: $e");
     }
   }
@@ -982,8 +750,6 @@ class SupabaseConnect {
   // ================================================== Start addNewList ==================================================
   static Future<ListModel?> addNewList({required ListModel list}) async {
     try {
-      log("🚀 Starting addNewList");
-
       final listMap = list.toMap();
 
       if (list.listId.isEmpty) {
@@ -1008,7 +774,6 @@ class SupabaseConnect {
       }
 
       final newList = ListModelMapper.fromMap(response.first);
-      log("✅ List created: ${newList.listId}");
 
       // Link user to list as admin
       final listUserRoleMap = {
@@ -1020,11 +785,8 @@ class SupabaseConnect {
 
       await supabase!.from('list_user_role').insert(listUserRoleMap);
 
-      log("✅ User $appUserId assigned as admin to list ${newList.listId}");
-
       return newList;
-    } catch (e, stack) {
-      log('❌ Error in addNewList: $e\n$stack');
+    } catch (e) {
       throw Exception('Failed to add new list and assign admin role.');
     }
   }
@@ -1034,8 +796,6 @@ class SupabaseConnect {
   // ================================================== Start editList ==================================================
   static Future<void> updateList({required ListModel list}) async {
     try {
-      log("🛠 Starting updateList");
-
       // Get current user
       final appUser = await fetchUserById();
       if (appUser == null) {
@@ -1066,10 +826,7 @@ class SupabaseConnect {
           .from('list')
           .update(updateData)
           .eq('list_id', list.listId);
-
-      log("✅ List ${list.listId} updated successfully.");
-    } catch (e, stack) {
-      log("❌ Error in updateList: $e\n$stack");
+    } catch (e) {
       throw Exception("Failed to update list: $e");
     }
   }
@@ -1077,8 +834,6 @@ class SupabaseConnect {
   // =================================================== End editList ===================================================
   static Future<void> deleteList({required String listId}) async {
     try {
-      log("🗑 Starting deleteList");
-
       // Get current user
       final appUser = await fetchUserById();
       if (appUser == null) {
@@ -1104,13 +859,10 @@ class SupabaseConnect {
 
       // 🔥 Delete all rows in list_user_role that reference this list
       await supabase!.from('list_user_role').delete().eq('list_id', listId);
-      log("✅ Related roles deleted from list_user_role");
 
       // 🔥 Now delete the list itself
       await supabase!.from('list').delete().eq('list_id', listId);
-      log("✅ List $listId deleted successfully.");
-    } catch (e, stack) {
-      log("❌ Error in deleteList: $e\n$stack");
+    } catch (e) {
       throw Exception("Failed to delete list: $e");
     }
   }

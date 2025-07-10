@@ -33,74 +33,61 @@ class ListsScreen extends StatelessWidget {
         builder: (context) {
           final bloc = context.read<AddListBloc>();
           return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(140),
-              child: Stack(
-                children: [
-                  AppBarWidget(
-                    title: 'listTitle'.tr(),
-                    showActions: false,
-                    showSearchBar: false,
-                    actionsIcon: const [],
-                    showBackButton: false,
-                  ),
+            appBar: AppBarWidget(
+              title: 'listTitle'.tr(),
+              showActions: true,
+              showSearchBar: false,
 
-                  SafeArea(
-                    child: Align(
-                      alignment: AlignmentDirectional.topEnd,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0, right: 12.0),
-                        child: BlocBuilder<InvitationsBloc, InvitationsState>(
-                          builder: (context, state) {
-                            final hasInvites =
-                                state is InviteLoadedState &&
-                                state.invitedLists.isNotEmpty;
+              showBackButton: false,
+              actionsIcon: [
+                BlocBuilder<InvitationsBloc, InvitationsState>(
+                  builder: (context, state) {
+                    final hasInvites =
+                        state is InviteLoadedState &&
+                        state.invitedLists.isNotEmpty;
 
-                            return Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.notifications,
-                                    color: Colors.green,
-                                    size: 26,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            const InvitationsScreen(),
-                                      ),
-                                    );
-                                  },
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.notifications,
+                            color: StyleColor.green,
+                            size: 26,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<InvitationsBloc>(),
+                                  child: const InvitationsScreen(),
                                 ),
-                                if (hasInvites)
-                                  const Positioned(
-                                    top: 8,
-                                    right: 8,
-                                    child: CircleAvatar(
-                                      radius: 5,
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  ),
-                              ],
+                              ),
                             );
                           },
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                        if (hasInvites)
+                          const Positioned(
+                            top: 8,
+                            right: 8,
+                            child: CircleAvatar(
+                              radius: 5,
+                              backgroundColor: Colors.red,
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
 
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  // ==================================== here will be external lists and completed lists ====================
-                  Row(
+            body: Column(
+              children: [
+                // ==================================== here will be external lists and completed lists ====================
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ListsButtons(
@@ -122,80 +109,80 @@ class ListsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // ==================================== here will end external lists and completed lists ====================
-                  SizedBox(height: 16.0),
-                  Divider(color: StyleColor.gray, thickness: 2.0),
+                ),
+                // ==================================== here will end external lists and completed lists ====================
+                SizedBox(height: 16.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Divider(color: StyleColor.gray, thickness: 2.0),
+                ),
 
-                  BlocBuilder<AddListBloc, AddListState>(
-                    builder: (context, state) {
-                      if (state is AddListLoading) {
-                        return SingleChildScrollView(
-                          child: CustomShimmerEffect(
-                            isItem: false,
-                          ),
-                        ); // while data not loaded will show shimmer (UX)
-                      } else if (state is AddListError) {
-                        return Center(child: Text('Error: ${state.message}'));
-                      } else if (state is AddListLoaded) {
-                        final lists = state.lists;
+                BlocBuilder<AddListBloc, AddListState>(
+                  builder: (context, state) {
+                    if (state is AddListLoading) {
+                      return SingleChildScrollView(
+                        child: CustomShimmerEffect(isItem: false),
+                      ); // while data not loaded will show shimmer (UX)
+                    } else if (state is AddListError) {
+                      return Center(child: Text('Error: ${state.message}'));
+                    } else if (state is AddListLoaded) {
+                      final lists = state.lists;
 
-                        return lists.isEmpty
-                            ? CustomEmptyWidget(
-                                img: '',
-                                bigText: 'listNoLists'.tr(),
-                                buttonText: 'listAdd'.tr(),
-                                onPressed: () {
-                                  showAddListButtomSheet(
-                                    context: context,
-                                    isEdit: false,
-                                  );
-                                },
-                              )
-                            : Expanded(
-                                child: BlocBuilder<AddListBloc, AddListState>(
-                                  builder: (context, state) {
-                                    return ListView.builder(
-                                      itemCount: lists.length,
-                                      itemBuilder: (context, index) {
-                                        final list = lists[index];
-                                        return GestureDetector(
-                                          onLongPress: () {
-                                            // becouse on press will go to sub list
-                                            showAddListButtomSheet(
-                                              context: context,
-                                              isEdit: true,
-                                              listId: list.listId,
-                                              list: list,
+                      return lists.isEmpty
+                          ? CustomEmptyWidget(
+                              img: '',
+                              bigText: 'listNoLists'.tr(),
+                              buttonText: 'listAdd'.tr(),
+                              onPressed: () {
+                                showAddListButtomSheet(
+                                  context: context,
+                                  isEdit: false,
+                                );
+                              },
+                            )
+                          : Expanded(
+                              child: BlocBuilder<AddListBloc, AddListState>(
+                                builder: (context, state) {
+                                  return ListView.builder(
+                                    itemCount: lists.length,
+                                    itemBuilder: (context, index) {
+                                      final list = lists[index];
+                                      return GestureDetector(
+                                        onLongPress: () {
+                                          // becouse on press will go to sub list
+                                          showAddListButtomSheet(
+                                            context: context,
+                                            isEdit: true,
+                                            listId: list.listId,
+                                            list: list,
+                                          );
+                                        },
+                                        child: CustomListtile(
+                                          title: list.name,
+                                          backgroundColor: list.getColor(),
+                                          onPressed: () {
+                                            bloc.appGetit.listId = list.listId;
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SubListScreen(),
+                                              ),
                                             );
                                           },
-                                          child: CustomListtile(
-                                            title: list.name,
-                                            backgroundColor: list.getColor(),
-                                            onPressed: () {
-                                              bloc.appGetit.listId =
-                                                  list.listId;
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SubListScreen(),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              );
-                      } else {
-                        return CustomShimmerEffect(isItem: false);
-                      }
-                    },
-                  ),
-                ],
-              ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                    } else {
+                      return CustomShimmerEffect(isItem: false);
+                    }
+                  },
+                ),
+              ],
             ),
 
             floatingActionButton: FloatingButton(

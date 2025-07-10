@@ -9,8 +9,8 @@ import 'package:qaimati/features/sub_list/sub_list_screen.dart';
 import 'package:qaimati/layer_data/app_data.dart';
 import 'package:qaimati/widgets/app_bar_widget.dart';
 import 'package:qaimati/widgets/custom_listtile.dart';
+import 'package:qaimati/widgets/custom_shimmer_effect.dart';
 import 'package:qaimati/widgets/empty_widget.dart';
-import 'package:qaimati/widgets/loading_widget.dart';
 
 class InvitedLists extends StatelessWidget {
   const InvitedLists({super.key});
@@ -27,7 +27,7 @@ class InvitedLists extends StatelessWidget {
               showActions: true,
               showSearchBar: false,
 
-              showBackButton: false,
+              showBackButton: true,
             ),
             body: Column(
               children: [
@@ -62,7 +62,7 @@ class InvitedLists extends StatelessWidget {
                       return const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
 
-                        children: [LoadingWidget()],
+                        children: [CustomShimmerEffect(isItem: false)],
                       );
                     } else if (state is AddListError) {
                       return Center(child: Text('Error: ${state.message}'));

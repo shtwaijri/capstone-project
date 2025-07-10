@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, depend_on_referenced_packages
 
 import 'dart:developer';
 
@@ -22,13 +22,6 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   NavigationBloc() : super(NavigationBarState(0)) {
     on<NavigationEvent>((event, emit) {});
     on<NavigationItemSelected>((event, emit) async {
-      // try {
-      //   final user = await fetchUserById();
-      //   OneSignal.login(user!.userId);
-      //   log("OneSignal log in in nav corect ");
-      // } catch (e) {
-      //   log("OneSignal log in in nav $e");
-      // }
       emit(NavigationBarState(event.index));
     });
   }

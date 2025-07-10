@@ -52,7 +52,14 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StyleSize.sizeH32,
-                      Text("Item".tr(), style: StyleText.bold24(context)),
+                      Text(
+                        "Item".tr(),
+                        style: StyleText.bold24(context).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
                       StyleSize.sizeH16,
                       Row(
                         children: [
@@ -98,27 +105,43 @@ void showAddItemBottomShaeet({required BuildContext context}) {
                         buildWhen: (previous, current) =>
                             current is SubListLoadedState,
                         builder: (context, state) {
-                          return Container(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                context.read<SubListBloc>().add(
-                                  ChooseImportanceEvent(
-                                    isImportant: !bloc.isItemImportant,
-                                  ),
-                                );
-                              },
-                              icon: Icon(
-                                !bloc.isItemImportant
-                                    ? CupertinoIcons.exclamationmark_square
-                                    : CupertinoIcons
-                                          .exclamationmark_square_fill,
-                                color: StyleColor.red,
-                                size: context.getWidth() * .09,
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                tr("asimportant"),
+                                style: StyleText.bold16(context).copyWith(
+                                  color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
-                            ),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    context.read<SubListBloc>().add(
+                                      ChooseImportanceEvent(
+                                        isImportant: !bloc.isItemImportant,
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    !bloc.isItemImportant
+                                        ? CupertinoIcons.exclamationmark_square
+                                        : CupertinoIcons
+                                              .exclamationmark_square_fill,
+                                    color: StyleColor.red,
+                                    size: context.getWidth() * .09,
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),

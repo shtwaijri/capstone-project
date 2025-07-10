@@ -1,27 +1,17 @@
 // ignore_for_file: empty_catches
 
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qaimati/models/app_user/app_user_model.dart';
 import 'package:qaimati/repository/supabase.dart';
+import 'package:qaimati/style/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthLayer {
-  //will be used later
-  // bool isSignIn = false;
-  // String? idUser;
-  //bool isSignIn = false;
-
-  //String? idUser = "cf2eb3c1-0d12-46dd-973e-eceb15dc6695";
   AppUserModel? user;
 
-  AuthLayer() {
-    //getUser(idUser!);
-  }
   Future<void> sendOtp({required String email}) async {
     try {
       await SupabaseConnect.sendOtp(email: email);
@@ -40,11 +30,8 @@ class AuthLayer {
 
   Future<void> updateEmail({required String email}) async {
     try {
-      log("updateEmail AuthLayer starts");
       await SupabaseConnect.updateEmail(email);
-      log("updateEmail AuthLayer end ss ");
     } catch (_) {
-      log("updateEmail AuthLayer rethrow");
       rethrow;
     }
   }
@@ -93,21 +80,11 @@ class AuthLayer {
 
   Future<void> getUser(String userId) async {
     try {
-      log("📥 Fetching user from Supabase: AuthLayer");
-
       user = await SupabaseConnect.getUser(userId);
 
       if (user != null && user!.userId.isNotEmpty) {
         OneSignal.login(user!.userId);
-        print(
-          "🎉 OneSignal: Logged in user ${user!.userId} after fetching user data.",
-        );
-      } else {
-        print(
-          "⚠️ OneSignal: User data or ID is null, cannot log in to OneSignal.",
-        );
       }
-      log("end AuthLayer ");
     } catch (_) {
       rethrow;
     }
@@ -124,7 +101,7 @@ class AuthLayer {
           .eq('auth_user_id', user.id)
           .single();
 
-      // final isDark = response['theme_mode'] == 'dark';
+      final isDark = response['theme_mode'] == 'dark';
       final isArabic = response['language_code'] == 'ar';
 
       //ensure that the screen still exist
@@ -135,7 +112,7 @@ class AuthLayer {
         isArabic ? const Locale('ar', 'AR') : const Locale('en', 'US'),
       );
 
-      // ThemeController.toggleTheme(isDark);
+      ThemeController.toggleTheme(isDark);
     } catch (e) {}
   }
 }

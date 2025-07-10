@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qaimati/style/style_color.dart';
+import 'package:qaimati/style/style_text.dart';
 
 class CustomListtile extends StatelessWidget {
   // Constructor for CustomListtile widget.
@@ -13,7 +14,8 @@ class CustomListtile extends StatelessWidget {
   final String title;
   final Function()? onPressed;
   final Color backgroundColor;
-  final Color contentColor = StyleColor.black; // White color for content text, any chnages can be done on all content
+  final Color contentColor = StyleColor
+      .black; // White color for content text, any chnages can be done on all content
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,18 +45,18 @@ class CustomListtile extends StatelessWidget {
           title: Text(
             // The main text content of the list tile.
             title,
-            style: TextStyle(color: contentColor),
+            style: StyleText.bold16black(
+              context,
+            ), //TextStyle(color: contentColor),
             // Sets the color of the title text to white.
           ),
-          trailing:
+          trailing: Icon(
+            // The icon inside the IconButton.
+            Icons.arrow_forward_ios, // A right-pointing arrow icon.
+            color: contentColor,
 
-              Icon(
-                // The icon inside the IconButton.
-                Icons.arrow_forward_ios, // A right-pointing arrow icon.
-                color: contentColor,
-
-                // Sets the color of the trailing icon to white.
-              ),
+            // Sets the color of the trailing icon to white.
+          ),
         ),
       ),
     );
