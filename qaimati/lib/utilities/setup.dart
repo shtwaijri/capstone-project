@@ -20,48 +20,56 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> setUp() async {
+  // 1. Initialize Flutter binding and environment
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+
+  // 2. Register basic services
   GetIt.instance.registerLazySingleton<OnboardingInfo>(() => OnboardingInfo());
-  // Enable verbose logging for debugging (remove in production)
+
+  // 3. Configure OneSignal
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  // Initialize with your OneSignal App ID
   OneSignal.initialize(dotenv.env["appIDOneSignal"].toString());
-  // Use this method to prompt for push notifications.
-  // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
   OneSignal.Notifications.requestPermission(false);
 
-  //to ensure that the current user is saved
+  // 4. Initialize Supabase
   await SupabaseConnect.init();
 
+  // 5. Initialize localization
   await EasyLocalization.ensureInitialized();
-  GetIt.I.registerSingletonAsync<AuthLayer>(() async => AuthLayer());
+
+  // 6. Register core services
+  GetIt.I.registerSingleton<AuthLayer>(AuthLayer()); // Changed to synchronous
   GetIt.I.registerSingletonAsync<AppDatatLayer>(() async => AppDatatLayer());
 
+  // 7. Load onboarding status
   final prefs = await SharedPreferences.getInstance();
-  final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
   GetIt.I.registerSingleton<bool>(
-    seenOnboarding,
+    prefs.getBool('seenOnboarding') ?? false,
     instanceName: 'seenOnboarding',
   );
 
-  GetIt.I.registerSingletonAsync<ReceiptData>(
-    () async => ReceiptData()..loadAllDataFromSupabase(),
-  );
-  if (!GetIt.I.isRegistered<ReceiptData>()) {
-    GetIt.I.registerSingletonAsync<ReceiptData>(
-      () async => ReceiptData()
-        ..loadMonthlyDataFromSupabase(
-          year: DateTime.now().year,
-          month: DateTime.now().month,
-        ),
-    );
-  }
+  // 8. Register ReceiptData with lazy loading (without immediate data fetch)
+  GetIt.I.registerLazySingleton<ReceiptData>(() => ReceiptData());
 
-
+  // 9. Wait for all async services to initialize
   await GetIt.I.allReady();
 
-  await PrimeService.checkAndExpirePrimeStatus();
+  // 10. Check auth state and load data if logged in
+  final supabase = Supabase.instance.client;
+  if (supabase.auth.currentUser != null) {
+    try {
+      // Now safely load data when needed
+      await GetIt.I<ReceiptData>().loadMonthlyDataFromSupabase(
+        year: DateTime.now().year,
+        month: DateTime.now().month,
+      );
 
-
+      await PrimeService.checkAndExpirePrimeStatus();
+    } catch (e) {
+      log('Error loading user data: $e');
+      // Handle error appropriately
+    }
+  }
 }
+
