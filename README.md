@@ -155,7 +155,7 @@ Qaimati is a powerful **productivity and collaboration app** to simplify shoppin
 
 ### **Amr Noorwali**
 
-- ٍSplash Screen
+- Splash Screen
 - Onboarding Screens
 - Home Screen (Lists)
 - Supabase tables
