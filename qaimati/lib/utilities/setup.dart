@@ -57,4 +57,11 @@ Future<void> setUp() async {
         ),
     );
   }
+
+
+  await GetIt.I.allReady();
+
+  await PrimeService.checkAndExpirePrimeStatus();
+
+
 }
