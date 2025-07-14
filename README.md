@@ -64,7 +64,7 @@ Supports both **Android** and **iOS** devices.
 
 ## 📱 Output Demo
 
-[📱 Output Demo Link](https://drive.google.com/file/d/1_ruWPRHy8DvX88FvnijhFI8nDcye315Q/view?usp=sharing)
+[📱 Output Demo Link](https://drive.google.com/file/d/1pAnOtTVjNyJf1AtOZEOq3zm2vombvOYs/view?usp=drivesdk)
 
 ### 📸 Screenshots:
 
