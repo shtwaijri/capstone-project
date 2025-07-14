@@ -64,13 +64,12 @@ Supports both **Android** and **iOS** devices.
 
 ## 📱 Output Demo
 
-[📱 Output Demo Link](https://drive.google.com)
+[📱 Output Demo Link](https://drive.google.com/file/d/1_ruWPRHy8DvX88FvnijhFI8nDcye315Q/view?usp=sharing)
 
 ### 📸 Screenshots:
 
-<img width="300"  alt="Screenshots 1" src="https://github.com/user-attachments/assets/3854a91f-139e-451e-8741-1d6e7b4e3a21" />
-<img width="300"  alt="Screenshots 2" src="https://github.com/user-attachments/assets/dac92c57-21fd-4b35-b991-4114d50ebfcd" />
-<img width="300"  alt="Screenshots 3" src="https://github.com/user-attachments/assets/c12c3934-d246-4137-95f2-ff50c8fb29dd" />
+<img width="1533" height="974" alt="Screenshots" src="https://github.com/user-attachments/assets/22938bc9-a46a-4412-bf51-f6dc711bffc3" />
+
 
 ---
 
@@ -189,10 +188,18 @@ Qaimati is a powerful **productivity and collaboration app** to simplify shoppin
 ---
 
 ## 🔗 GitHub Profiles
+- [Shatha Altwaijri](https://github.com/shtwaijri)
+- [Bushra Aljuwair](https://github.com/BushraAljuwair)
+- [Lamya Alsuhaibani](https://github.com/lamyaalsuhaibani)
+- [Amr Noorwali](https://github.com/amr-noorwali)
 
+---
+
+## 🌐 Connect With Us
 - [Shatha Altwaijri](https://bind.link/@shathaaltwaijri)
 - [Bushra Aljuwair](https://bind.link/@bushraaljuwair)
 - [Lamya Alsuhaibani](https://bind.link/@lamyaalsuhaibani)
 - [Amr Noorwali](https://bind.link/@amr-noorwli)
 
 ---
+> 🛒 Qaimati - Because every purchase begins with a list
